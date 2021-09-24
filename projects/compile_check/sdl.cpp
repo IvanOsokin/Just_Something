@@ -1,14 +1,17 @@
 #include <SDL.h>
 #include <iostream>
 
-int main()
+extern "C"
 {
-	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
+	int main(int argc, char * argv[])
 	{
-		std::cerr << "Failed to init SDL: " << SDL_GetError() << std::endl;
-		return 1;
-	}
+		if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
+		{
+			std::cerr << "Failed to init SDL: " << SDL_GetError() << std::endl;
+			return 1;
+		}
 
-	SDL_Quit();
-	return 0;
+		SDL_Quit();
+		return 0;
+	}
 }
