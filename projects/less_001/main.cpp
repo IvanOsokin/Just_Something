@@ -1,8 +1,5 @@
-﻿#include <iostream>
-#include <algorithm>
-#include <functional>
+﻿#include <algorithm>
 #include <list>
-#include <vector>
 #include "My_String.h"
 
 void printList(std::list<MyString>& stringList);
@@ -18,7 +15,6 @@ int main(int argc, char* argv[])
     MyString object3 = "Second string";
     MyString object4 = object3;
     object4.remove_begin(7);
-    object1.add_begin("third");
 
     MyString object5 = object4;
     object5.add_begin("fourth");
@@ -54,21 +50,6 @@ int main(int argc, char* argv[])
     std::copy(sortedList.begin(), sortedList.end(), std::back_inserter(reversedList));
     reversedList.sort(descendingComp);
     printList(reversedList);
-
-    /*const char str[] = "Hello";
-
-    MyString var1;
-    MyString var2(str, strlen(str));
-    MyString var3("World");
-
-    MyString var_eq1;
-    var_eq1 = var2;
-    var_eq1 = std::move(var3);
-
-    MyString empt;
-    MyString add;
-    add.add_begin(var_eq1);
-    add.add_end("");*/
 
     std::cin.get();
 
@@ -111,7 +92,7 @@ bool ascendingComp(const MyString& obj1, const MyString& obj2)
     }
     else
     {
-        return true;   //Исключение, если сравнивается дефолтный объект
+        return false;
     }
 }
 
@@ -140,6 +121,6 @@ bool descendingComp(const MyString& obj1, const MyString& obj2)
     }
     else
     {
-        return true;   //Исключение, если сравнивается дефолтный объект
+        return false;
     }
 }
