@@ -1,6 +1,6 @@
 ﻿#include <algorithm>
 #include <list>
-#include "My_String.h"
+#include "MyString.h"
 
 void printList(std::list<MyString>& stringList);
 bool ascendingComp (const MyString& obj1, const MyString& obj2);
@@ -14,12 +14,12 @@ int main(int argc, char* argv[])
 
     MyString object3 = "Second string";
     MyString object4 = object3;
-    object4.remove_begin(7);
+    object4.RemoveBegin(7);
 
     MyString object5 = object4;
-    object5.add_begin("fourth");
-    object4.remove(2);
-    object5.remove(6, 10);
+    object5.AddBegin("fourth");
+    object4.Remove(2);
+    object5.Remove(6, 10);
 
     MyString object6 = "First strimg1";
     MyString object7 = "First string2";
@@ -42,13 +42,13 @@ int main(int argc, char* argv[])
     printList(sortedList);
 
     std::cout << "**********************LIST SORTED IN ASCEND ORDER**********************" << std::endl << std::endl;
-    sortedList.sort(ascendingComp);
+    sortedList.sort(AscendingComp);
     printList(sortedList);
 
     std::cout << "**********************LIST SORTED IN DESCEND ORDER**********************" << std::endl << std::endl;
     std::list<MyString> reversedList;
     std::copy(sortedList.begin(), sortedList.end(), std::back_inserter(reversedList));
-    reversedList.sort(descendingComp);
+    reversedList.sort(DescendingComp);
     printList(reversedList);
 
     std::cin.get();
@@ -60,14 +60,14 @@ void printList(std::list<MyString>& list)
 {
     for (auto i = list.begin(); i != list.end(); ++i)
     {
-        if (i->length())
+        if (i->Length())
         {
             std::cout << *i;
         }
     }
 }
 
-bool ascendingComp(const MyString& obj1, const MyString& obj2)
+bool AscendingComp(const MyString& obj1, const MyString& obj2)
 {
     if (obj1._str && obj2._str)
     {
@@ -87,7 +87,7 @@ bool ascendingComp(const MyString& obj1, const MyString& obj2)
         {
             MyString oc1 = &obj1._str[1];
             MyString oc2 = &obj2._str[1];
-            return ascendingComp(oc1, oc2);
+            return AscendingComp(oc1, oc2);
         }
     }
     else
@@ -96,7 +96,7 @@ bool ascendingComp(const MyString& obj1, const MyString& obj2)
     }
 }
 
-bool descendingComp(const MyString& obj1, const MyString& obj2)
+bool DescendingComp(const MyString& obj1, const MyString& obj2)
 {
     if (obj1._str && obj2._str)
     {
@@ -116,7 +116,7 @@ bool descendingComp(const MyString& obj1, const MyString& obj2)
         {
             MyString oc1 = &obj1._str[1];
             MyString oc2 = &obj2._str[1];
-            return descendingComp(oc1, oc2);
+            return DescendingComp(oc1, oc2);
         }
     }
     else
