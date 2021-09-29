@@ -2,9 +2,9 @@
 #include <list>
 #include "MyString.h"
 
-void printList(std::list<MyString>& stringList);
-bool ascendingComp (const MyString& obj1, const MyString& obj2);
-bool descendingComp(const MyString& obj1, const MyString& obj2);
+void PrintList(std::list<MyString>& stringList);
+bool AscendingComp (const MyString& obj1, const MyString& obj2);
+bool DescendingComp(const MyString& obj1, const MyString& obj2);
 
 int main(int argc, char* argv[])
 {
@@ -39,24 +39,24 @@ int main(int argc, char* argv[])
     sortedList.push_back(std::move(object8));
     sortedList.push_back(std::move(object9));
     sortedList.push_back(std::move(object10));
-    printList(sortedList);
+    PrintList(sortedList);
 
     std::cout << "**********************LIST SORTED IN ASCEND ORDER**********************" << std::endl << std::endl;
     sortedList.sort(AscendingComp);
-    printList(sortedList);
+    PrintList(sortedList);
 
     std::cout << "**********************LIST SORTED IN DESCEND ORDER**********************" << std::endl << std::endl;
     std::list<MyString> reversedList;
     std::copy(sortedList.begin(), sortedList.end(), std::back_inserter(reversedList));
     reversedList.sort(DescendingComp);
-    printList(reversedList);
+    PrintList(reversedList);
 
     std::cin.get();
 
     return 0;
 }
 
-void printList(std::list<MyString>& list)
+void PrintList(std::list<MyString>& list)
 {
     for (auto i = list.begin(); i != list.end(); ++i)
     {
