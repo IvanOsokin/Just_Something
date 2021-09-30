@@ -8,4 +8,5 @@ FetchContent_Declare(
 
 set(SFML_BUILD_AUDIO OFF CACHE INTERNAL "")
 set(SFML_STATIC_LIBRARIES ON CACHE INTERNAL "")
+set(BUILD_SHARED_LIBS OFF)
 FetchContent_MakeAvailable(sfmllib)
