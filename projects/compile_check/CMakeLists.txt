@@ -1,11 +1,10 @@
-project(compile_check)
+option(PROJECTS_COMPILE_CHECK_SDL OFF)
+option(PROJECTS_COMPILE_CHECK_SFML OFF)
 
-set(EXTERNAL_SDL_ENABLED ON)
-set(EXTERNAL_SFML_ENABLED ON)
-include(../../external.cmake)
+if (PROJECTS_COMPILE_CHECK_SDL)
+	add_subdirectory(sdl)
+endif()
 
-add_executable(sdl-check sdl.cpp)
-target_link_libraries(sdl-check PRIVATE SDL2-static SDL2main)
-
-add_executable(sfml-check sfml.cpp)
-target_link_libraries(sfml-check PRIVATE sfml-graphics sfml-system sfml-window)
+if (PROJECTS_COMPILE_CHECK_SFML)
+	add_subdirectory(sfml)
+endif()
