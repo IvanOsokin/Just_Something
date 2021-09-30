@@ -84,9 +84,16 @@ std::ostream& operator << (std::ostream& os, const MyString& obj)
 	return os;
 }
 
-char MyString::operator [] (int index)
+char MyString::operator [] (std::size_t index) const
 {
-	return _str[index];
+	if (_str && index <= _len)
+	{
+		return _str[index];
+	}
+	else
+	{
+		return '\0';
+	}
 }
 
 void MyString::Swap(MyString& other)
@@ -98,6 +105,11 @@ void MyString::Swap(MyString& other)
 int MyString::Length() const
 {
 	return _len;
+}
+
+bool MyString::IsEmpty() const
+{
+	return !_len;
 }
 
 void MyString::Clean()
