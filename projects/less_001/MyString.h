@@ -17,11 +17,12 @@ public:
 
 	friend MyString operator + (const MyString& obj1, const MyString& obj2);
 	friend std::ostream& operator << (std::ostream& os, const MyString& obj);
-	char   operator [] (int index);
+	char operator [] (std::size_t index) const;
 
 	void  Swap(MyString& other);
 
 	int   Length() const;
+	bool  IsEmpty() const;
 	void  Clean();
 	void  Remove	   (const std::size_t index);
 	void  Remove	   (const std::size_t iBegin, const std::size_t iEnd);
@@ -31,10 +32,6 @@ public:
 	void  AddEnd	   (const MyString& other);
 	void  AddBegin	   (const char* subStr);
 	void  AddBegin	   (const MyString& other);
-
-	friend bool AscendingComp (const MyString& obj1, const MyString& obj2);
-	friend bool DescendingComp(const MyString& obj1, const MyString& obj2);
-
 
 private:
 	char*	_str = nullptr;
