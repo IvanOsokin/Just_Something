@@ -10,6 +10,7 @@ get_filename_component(CMAKE_HELPERS_FILE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cm
 add_subdirectory(compile_check)
 add_subdirectory(less_001)
 add_subdirectory(less_002)
+add_subdirectory(less_003)
 
 add_subdirectory(libcore)
 add_subdirectory(alienland)
