@@ -1,7 +1,10 @@
-project(compile_check)
+option(PROJECTS_COMPILE_CHECK_SDL OFF)		# Создание перменной PROJECTS_COMPILE_CHECK_SDL и ее значением по умолчанию OFF
+option(PROJECTS_COMPILE_CHECK_SFML OFF)
 
-set(EXTERNAL_SDL_ENABLED ON)
-include(../../external.cmake)
+if (PROJECTS_COMPILE_CHECK_SDL)
+	add_subdirectory(sdl)
+endif()
 
-add_executable(sdl-check sdl.cpp)
-target_link_libraries(sdl-check PRIVATE SDL2-static SDL2main)
+if (PROJECTS_COMPILE_CHECK_SFML)
+	add_subdirectory(sfml)
+endif()

@@ -1,8 +1,6 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <iostream>
 #include <cstring>
-#include "My_String.h"
+#include "MyString.h"
 
 MyString::MyString(const char* initString, size_t length)
 {
@@ -86,9 +84,16 @@ std::ostream& operator << (std::ostream& os, const MyString& obj)
 	return os;
 }
 
-char MyString::operator [] (int index)
+char MyString::operator [] (std::size_t index) const
 {
-	return _str[index];
+	if (_str && index <= _len)
+	{
+		return _str[index];
+	}
+	else
+	{
+		return '\0';
+	}
 }
 
 void MyString::Swap(MyString& other)
@@ -97,12 +102,17 @@ void MyString::Swap(MyString& other)
 	std::swap(other._len, _len);
 }
 
-int MyString::length() const
+int MyString::Length() const
 {
 	return _len;
 }
 
-void MyString::clean()
+bool MyString::IsEmpty() const
+{
+	return !_len;
+}
+
+void MyString::Clean()
 {
 	if (_str)
 	{
@@ -112,7 +122,7 @@ void MyString::clean()
 	}
 }
 
-void MyString::remove(const std::size_t index)
+void MyString::Remove(const std::size_t index)
 {
 	if (index >= 0 && index <= _len)
 	{
@@ -138,7 +148,7 @@ void MyString::remove(const std::size_t index)
 	}
 }
 
-void MyString::remove(const std::size_t iBegin, const std::size_t iEnd)
+void MyString::Remove(const std::size_t iBegin, const std::size_t iEnd)
 {
 	if (iBegin < iEnd && iBegin >= 0 && iEnd <= _len)
 	{
@@ -162,7 +172,7 @@ void MyString::remove(const std::size_t iBegin, const std::size_t iEnd)
 	}
 }
 
-void MyString::remove_end(const std::size_t range)
+void MyString::RemoveEnd(const std::size_t range)
 {
 	if (!(_len < range))
 	{
@@ -183,7 +193,7 @@ void MyString::remove_end(const std::size_t range)
 	}
 }
 
-void MyString::remove_begin(const std::size_t range)
+void MyString::RemoveBegin(const std::size_t range)
 {
 	if (!(_len < range))
 	{
@@ -204,7 +214,7 @@ void MyString::remove_begin(const std::size_t range)
 	}
 }
 
-void MyString::add_end(const char* subStr)
+void MyString::AddEnd(const char* subStr)
 {
 	if (!_str)
 	{
@@ -224,7 +234,7 @@ void MyString::add_end(const char* subStr)
 	}
 }
 
-void MyString::add_end(const MyString& other)
+void MyString::AddEnd(const MyString& other)
 {
 	if (!_str)
 	{
@@ -244,7 +254,7 @@ void MyString::add_end(const MyString& other)
 	}
 }
 
-void MyString::add_begin(const char* subStr)
+void MyString::AddBegin(const char* subStr)
 {
 	if (!_str)
 	{
@@ -264,7 +274,7 @@ void MyString::add_begin(const char* subStr)
 	}
 }
 
-void MyString::add_begin(const MyString& other)
+void MyString::AddBegin(const MyString& other)
 {
 	if (!_str)
 	{

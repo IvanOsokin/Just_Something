@@ -1,25 +1,25 @@
 ﻿#include <algorithm>
 #include <list>
-#include "My_String.h"
+#include "MyString.h"
 
-void printList(std::list<MyString>& stringList);
-bool ascendingComp (const MyString& obj1, const MyString& obj2);
-bool descendingComp(const MyString& obj1, const MyString& obj2);
+void PrintList(std::list<MyString>& stringList);
+bool AscendingComp (const MyString& str1, const MyString& str2);
+bool DescendingComp(const MyString& str1, const MyString& str2);
 
 int main(int argc, char* argv[])
 {
     MyString object1;
     MyString object2(object1);
-    object2 = "First string";
+    object2 = "1. Return";
 
-    MyString object3 = "Second string";
+    MyString object3 = "2. Second string";
     MyString object4 = object3;
-    object4.remove_begin(7);
+    object4.RemoveBegin(7);
 
     MyString object5 = object4;
-    object5.add_begin("fourth");
-    object4.remove(2);
-    object5.remove(6, 10);
+    object5.AddBegin("fourth");
+    object4.Remove(2);
+    object5.Remove(6, 10);
 
     MyString object6 = "First strimg1";
     MyString object7 = "First string2";
@@ -39,88 +39,69 @@ int main(int argc, char* argv[])
     sortedList.push_back(std::move(object8));
     sortedList.push_back(std::move(object9));
     sortedList.push_back(std::move(object10));
-    printList(sortedList);
+    PrintList(sortedList);
 
-    std::cout << "**********************LIST SORTED IN ASCEND ORDER**********************" << std::endl << std::endl;
-    sortedList.sort(ascendingComp);
-    printList(sortedList);
+    std::cout << "**********************LIST SORTED IN ASCENDING ORDER**********************" << std::endl << std::endl;
+    sortedList.sort(AscendingComp);
+    PrintList(sortedList);
 
-    std::cout << "**********************LIST SORTED IN DESCEND ORDER**********************" << std::endl << std::endl;
+    std::cout << "**********************LIST SORTED IN DESCENDING ORDER**********************" << std::endl << std::endl;
     std::list<MyString> reversedList;
     std::copy(sortedList.begin(), sortedList.end(), std::back_inserter(reversedList));
-    reversedList.sort(descendingComp);
-    printList(reversedList);
+    reversedList.sort(DescendingComp);
+    PrintList(reversedList);
 
     std::cin.get();
 
     return 0;
 }
 
-void printList(std::list<MyString>& list)
+void PrintList(std::list<MyString>& list)
 {
     for (auto i = list.begin(); i != list.end(); ++i)
     {
-        if (i->length())
+        if (i->Length())
         {
             std::cout << *i;
         }
     }
 }
 
-bool ascendingComp(const MyString& obj1, const MyString& obj2)
+bool AscendingComp(const MyString& str1, const MyString& str2)
 {
-    if (obj1._str && obj2._str)
-    {
-        if (tolower(*(obj1._str)) < tolower(*(obj2._str)) ||
-            (obj1._str[1] == '\0' && obj2._str[1] != '\0') ||
-            (obj2._len == 0))
-        {
-            return true;
-        }
-        else if (tolower(*(obj1._str)) > tolower(*(obj2._str)) ||
-            (obj1._str[1] != '\0' && obj2._str[1] == '\0') ||
-            (obj1._len == 0))
-        {
-            return false;
-        }
-        else
-        {
-            MyString oc1 = &obj1._str[1];
-            MyString oc2 = &obj2._str[1];
-            return ascendingComp(oc1, oc2);
-        }
-    }
-    else
-    {
-        return false;
-    }
+   for (std::size_t i = 0; str1[i] != '\0' && str2[i] != '\0'; ++i)
+   {
+       if (str1.IsEmpty() ||
+          (tolower(str1[i]) > tolower(str2[i])) ||
+          (str2[i + 1] == '\0' && str2[i + 1] != '\0'))
+       {
+           return false;
+       }
+       else if (str2.IsEmpty() ||
+               (tolower(str1[i]) < tolower(str2[i])) ||
+               (str2[i + 1] != '\0' && str2[i + 1] == '\0'))
+       {
+           return true;
+       }
+   }
+   return false;
 }
-
-bool descendingComp(const MyString& obj1, const MyString& obj2)
+bool DescendingComp(const MyString& str1, const MyString& str2)
 {
-    if (obj1._str && obj2._str)
+    for (std::size_t i = 0; str1[i] != '\0' && str2[i] != '\0'; ++i)
     {
-        if (tolower(*(obj1._str)) < tolower(*(obj2._str)) ||
-            (obj1._str[1] == '\0' && obj2._str[1] != '\0') ||
-            (obj2._len == 0))
-        {
-            return false;
-        }
-        else if (tolower(*(obj1._str)) > tolower(*(obj2._str)) ||
-            (obj1._str[1] != '\0' && obj2._str[1] == '\0') ||
-            (obj1._len == 0))
+        if (str1.IsEmpty() ||
+            (tolower(str1[i]) > tolower(str2[i])) ||
+            (str2[i + 1] == '\0' && str2[i + 1] != '\0'))
         {
             return true;
         }
-        else
+        else if (str2.IsEmpty() ||
+            (tolower(str1[i]) < tolower(str2[i])) ||
+            (str2[i + 1] != '\0' && str2[i + 1] == '\0'))
         {
-            MyString oc1 = &obj1._str[1];
-            MyString oc2 = &obj2._str[1];
-            return descendingComp(oc1, oc2);
+            return false;
         }
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
