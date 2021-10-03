@@ -1,13 +1,15 @@
 #pragma once
 
-#define LOG_MESSAGE_IMPL(severity, msg) \
-	Core::Log::Instance().Message(severity, (msg), __LINE__, __FILE__);
-
-#define LOG_DEBUG(msg) LOG_MESSAGE_IMPL(Core::LogMessageSeverity::Debug, msg)
-#define LOG_INFO(msg) LOG_MESSAGE_IMPL(Core::LogMessageSeverity::Info, msg)
-#define LOG_WARNING(msg) LOG_MESSAGE_IMPL(Core::LogMessageSeverity::Warning, msg)
-#define LOG_ERROR(msg) LOG_MESSAGE_IMPL(Core::LogMessageSeverity::Error, msg)
-#define LOG_FATAL_ERROR(msg) LOG_MESSAGE_IMPL(Core::LogMessageSeverity::FatalError, msg)
+#define LOG_DEBUG(msg) \
+	Core::Log::Instance().Message(Core::LogMessageSeverity::Debug, (msg), __LINE__, __FILE__);
+#define LOG_INFO(msg) \
+	Core::Log::Instance().Message(Core::LogMessageSeverity::Info, (msg), __LINE__, __FILE__);
+#define LOG_WARNING(msg) \
+	Core::Log::Instance().Message(Core::LogMessageSeverity::Warning, (msg), __LINE__, __FILE__);
+#define LOG_ERROR(msg) \
+	Core::Log::Instance().Message(Core::LogMessageSeverity::Error, (msg), __LINE__, __FILE__);
+#define LOG_FATAL_ERROR(msg) \
+	Core::Log::Instance().Message(Core::LogMessageSeverity::FatalError, (msg), __LINE__, __FILE__);
 
 namespace Core
 {
