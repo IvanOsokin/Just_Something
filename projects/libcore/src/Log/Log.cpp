@@ -18,7 +18,7 @@ namespace Core
 		messageData.severity = severity;
 		messageData.file = file;
 		messageData.line = line;
-		messageData.timepoint = std::chrono::steady_clock::now();
+		messageData.timepoint = std::chrono::system_clock::now();
 		MessageImpl(std::move(messageData));
 	}
 

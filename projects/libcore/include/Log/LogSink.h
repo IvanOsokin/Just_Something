@@ -2,6 +2,8 @@
 
 namespace Core
 {
+	struct LogMessageData;
+
 	class LogSink
 	{
 	public:

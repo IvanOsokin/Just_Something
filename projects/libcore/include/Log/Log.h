@@ -4,7 +4,6 @@ namespace Core
 {
 	struct LogMessageData;
 	enum class LogMessageSeverity;
-	struct MessageData;
 	class LogSink;
 
 	class Log
