@@ -7,6 +7,6 @@ namespace Core
 	public:
 		virtual ~LogSink() = default;
 
-		virtual void OnMessage(const std::string &);
+		virtual void OnMessage(const LogMessageData & messageData) = 0;
 	};
 }

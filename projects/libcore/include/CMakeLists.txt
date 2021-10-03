@@ -1,7 +1,10 @@
 target_sources(${PROJECT_NAME} PRIVATE
-	internal/pch.h
+	Internal/pch.h
+	Log/Log.h
+	Log/LogMessageData.h
+	Log/LogMessageSeverity.h
+	Log/LogSink.h
 	Core.h
-	Log.h
 )
 
-target_precompile_headers(${PROJECT_NAME} PRIVATE internal/pch.h)
+target_precompile_headers(${PROJECT_NAME} PRIVATE Internal/pch.h)

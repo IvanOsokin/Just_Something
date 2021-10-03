@@ -1,3 +1,5 @@
 #pragma once
 
-#include "Log.h"
+#include "Log/Log.h"
+#include "Log/LogMessageSeverity.h"
+#include "Log/LogSink.h"

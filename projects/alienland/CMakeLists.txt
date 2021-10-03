@@ -2,7 +2,7 @@ project(Alienland)
 
 set(EXTERNAL_SFML_ENABLED ON)
 include(${EXTERNAL_CMAKE_FILE})
-include(cmake/config.cmake)
+include(${CMAKE_HELPERS_FILE_DIR}/config.cmake)
 
 add_executable(${PROJECT_NAME})
 add_subdirectory(include)

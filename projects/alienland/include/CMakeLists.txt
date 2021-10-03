@@ -1,5 +1,5 @@
 target_sources(${PROJECT_NAME} PRIVATE
-	internal/pch.h
+	Internal/pch.h
 	Game.h
 	TestScene.h
 	Character.h
@@ -7,4 +7,4 @@ target_sources(${PROJECT_NAME} PRIVATE
 	Bullet.h
 )
 
-target_precompile_headers(${PROJECT_NAME} PRIVATE internal/pch.h)
+target_precompile_headers(${PROJECT_NAME} PRIVATE Internal/pch.h)
