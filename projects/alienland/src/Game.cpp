@@ -58,7 +58,7 @@ void Game::Render()
 
 void Game::GameLoop()
 {
-	constexpr size_t expectedFps = 60;
+	const size_t expectedFps = 60;
 	const auto expectedTps = sf::milliseconds(1000 / expectedFps);
 
 	sf::Clock frameClock;
