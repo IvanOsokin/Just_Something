@@ -19,7 +19,7 @@ private:
 	void Update(sf::Time elapsedTime);
 	void Render();
 
-	std::unique_ptr<sf::RenderWindow>		_window;
-	std::unique_ptr<TestScene>				_testScene;
+	std::shared_ptr<sf::RenderWindow>		_window;
+	std::shared_ptr<TestScene>				_testScene;
 	bool									_shouldTerminate = false;
 };

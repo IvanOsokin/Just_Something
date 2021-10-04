@@ -10,9 +10,9 @@ TestScene::TestScene()
 
 TestScene::~TestScene() = default;
 
-void TestScene::Init(sf::RenderWindow & window)
+void TestScene::Init(std::shared_ptr<sf::RenderWindow> & window)
 {
-	_window = &window;
+	_window = window;
 }
 
 void TestScene::ProcessInput(const sf::Event& event)
@@ -34,8 +34,8 @@ void TestScene::Render()
 		return;
 	}
 
-	_character->Render(*_window);
-	_enemy->Render(*_window);
+	_character->Render(*_window.lock());
+	_enemy->Render(*_window.lock());
 }
 
 void TestScene::ProcessSceneInput(const sf::Event& event)
@@ -52,7 +52,7 @@ void TestScene::ProcessSceneInput(const sf::Event& event)
 
 bool TestScene::TerminateIfEmptyWindow()
 {
-	if (_window)
+	if (_window.lock())
 	{
 		return false;
 	}

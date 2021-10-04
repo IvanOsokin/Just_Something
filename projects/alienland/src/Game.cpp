@@ -3,7 +3,7 @@
 #include "TestScene.h"
 
 Game::Game()
-	: _testScene(std::make_unique<TestScene>())
+	: _testScene(std::make_shared<TestScene>())
 {
 }
 
@@ -20,7 +20,7 @@ void Game::Start(const std::filesystem::path & resourcesDirectory)
 void Game::CreateWindow()
 {
 	const std::string gameTitle = "Alien Land";
-	_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(800, 600), gameTitle);
+	_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(800, 600), gameTitle);
 }
 
 void Game::CreateTestScene()
@@ -31,7 +31,7 @@ void Game::CreateTestScene()
 		sf::err() << "Window must be created first." << std::endl;
 		return;
 	}
-	_testScene->Init(*_window);
+	_testScene->Init(_window);
 }
 
 void Game::HandleInput()
