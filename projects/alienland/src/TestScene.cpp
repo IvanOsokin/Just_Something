@@ -35,24 +35,24 @@ void TestScene::Render()
 		return;
 	}
 
-	std::shared_ptr<sf::RenderWindow> tempSharedPtr = _window.lock();
-	_character->Render(*tempSharedPtr);
-	_enemy->Render(*tempSharedPtr);
+	auto weakWindow = _window.lock();
+	_character->Render(*weakWindow);
+	_enemy->Render(*weakWindow);
 }
 
 void TestScene::EventLogging(const sf::Event & event)
 {
-	std::string tempStr;
+	std::string eventCodeStr;
 
 	switch (event.type)
 	{
 	case sf::Event::KeyPressed: 
-		tempStr = std::to_string(event.key.code);
-		LOG_INFO(tempStr + "\t- code of pressed button");
+		eventCodeStr = std::to_string(event.key.code);
+		LOG_INFO(eventCodeStr + "\t- code of pressed button");
 		break;
 	case sf::Event::MouseButtonPressed:
-		tempStr = std::to_string(event.mouseButton.button);
-		LOG_INFO(tempStr + "\t- code of pressed mouse button");
+		eventCodeStr = std::to_string(event.mouseButton.button);
+		LOG_INFO(eventCodeStr + "\t- code of pressed mouse button");
 		break;
 	}
 }
