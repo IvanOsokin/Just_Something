@@ -34,8 +34,9 @@ void TestScene::Render()
 		return;
 	}
 
-	_character->Render(*_window.lock());
-	_enemy->Render(*_window.lock());
+	std::shared_ptr<sf::RenderWindow> tempSharedPtr = _window.lock();
+	_character->Render(*tempSharedPtr);
+	_enemy->Render(*tempSharedPtr);
 }
 
 void TestScene::EventLogging(const sf::Event & event)
