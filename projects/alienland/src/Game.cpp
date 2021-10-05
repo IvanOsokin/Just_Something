@@ -39,7 +39,6 @@ void Game::HandleInput()
 	sf::Event e;
 	while (_window->pollEvent(e))
 	{
-		_testScene->EventLogging(e);
 		_testScene->ProcessInput(e);
 		_shouldTerminate = _testScene->ShouldTerminate();
 	}

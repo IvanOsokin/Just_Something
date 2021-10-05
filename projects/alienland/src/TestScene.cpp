@@ -17,6 +17,7 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> window)
 
 void TestScene::ProcessInput(const sf::Event & event)
 {
+	EventLogging(event);
 	ProcessSceneInput(event);
 	_character->ProcessInput(event);
 }
