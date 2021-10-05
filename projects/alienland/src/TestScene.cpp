@@ -10,7 +10,7 @@ TestScene::TestScene()
 
 TestScene::~TestScene() = default;
 
-void TestScene::Init(std::shared_ptr<sf::RenderWindow> & window)
+void TestScene::Init(std::shared_ptr<sf::RenderWindow> window)
 {
 	_window = window;
 }

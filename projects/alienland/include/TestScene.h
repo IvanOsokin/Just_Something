@@ -9,7 +9,7 @@ public:
 	TestScene();
 	~TestScene();
 
-	void Init(std::shared_ptr<sf::RenderWindow> & renderWindow);
+	void Init(std::shared_ptr<sf::RenderWindow> renderWindow);
 
 	void ProcessInput(const sf::Event & event);
 	void Update(sf::Time elapsedTime);
