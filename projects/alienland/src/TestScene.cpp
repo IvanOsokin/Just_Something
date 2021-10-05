@@ -35,9 +35,9 @@ void TestScene::Render()
 		return;
 	}
 
-	auto weakWindow = _window.lock();
-	_character->Render(*weakWindow);
-	_enemy->Render(*weakWindow);
+	auto sharedWindow = _window.lock();
+	_character->Render(*sharedWindow);
+	_enemy->Render(*sharedWindow);
 }
 
 void TestScene::EventLogging(const sf::Event & event)
