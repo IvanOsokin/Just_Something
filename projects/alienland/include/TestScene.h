@@ -15,6 +15,7 @@ public:
 	void Update(sf::Time elapsedTime);
 	void Render();
 
+	void EventLogging(const sf::Event & event);
 	bool ShouldTerminate() const { return _shouldTerminate; }
 
 private:

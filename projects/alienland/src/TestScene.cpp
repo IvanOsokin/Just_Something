@@ -15,7 +15,7 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> & window)
 	_window = window;
 }
 
-void TestScene::ProcessInput(const sf::Event& event)
+void TestScene::ProcessInput(const sf::Event & event)
 {
 	ProcessSceneInput(event);
 	_character->ProcessInput(event);
@@ -38,7 +38,24 @@ void TestScene::Render()
 	_enemy->Render(*_window.lock());
 }
 
-void TestScene::ProcessSceneInput(const sf::Event& event)
+void TestScene::EventLogging(const sf::Event & event)
+{
+	std::string tempStr;
+
+	switch (event.type)
+	{
+	case sf::Event::KeyPressed: 
+		tempStr = std::to_string(event.key.code);
+		LOG_INFO(tempStr + "\t- code of pressed button");
+		break;
+	case sf::Event::MouseButtonPressed:
+		tempStr = std::to_string(event.mouseButton.button);
+		LOG_INFO(tempStr + "\t- code of pressed mouse button");
+		break;
+	}
+}
+
+void TestScene::ProcessSceneInput(const sf::Event & event)
 {
 	if (event.type == sf::Event::Closed)
 	{
