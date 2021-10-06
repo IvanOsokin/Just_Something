@@ -7,8 +7,6 @@ void Character::Init(const std::filesystem::path & resourcesDirectory)
 
 	std::string characterTexturePathStr = characterTexturePath.generic_string();
 
-	std::replace(characterTexturePathStr.begin(), characterTexturePathStr.end(), '/', '\\');
-
 	if (_texture.loadFromFile(characterTexturePathStr))
 	{
 		_sprite.setTexture(_texture);
@@ -16,8 +14,7 @@ void Character::Init(const std::filesystem::path & resourcesDirectory)
 	}
 	else
 	{
-		sf::err() << "Could not find the texture." << std::endl;
-		LOG_INFO("Failed to download the character's texture");
+		LOG_ERROR("Failed to download the character's texture");
 	}
 }
 
