@@ -12,7 +12,7 @@ Game::~Game() = default;
 void Game::Start(const std::filesystem::path & resourcesDirectory)
 {
 	CreateWindow();
-	CreateTestScene();
+	CreateTestScene(resourcesDirectory);
 
 	GameLoop();
 }
@@ -23,7 +23,7 @@ void Game::CreateWindow()
 	_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(800, 600), gameTitle);
 }
 
-void Game::CreateTestScene()
+void Game::CreateTestScene(const std::filesystem::path& resourcesDirectory)
 {
 	if (!_window)
 	{
@@ -31,7 +31,7 @@ void Game::CreateTestScene()
 		sf::err() << "Window must be created first." << std::endl;
 		return;
 	}
-	_testScene->Init(_window);
+	_testScene->Init(_window, resourcesDirectory);
 }
 
 void Game::HandleInput()

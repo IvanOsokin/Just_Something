@@ -12,7 +12,7 @@ public:
 
 private:
 	void CreateWindow();
-	void CreateTestScene();
+	void CreateTestScene(const std::filesystem::path& resourcesDirectory);
 	
 	void GameLoop();
 	void HandleInput();
