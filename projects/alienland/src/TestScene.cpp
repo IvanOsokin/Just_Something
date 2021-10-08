@@ -13,7 +13,7 @@ TestScene::~TestScene() = default;
 void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesystem::path & resourcesDirectory)
 {
 	_window = window;
-	_character->Init(resourcesDirectory);
+	_character->Init(resourcesDirectory, window);
 }
 
 void TestScene::ProcessInput(const sf::Event & event)

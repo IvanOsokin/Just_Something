@@ -3,7 +3,7 @@
 class Character
 {
 public:
-	void Init(const std::filesystem::path & resourcesDirectory);
+	void Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<sf::RenderWindow> window);
 
 	void ProcessInput(const sf::Event & event);
 	void Update(sf::Time elapsedTime);
