@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Log/LogMessageSeverity.h"
+
 namespace Core
 {
 	struct LogMessageData;
