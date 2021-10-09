@@ -12,6 +12,7 @@ TestScene::~TestScene() = default;
 
 void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesystem::path & resourcesDirectory)
 {
+	Assert(window);
 	_window = window;
 	_character->Init(resourcesDirectory, window);
 }
@@ -31,14 +32,14 @@ void TestScene::Update(sf::Time elapsedTime)
 
 void TestScene::Render()
 {
-	if (TerminateIfEmptyWindow())
+	auto window = _window.lock();
+	if (!Verify2(window, "Failed to render TestScene, window must be alive."))
 	{
 		return;
 	}
-
-	auto sharedWindow = _window.lock();
-	_character->Render(*sharedWindow);
-	_enemy->Render(*sharedWindow);
+	
+	_character->Render(*window);
+	_enemy->Render(*window);
 }
 
 void TestScene::EventLogging(const sf::Event & event)
@@ -65,16 +66,3 @@ void TestScene::ProcessSceneInput(const sf::Event & event)
 		_shouldTerminate = true;
 	}
 }
-
-bool TestScene::TerminateIfEmptyWindow()
-{
-	if (_window.lock())
-	{
-		return false;
-	}
-
-	sf::err() << "Failed to process test scene, render window must be set." << std::endl;
-	_shouldTerminate = true;
-	return true;
-}
-

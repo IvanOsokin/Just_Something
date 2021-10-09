@@ -11,6 +11,9 @@ Game::~Game() = default;
 
 void Game::Start(const std::filesystem::path & resourcesDirectory)
 {
+	std::error_code ec;
+	Assert(std::filesystem::is_directory(resourcesDirectory, ec));
+
 	CreateWindow();
 	CreateTestScene(resourcesDirectory);
 
@@ -25,10 +28,9 @@ void Game::CreateWindow()
 
 void Game::CreateTestScene(const std::filesystem::path& resourcesDirectory)
 {
-	if (!_window)
+	if (!Verify2(_window, "Window must be created first."))
 	{
 		_shouldTerminate = true;
-		sf::err() << "Window must be created first." << std::endl;
 		return;
 	}
 	_testScene->Init(_window, resourcesDirectory);
