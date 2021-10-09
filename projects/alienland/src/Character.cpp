@@ -11,11 +11,11 @@ void Character::Init(const std::filesystem::path & resourcesDirectory, std::shar
 	if (_texture.loadFromFile(characterTexturePathStr))
 	{
 		_sprite.setTexture(_texture);
-		LOG_INFO("The character's texture was downloaded");
+		LOG_INFO() << "The character's texture was downloaded";
 	}
 	else
 	{
-		LOG_ERROR("Failed to download the character's texture");
+		LOG_ERROR() << "Failed to download the character's texture";
 	}
 
 	//Putting the character (initial state) in the middle of the scene

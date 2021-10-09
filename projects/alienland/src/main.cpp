@@ -8,11 +8,11 @@ int main(int /*argc*/, char **argv)
 	auto executableDirectory = executableName.parent_path();
 	auto resourcesDirectory = executableDirectory / "resources";
 
-	Core::Log::Instance().AddSink(std::make_shared<Core::DebuggerDisplaySink>());
+	Core::GetLogger().AddSink(std::make_shared<Core::DebuggerDisplaySink>());
 
 	auto fileLogSink = std::make_shared<Core::FileLogSink>();
 	fileLogSink->Init(executableDirectory / "Alienland.log");
-	Core::Log::Instance().AddSink(fileLogSink);
+	Core::GetLogger().AddSink(fileLogSink);
 
 	Game game;
 	game.Start(resourcesDirectory);
