@@ -1,7 +1,6 @@
-target_sources(${PROJECT_NAME} PUBLIC
+target_sources(${PROJECT_NAME} PRIVATE
 	Core.cpp
-	Log/DebuggerDisplaySink.cpp
-	Log/FileLogSink.cpp
-	Log/Log.cpp
-	Log/LogUtils.cpp
 )
+
+add_subdirectory(Asserts)
+add_subdirectory(Log)
