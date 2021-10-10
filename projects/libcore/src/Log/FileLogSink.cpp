@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include "Log/LogUtils.h"
+#include "Asserts/AssertMacros.h"
 
 namespace Core
 {
@@ -9,6 +10,7 @@ namespace Core
 	{
 		_filename = filepath.string();
 		std::ofstream ofs(_filename);
+		Verify2(ofs.is_open(), "Failed to open filename.");
 	}
 
 	void FileLogSink::OnMessage(const LogMessageData& messageData)
