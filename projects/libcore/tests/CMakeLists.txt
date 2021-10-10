@@ -9,5 +9,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 	gtest_main
 	corelib
 )
+target_precompile_headers(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../include/Internal/pch.h")
 
-add_subdirectory(Log)
+add_subdirectory(src)
+add_subdirectory(include)

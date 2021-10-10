@@ -1,5 +1,3 @@
-#include "Internal/pch.h"
-
 #include "gtest/gtest.h"
 #include "Log/Log.h"
 #include "Log/LogMacros.h"

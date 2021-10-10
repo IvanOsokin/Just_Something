@@ -25,7 +25,7 @@ namespace Core
 
 	AssertHandler SetAssertionHandler(AssertHandler handler)
 	{
-		return std::exchange(g_assertHandler, handler);
+		return std::exchange(g_assertHandler, std::move(handler));
 	}
 
 	void DefaultAssertionHandler(const std::string& message, int line, const char* file)
