@@ -18,8 +18,8 @@ public:
 	void Render(sf::RenderTarget & renderTarget);
 
 private:
-	sf::Vector2f GetStartPositon(std::shared_ptr<sf::RenderWindow> window);
-	bool LoadTexture(std::shared_ptr<sf::RenderWindow> window, const std::string & characterTexturePath);
+	sf::Vector2f GetStartPositon(std::shared_ptr<sf::RenderWindow> window, const sf::Texture& texture);
+	bool LoadTexture(const std::string & characterTexturePath);
 
 	sf::Sprite		_sprite;
 	sf::Texture		_texture;
