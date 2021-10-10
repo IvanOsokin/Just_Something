@@ -5,3 +5,7 @@ endif()
 if (EXTERNAL_SFML_ENABLED)
 	add_subdirectory(sfml)
 endif()
+
+if (EXTERNAL_GOOGLETEST_ENABLED)
+	add_subdirectory(googletest)
+endif()
