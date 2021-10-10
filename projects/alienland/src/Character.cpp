@@ -10,63 +10,68 @@ void Character::Init(const std::filesystem::path & resourcesDirectory, std::shar
 
 	std::string characterTexturePathStr = characterTexturePath.generic_string();
 
-	if (window)
-	{
-		if (_texture.loadFromFile(characterTexturePathStr))
-		{
-			_sprite.setTexture(_texture);
-			LOG_INFO() << "The character's texture was downloaded.";
+	SetStartPositon(window, characterTexturePathStr);
 
-			//Putting the character (initial state) in the middle of the scene
-			sf::Vector2u textureSize = _texture.getSize();
-			sf::Vector2u windowSize = window->getSize();
+	_sprite.setPosition(_pos);
 
-			_pos.x = (windowSize.x - textureSize.x) / 2.0f;
-			_pos.y = (windowSize.y - textureSize.y) / 2.0f;
-		}
-		else
-		{
-			LOG_ERROR() << "Failed to download the character's texture.";
-		}
-
-		_sprite.setPosition(_pos);
-	}
-	else
-	{
-		LOG_ERROR() << "The window was lost.";
-	}
 }
 
 void Character::ProcessInput(const sf::Event & /*event*/)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))	_direction._up	  = true;
-	else												_direction._up    = false;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))	_direction._down  = true;
-	else												_direction._down  = false;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))	_direction._left  = true;
-	else												_direction._left  = false;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))	_direction._right = true;
-	else												_direction._right = false;
+	_direction.up    = (sf::Keyboard::isKeyPressed(sf::Keyboard::W) ? true : false);
+	_direction.down  = (sf::Keyboard::isKeyPressed(sf::Keyboard::S) ? true : false);
+	_direction.left  = (sf::Keyboard::isKeyPressed(sf::Keyboard::A) ? true : false);
+	_direction.right = (sf::Keyboard::isKeyPressed(sf::Keyboard::D) ? true : false);
 }
 
 void Character::Update(sf::Time /*elapsedTime*/)
 {
-	if (_direction._right && _direction._up)        { ++_pos.x; --_pos.y; }
-	else if (_direction._left && _direction._up)    { --_pos.x; --_pos.y; }
-	else if (_direction._right && _direction._down) { ++_pos.x; ++_pos.y; }
-	else if (_direction._left && _direction._down)  { --_pos.x; ++_pos.y; }
-	else if (_direction._up)						{ --_pos.y; }
-	else if (_direction._down)						{ ++_pos.y; }
-	else if (_direction._left)						{ --_pos.x; }
-	else if (_direction._right)						{ ++_pos.x; }
-	
-	_sprite.setPosition(_pos);
+	if (_direction.up)		{ _speed.y = -1; }
+	if (_direction.down)	{ _speed.y =  1; }
+	if (_direction.left)	{ _speed.x = -1; }
+	if (_direction.right)	{ _speed.x =  1; }
+
+	_sprite.move(_speed);
+
+	_speed.x = 0;
+	_speed.y = 0;
 }
 
 void Character::Render(sf::RenderTarget & renderTarget)
 {
 	renderTarget.draw(_sprite);
+}
+
+void Character::SetStartPositon(std::shared_ptr<sf::RenderWindow> window, std::string characterTexturePath)
+{
+	if (!window)
+	{
+		LOG_ERROR() << "The window was lost.";
+		return;
+	}
+
+	if (DownloadTexture(window, characterTexturePath))
+	{
+		//Putting the character (initial state) in the middle of the scene
+		sf::Vector2u textureSize = _texture.getSize();
+		sf::Vector2u windowSize = window->getSize();
+
+		_pos.x = (windowSize.x - textureSize.x) / 2.0f;
+		_pos.y = (windowSize.y - textureSize.y) / 2.0f;
+	}
+}
+
+bool Character::DownloadTexture(std::shared_ptr<sf::RenderWindow> window, std::string characterTexturePath)
+{
+	if (_texture.loadFromFile(characterTexturePath))
+	{
+		_sprite.setTexture(_texture);
+		LOG_INFO() << "The character's texture was downloaded.";
+		return true;
+	}
+	else
+	{
+		LOG_ERROR() << "Failed to download the character's texture.";
+		return false;
+	}
 }

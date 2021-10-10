@@ -2,10 +2,10 @@
 
 struct Direction
 {
-	bool _up	= false;
-	bool _down	= false;
-	bool _left	= false;
-	bool _right	= false;
+	bool up		= false;
+	bool down	= false;
+	bool left	= false;
+	bool right	= false;
 };
 
 class Character
@@ -18,10 +18,13 @@ public:
 	void Render(sf::RenderTarget & renderTarget);
 
 private:
+	void SetStartPositon(std::shared_ptr<sf::RenderWindow> window, std::string characterTexturePath);
+	bool DownloadTexture(std::shared_ptr<sf::RenderWindow> window, std::string characterTexturePath);
+
 	sf::Sprite		_sprite;
 	sf::Texture		_texture;
-	sf::Vector2f	_pos;
-	sf::Vector2f	_speed;
+	sf::Vector2f	_pos	{ 0, 0 };
+	sf::Vector2f	_speed	{ 0, 0 };
 
 	Direction		_direction;
 };
