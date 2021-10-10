@@ -1,6 +1,11 @@
 #include "Asserts/Asserts.h"
 #include "Log/Log.h"
 
+namespace
+{
+	Core::AssertHandler		g_assertHandler = &Core::DefaultAssertionHandler;
+}
+
 namespace Core
 {
 	void DebugBreak()
@@ -11,6 +16,19 @@ namespace Core
 	}
 
 	void HandleAssertion(const std::string& message, int line, const char* file)
+	{
+		if (g_assertHandler)
+		{
+			g_assertHandler(message, line, file);
+		}
+	}
+
+	AssertHandler SetAssertionHandler(AssertHandler handler)
+	{
+		return std::exchange(g_assertHandler, handler);
+	}
+
+	void DefaultAssertionHandler(const std::string& message, int line, const char* file)
 	{
 		GetLogger().Message(LogMessageSeverity::Error, message, line, file);
 		DebugBreak();
