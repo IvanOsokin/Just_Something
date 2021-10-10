@@ -18,7 +18,7 @@
 
 #define CORE_VERIFY_IMPL(expession, message) \
 	[value = !!(expession)]() -> bool { \
-		if (!value) [[unlikely]] { \
+		if (!value) { \
 			Core::HandleAssertion(message, __LINE__, __FILE__); \
 		} \
 		return value; \
@@ -26,7 +26,7 @@
 
 #define CORE_ASSERT_IMPL(expression, message) \
 	do {\
-		if (!(expression)) [[unlikely]] \
+		if (!(expression)) \
 		{ \
 			Core::HandleAssertion(message, __LINE__, __FILE__); \
 		} \

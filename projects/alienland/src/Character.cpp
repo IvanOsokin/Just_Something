@@ -24,8 +24,8 @@ void Character::Init(const std::filesystem::path & resourcesDirectory, std::shar
 	sf::Vector2u textureSize = _texture.getSize();
 	sf::Vector2u windowSize = window->getSize();
 
-	_pos.x = (windowSize.x - textureSize.x) / 2;
-	_pos.y = (windowSize.y - textureSize.y) / 2;
+	_pos.x = (windowSize.x - textureSize.x) / 2.0f;
+	_pos.y = (windowSize.y - textureSize.y) / 2.0f;
 
 	_sprite.setPosition(_pos);
 }
@@ -41,7 +41,7 @@ void Character::ProcessInput(const sf::Event & event)
 	}
 }
 
-void Character::Update(sf::Time elapsedTime)
+void Character::Update(sf::Time /*elapsedTime*/)
 {
 	_sprite.setPosition(_pos);
 }

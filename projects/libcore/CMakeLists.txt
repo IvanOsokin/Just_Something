@@ -8,3 +8,4 @@ add_subdirectory(src)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_enable_cpplatest(${PROJECT_NAME})
+target_treat_all_warnings_as_error(${PROJECT_NAME})

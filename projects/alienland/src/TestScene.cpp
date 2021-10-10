@@ -52,6 +52,8 @@ void TestScene::EventLogging(const sf::Event & event)
 	case sf::Event::MouseButtonPressed:
 		LOG_INFO() << event.mouseButton.button << "\t- code of pressed mouse button";
 		break;
+	default:
+		break;
 	}
 }
 

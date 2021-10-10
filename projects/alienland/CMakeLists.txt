@@ -11,6 +11,7 @@ add_subdirectory(src)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_enable_cpplatest(${PROJECT_NAME})
 target_set_binary_output(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+target_treat_all_warnings_as_error(${PROJECT_NAME})
 
 target_link_libraries(${PROJECT_NAME}
 	sfml-graphics
