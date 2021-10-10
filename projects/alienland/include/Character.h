@@ -18,13 +18,13 @@ public:
 	void Render(sf::RenderTarget & renderTarget);
 
 private:
-	void SetStartPositon(std::shared_ptr<sf::RenderWindow> window, std::string characterTexturePath);
-	bool DownloadTexture(std::shared_ptr<sf::RenderWindow> window, std::string characterTexturePath);
+	sf::Vector2f GetStartPositon(std::shared_ptr<sf::RenderWindow> window);
+	bool LoadTexture(std::shared_ptr<sf::RenderWindow> window, const std::string & characterTexturePath);
 
 	sf::Sprite		_sprite;
 	sf::Texture		_texture;
-	sf::Vector2f	_pos	{ 0, 0 };
-	sf::Vector2f	_speed	{ 0, 0 };
+	sf::Vector2f	_pos;
+	sf::Vector2f	_speed;
 
 	Direction		_direction;
 };
