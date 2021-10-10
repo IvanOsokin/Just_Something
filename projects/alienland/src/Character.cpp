@@ -37,36 +37,32 @@ void Character::Init(const std::filesystem::path & resourcesDirectory, std::shar
 	}
 }
 
-void Character::ProcessInput(const sf::Event & event)
+void Character::ProcessInput(const sf::Event & /*event*/)
 {
-	static bool isWPressed = false;
-	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::W)		isWPressed = true;
-	else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::W) isWPressed = false;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))	_direction._up	  = true;
+	else												_direction._up    = false;
 
-	static bool isSPressed = false;
-	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)		isSPressed = true;
-	else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::S) isSPressed = false;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))	_direction._down  = true;
+	else												_direction._down  = false;
 
-	static bool isAPressed = false;
-	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::A)		isAPressed = true;
-	else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::A) isAPressed = false;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))	_direction._left  = true;
+	else												_direction._left  = false;
 
-	static bool isDPressed = false;
-	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::D)		isDPressed = true;
-	else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::D) isDPressed = false;
-
-	if (isDPressed && isWPressed)		{ ++_pos.x; --_pos.y; }
-	else if (isAPressed && isWPressed)	{ --_pos.x; --_pos.y; }
-	else if (isDPressed && isSPressed)	{ ++_pos.x; ++_pos.y; }
-	else if (isAPressed && isSPressed)	{ --_pos.x; ++_pos.y; }
-	else if (isWPressed)				{ --_pos.y; }
-	else if (isSPressed)				{ ++_pos.y; }
-	else if (isAPressed)				{ --_pos.x; }
-	else if (isDPressed)				{ ++_pos.x; }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))	_direction._right = true;
+	else												_direction._right = false;
 }
 
 void Character::Update(sf::Time /*elapsedTime*/)
 {
+	if (_direction._right && _direction._up)        { ++_pos.x; --_pos.y; }
+	else if (_direction._left && _direction._up)    { --_pos.x; --_pos.y; }
+	else if (_direction._right && _direction._down) { ++_pos.x; ++_pos.y; }
+	else if (_direction._left && _direction._down)  { --_pos.x; ++_pos.y; }
+	else if (_direction._up)						{ --_pos.y; }
+	else if (_direction._down)						{ ++_pos.y; }
+	else if (_direction._left)						{ --_pos.x; }
+	else if (_direction._right)						{ ++_pos.x; }
+	
 	_sprite.setPosition(_pos);
 }
 

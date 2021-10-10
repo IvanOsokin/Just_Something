@@ -1,5 +1,13 @@
 #pragma once
 
+struct Direction
+{
+	bool _up	= false;
+	bool _down	= false;
+	bool _left	= false;
+	bool _right	= false;
+};
+
 class Character
 {
 public:
@@ -14,4 +22,6 @@ private:
 	sf::Texture		_texture;
 	sf::Vector2f	_pos;
 	sf::Vector2f	_speed;
+
+	Direction		_direction;
 };

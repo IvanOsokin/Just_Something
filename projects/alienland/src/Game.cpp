@@ -26,7 +26,7 @@ void Game::CreateWindow()
 	_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(800, 600), gameTitle);
 }
 
-void Game::CreateTestScene(const std::filesystem::path& resourcesDirectory)
+void Game::CreateTestScene(const std::filesystem::path & resourcesDirectory)
 {
 	if (!Verify2(_window, "Window must be created first."))
 	{
