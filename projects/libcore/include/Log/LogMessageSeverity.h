@@ -7,7 +7,6 @@ namespace Core
 		Debug,
 		Info,
 		Warning,
-		Error,
-		FatalError
+		Error
 	};
 }

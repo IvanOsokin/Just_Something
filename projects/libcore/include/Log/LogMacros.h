@@ -11,8 +11,6 @@
 	CORE_LOG_IMPL(::Core::LogMessageSeverity::Warning)
 #define LOG_ERROR \
 	CORE_LOG_IMPL(::Core::LogMessageSeverity::Error)
-#define LOG_FATAL_ERROR \
-	CORE_LOG_IMPL(::Core::LogMessageSeverity::FatalError)
 
 #define CORE_LOG_IMPL(severity) \
 	::Core::LogStreamHandler((severity), __LINE__, __FILE__).GetStream

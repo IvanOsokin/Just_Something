@@ -40,9 +40,6 @@ namespace Core
 		case LogMessageSeverity::Error:
 			ostream << "Error";
 			break;
-		case LogMessageSeverity::FatalError:
-			ostream << "Fatal Error";
-			break;
 		default:
 			ostream << "Unknown";
 			break;

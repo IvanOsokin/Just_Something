@@ -33,6 +33,10 @@ namespace Core
 		_sinks.erase(sinkIt);
 	}
 
+	Log::Log()
+	{
+	}
+
 	void Log::MessageImpl(LogMessageData messageData)
 	{
 		for (const auto & logSink : _sinks)
