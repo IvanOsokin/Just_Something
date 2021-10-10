@@ -14,5 +14,5 @@ endfunction()
 
 function(target_treat_all_warnings_as_error project)
 	target_compile_definitions(${project} PRIVATE _CRT_SECURE_NO_WARNINGS)
-	target_compile_options(${project} PRIVATE -W4 -WX)
+	target_compile_options(${project} PRIVATE /W4 /WX /permissive-)
 endfunction()
