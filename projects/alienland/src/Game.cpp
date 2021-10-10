@@ -11,7 +11,7 @@ Game::~Game() = default;
 
 void Game::Start(const std::filesystem::path & resourcesDirectory)
 {
-	std::error_code ec;
+	AssertVar std::error_code ec;
 	Assert(std::filesystem::is_directory(resourcesDirectory, ec));
 
 	CreateWindow();

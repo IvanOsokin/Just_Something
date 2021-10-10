@@ -8,6 +8,8 @@
 #define Assert2(expression, message) \
 	CORE_ASSERT_IMPL(expression, message)
 
+#define AssertVar [[maybe_unused]]
+
 #define Verify(expression) \
 	CORE_VERIFY_IMPL(expression, "Expession failed.")
 
@@ -29,3 +31,8 @@
 			Core::HandleAssertion(message, __LINE__, __FILE__); \
 		} \
 	} while (false)
+
+#ifndef _DEBUG
+#undef CORE_ASSERT_IMPL
+#define CORE_ASSERT_IMPL(expression, message) (void)(0)
+#endif
