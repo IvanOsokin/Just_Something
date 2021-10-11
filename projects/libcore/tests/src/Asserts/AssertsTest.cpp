@@ -121,27 +121,27 @@ TEST_F(TestAssertFixture, CheckFalseAssertWithMessage)
 TEST_F(TestAssertFixture, CheckTrueVerify)
 {
 	ASSERT_EQ(GetLastAssertionData(), nullptr);
-	Verify(2 + 2 == 4);
+	EXPECT_TRUE(Verify(2 + 2 == 4));
 	VerifyAssertAccepted();
 }
 
 TEST_F(TestAssertFixture, CheckFalseVerify)
 {
 	ASSERT_EQ(GetLastAssertionData(), nullptr);
-	Verify(2 + 2 == 5);
+	EXPECT_FALSE(Verify(2 + 2 == 5));
 	VerifyAssertFailed();
 }
 
 TEST_F(TestAssertFixture, CheckTrueVerifyWithMessage)
 {
 	ASSERT_EQ(GetLastAssertionData(), nullptr);
-	Verify2(2 + 2 == 4, "Test verify error");
+	EXPECT_TRUE(Verify2(2 + 2 == 4, "Test verify error"));
 	VerifyAssertAccepted();
 }
 
 TEST_F(TestAssertFixture, CheckFalseVerifyWithMessage)
 {
 	ASSERT_EQ(GetLastAssertionData(), nullptr);
-	Verify2(2 + 2 == 5, "Test verify error");
+	EXPECT_FALSE(Verify2(2 + 2 == 5, "Test verify error"));
 	VerifyAssertFailed("Test verify error");
 }
