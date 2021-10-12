@@ -13,6 +13,17 @@ void Character::Init(const std::filesystem::path & resourcesDirectory, std::shar
 	LoadTexture(characterTexturePathStr);
 
 	_sprite.setPosition(GetStartPositon(window, _texture));
+
+	//Initializing unit speed vector
+	_unitSpeedVector.emplace_back(std::move(sf::Vector2f( 0.0f, -1.0f)));	// move up
+	_unitSpeedVector.emplace_back(std::move(sf::Vector2f( 0.0f,  1.0f)));	// move down
+	_unitSpeedVector.emplace_back(std::move(sf::Vector2f(-1.0f,  0.0f)));	// move to the left
+	_unitSpeedVector.emplace_back(std::move(sf::Vector2f( 1.0f,  0.0f)));	// move to the right
+
+	//Initializing character's speed
+	const float baseSpeed = 3000000.0f;
+	_speed.x = baseSpeed;
+	_speed.y = baseSpeed;
 }
 
 void Character::ProcessInput(const sf::Event & /*event*/)
@@ -23,17 +34,16 @@ void Character::ProcessInput(const sf::Event & /*event*/)
 	_direction.right = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
 }
 
-void Character::Update(sf::Time /*elapsedTime*/)
+void Character::Update(sf::Time elapsedTime)
 {
-	if (_direction.up)		{ _speed.y = -1; }
-	if (_direction.down)	{ _speed.y =  1; }
-	if (_direction.left)	{ _speed.x = -1; }
-	if (_direction.right)	{ _speed.x =  1; }
+	sf::Vector2f offset;
+	
+	if (_direction.up)		{ offset.x += _speed.x * _unitSpeedVector[0].x; offset.y += _speed.y * _unitSpeedVector[0].y; }
+	if (_direction.down)	{ offset.x += _speed.x * _unitSpeedVector[1].x; offset.y += _speed.y * _unitSpeedVector[1].y; }
+	if (_direction.left)	{ offset.x += _speed.x * _unitSpeedVector[2].x; offset.y += _speed.y * _unitSpeedVector[2].y; }
+	if (_direction.right)	{ offset.x += _speed.x * _unitSpeedVector[3].x; offset.y += _speed.y * _unitSpeedVector[3].y; }
 
-	_sprite.move(_speed);
-
-	_speed.x = 0;
-	_speed.y = 0;
+	_sprite.move(offset * elapsedTime.asSeconds());
 }
 
 void Character::Render(sf::RenderTarget & renderTarget)

@@ -21,10 +21,10 @@ private:
 	sf::Vector2f GetStartPositon(std::shared_ptr<sf::RenderWindow> window, const sf::Texture& texture);
 	bool LoadTexture(const std::string & characterTexturePath);
 
-	sf::Sprite		_sprite;
-	sf::Texture		_texture;
-	sf::Vector2f	_pos;
-	sf::Vector2f	_speed;
-
-	Direction		_direction;
+	sf::Sprite					_sprite;
+	sf::Texture					_texture;
+	sf::Vector2f				_pos;
+	sf::Vector2f				_speed;
+	std::vector<sf::Vector2f>	_unitSpeedVector;
+	Direction					_direction;
 };
