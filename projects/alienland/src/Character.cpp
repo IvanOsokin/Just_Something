@@ -13,37 +13,22 @@ void Character::Init(const std::filesystem::path & resourcesDirectory, std::shar
 	LoadTexture(characterTexturePathStr);
 
 	_sprite.setPosition(GetStartPositon(window, _texture));
-
-	//Initializing unit speed vector
-	_unitSpeedVector.emplace_back(std::move(sf::Vector2f( 0.0f, -1.0f)));	// move up
-	_unitSpeedVector.emplace_back(std::move(sf::Vector2f( 0.0f,  1.0f)));	// move down
-	_unitSpeedVector.emplace_back(std::move(sf::Vector2f(-1.0f,  0.0f)));	// move to the left
-	_unitSpeedVector.emplace_back(std::move(sf::Vector2f( 1.0f,  0.0f)));	// move to the right
-
-	//Initializing character's speed
-	const float baseSpeed = 3000000.0f;
-	_speed.x = baseSpeed;
-	_speed.y = baseSpeed;
 }
 
-void Character::ProcessInput(const sf::Event & /*event*/)
+void Character::ProcessInput(const sf::Event& /*event*/)
 {
-	_direction.up    = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
-	_direction.down  = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
-	_direction.left  = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-	_direction.right = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+	_unitSpeedVector.x = 0;
+	_unitSpeedVector.y = 0;
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { _unitSpeedVector.y = -1; }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { _unitSpeedVector.y =  1; }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { _unitSpeedVector.x = -1; }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { _unitSpeedVector.x =  1; }
 }
 
 void Character::Update(sf::Time elapsedTime)
 {
-	sf::Vector2f offset;
-	
-	if (_direction.up)		{ offset.x += _speed.x * _unitSpeedVector[0].x; offset.y += _speed.y * _unitSpeedVector[0].y; }
-	if (_direction.down)	{ offset.x += _speed.x * _unitSpeedVector[1].x; offset.y += _speed.y * _unitSpeedVector[1].y; }
-	if (_direction.left)	{ offset.x += _speed.x * _unitSpeedVector[2].x; offset.y += _speed.y * _unitSpeedVector[2].y; }
-	if (_direction.right)	{ offset.x += _speed.x * _unitSpeedVector[3].x; offset.y += _speed.y * _unitSpeedVector[3].y; }
-
-	_sprite.move(offset * elapsedTime.asSeconds());
+	_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector.x, _baseSpeed * _unitSpeedVector.y) * elapsedTime.asSeconds());
 }
 
 void Character::Render(sf::RenderTarget & renderTarget)
@@ -62,11 +47,11 @@ sf::Vector2f Character::GetStartPositon(std::shared_ptr<sf::RenderWindow> window
     auto windowSize = window->getSize();
 	auto textureSize = texture.getSize();
 
-	sf::Vector2f screenPosition;
-	screenPosition.x = (windowSize.x - textureSize.x) / 2.0f;
-	screenPosition.y = (windowSize.y - textureSize.y) / 2.0f;
+	sf::Vector2f positionOnScreen;
+	positionOnScreen.x = (windowSize.x - textureSize.x) / 2.0f;
+	positionOnScreen.y = (windowSize.y - textureSize.y) / 2.0f;
 
-	return screenPosition;
+	return positionOnScreen;
 }
 
 bool Character::LoadTexture(const std::string & characterTexturePath)
