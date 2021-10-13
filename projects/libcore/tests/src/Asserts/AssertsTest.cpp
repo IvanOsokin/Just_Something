@@ -61,7 +61,7 @@ public:
 	void VerifyAssertFailed(std::optional<std::string> exactlyMessage = std::nullopt)
 	{
 		auto * data = GetLastAssertionData();
-		EXPECT_NE(data, nullptr);
+		ASSERT_NE(data, nullptr);
 		if (exactlyMessage)
 		{
 			EXPECT_EQ(data->message, *exactlyMessage);
@@ -144,4 +144,18 @@ TEST_F(TestAssertFixture, CheckFalseVerifyWithMessage)
 	ASSERT_EQ(GetLastAssertionData(), nullptr);
 	EXPECT_FALSE(Verify2(2 + 2 == 5, "Test verify error"));
 	VerifyAssertFailed("Test verify error");
+}
+
+TEST_F(TestAssertFixture, CheckFalseVerifyWithMessageWithNegation)
+{
+	ASSERT_EQ(GetLastAssertionData(), nullptr);
+	EXPECT_TRUE(!Verify2(2 + 2 == 5, "Test verify error"));
+	VerifyAssertFailed("Test verify error");
+}
+
+TEST_F(TestAssertFixture, CheckTrueVerifyWithMessageWithNegation)
+{
+	ASSERT_EQ(GetLastAssertionData(), nullptr);
+	EXPECT_FALSE(!Verify2(2 + 2 == 4, "Test verify error"));
+	VerifyAssertAccepted();
 }
