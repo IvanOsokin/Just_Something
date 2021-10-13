@@ -20,7 +20,9 @@ public:
 private:
 	void EventLogging(const sf::Event& event);
 	void ProcessSceneInput(const sf::Event & event);
-	bool TerminateIfEmptyWindow();
+	void SetInitialPosition(std::unique_ptr<Character> & character);
+	//void SetInitialPosition(std::unique_ptr<Enemy> & enemy);
+	//bool TerminateIfEmptyWindow();
 	
 	std::unique_ptr<Character>			_character;
 	std::unique_ptr<Enemy>				_enemy;
