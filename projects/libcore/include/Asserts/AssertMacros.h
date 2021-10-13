@@ -17,7 +17,7 @@
 	CORE_VERIFY_IMPL(expession, message)
 
 #define CORE_VERIFY_IMPL(expession, message) \
-	!!(expession) || (Core::HandleAssertion(message, __LINE__, __FILE__), false)
+	((expession) || (Core::HandleAssertion(message, __LINE__, __FILE__), false))
 
 #define CORE_ASSERT_IMPL(expression, message) \
 	do {\
