@@ -24,6 +24,7 @@
 #include <memory>
 #include <algorithm>
 #include <random>
+#include <functional>
 
 #include <atomic>
 #include <mutex>

@@ -18,6 +18,7 @@
 
 #include <cstdint>
 #include <utility>
+#include <functional>
 #include <optional>
 #include <memory>
 #include <algorithm>
