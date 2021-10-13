@@ -55,13 +55,14 @@
 		//	PrintFraction(ptr2);
 		//
 		//	std::unique_ptr<Fraction> ptr3 = std::make_unique<Fraction>(10, 10);
-		//	ptr3 = std::make_unique<Fraction>(2, 1);		//Потеря предыдущего объекта <Fraction>(10, 10) - деструктор не срабатывает
+		//	ptr3 = std::make_unique<Fraction>(2, 1);
 		//	std::cout << ptr3;
 		//	PrintFraction(ptr3);
 		//
 		//	std::unique_ptr<Fraction> ptr4 = std::make_unique<Fraction>(15, 30);
 		//	Fraction* manual_pointer = ptr4.release();		//Передача данных из умного указателя обычно (умный освобождается)
 		//	PrintFraction(ptr4);							//Дальнейшее освобождения памяти на плечах программиста
+		//  delete ptr4;
 		//
 		//	auto ptr5 = std::make_unique<Fraction>();
 		//	ptr5.reset();									//Удаляет данные в указателе
