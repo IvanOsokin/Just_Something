@@ -17,9 +17,9 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 	_character->Init(resourcesDirectory, window);
 	SetInitialPosition(_character);
 
-	//Assert(_character);
-	//_enemy->Init(resourcesDirectory, window, _character->GetSprite());
-	//SetInitialPosition(_enemy, window);
+	Assert(_character);
+	_enemy->Init(resourcesDirectory, window);
+	SetInitialPosition(_enemy);
 }
 
 void TestScene::ProcessInput(const sf::Event & event)
@@ -74,26 +74,22 @@ void TestScene::ProcessSceneInput(const sf::Event & event)
 	}
 }
 
-void TestScene::SetInitialPosition(std::unique_ptr<Character> & character)
+template <typename T>
+void TestScene::SetInitialPosition(std::unique_ptr<T> & object)
 {
 	if (!_window.lock())
 	{
 		LOG_ERROR() << "The window was lost.";
-		character->GetSprite().setPosition( 0.0f, 0.0f );
+		object->GetSprite().setPosition( 0.0f, 0.0f );
 		return;
 	}
 
 	auto windowSize = _window.lock()->getSize();
-	auto textureSize = character->GetSprite().getTexture()->getSize();
+	auto textureSize = object->GetSprite().getTexture()->getSize();
 
 	sf::Vector2f positionOnScreen;
 	positionOnScreen.x = (windowSize.x - textureSize.x) / 2.0f;
 	positionOnScreen.y = (windowSize.y - textureSize.y) / 2.0f;
 
-	character->GetSprite().setPosition(positionOnScreen);
+	object->GetSprite().setPosition(positionOnScreen);
 }
-
-//void TestScene::SetInitialPosition(std::unique_ptr<Enemy> & /*enemy*/)
-//{
-//
-//}
