@@ -32,7 +32,7 @@ void TestScene::ProcessInput(const sf::Event & event)
 void TestScene::Update(sf::Time elapsedTime)
 {
 	_character->Update(elapsedTime);
-	_enemy->Update(elapsedTime);
+	_enemy->Update(elapsedTime, _character->GetSprite());
 }
 
 void TestScene::Render()

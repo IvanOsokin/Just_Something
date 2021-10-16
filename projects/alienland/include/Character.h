@@ -10,6 +10,7 @@ public:
 	void			Render(sf::RenderTarget & renderTarget);
 
 	sf::Sprite&		GetSprite() { return _sprite; };
+	sf::Sprite		GetSprite() const { return _sprite; };
 
 private:
 	bool			LoadTexture(const std::string & characterTexturePath);
