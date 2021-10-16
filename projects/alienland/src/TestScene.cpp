@@ -84,12 +84,9 @@ void TestScene::SetInitialPosition(std::unique_ptr<T> & object)
 		return;
 	}
 
-	auto windowSize = _window.lock()->getSize();
 	auto textureSize = object->GetSprite().getTexture()->getSize();
-
-	sf::Vector2f positionOnScreen;
-	positionOnScreen.x = (windowSize.x - textureSize.x) / 2.0f;
-	positionOnScreen.y = (windowSize.y - textureSize.y) / 2.0f;
-
-	object->GetSprite().setPosition(positionOnScreen);
+	object->GetSprite().setOrigin(textureSize.x / 2.0f, textureSize.y / 2.0f);
+	
+	auto windowSize = _window.lock()->getSize();
+	object->GetSprite().setPosition(windowSize.x / 2.0f, windowSize.y / 2.0f);
 }
