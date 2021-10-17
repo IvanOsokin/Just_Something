@@ -46,7 +46,7 @@ void Game::HandleInput()
 	}
 }
 
-void Game::Update(sf::Time elapsedTime)
+void Game::Update(const sf::Time & elapsedTime)
 {
 	_testScene->Update(elapsedTime);
 }
@@ -64,18 +64,18 @@ void Game::GameLoop()
 	const auto expectedTps = sf::milliseconds(1000 / expectedFps);
 
 	sf::Clock frameClock;
+	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	while (!_shouldTerminate)
 	{
-		const sf::Time elapsedTime = frameClock.getElapsedTime();
+		timeSinceLastUpdate += frameClock.restart();
 
-		HandleInput();
-		Update(elapsedTime);
-		Render();
-
-		if (elapsedTime < expectedTps)
+		while (timeSinceLastUpdate >= expectedTps)
 		{
-			sf::sleep(expectedTps - elapsedTime);
+			timeSinceLastUpdate -= expectedTps;
+			HandleInput();
+			Update(expectedTps);
 		}
-		frameClock.restart();
+
+		Render();
 	}
 }
