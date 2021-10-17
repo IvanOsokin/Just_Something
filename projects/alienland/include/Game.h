@@ -12,11 +12,11 @@ public:
 
 private:
 	void CreateWindow();
-	void CreateTestScene(const std::filesystem::path& resourcesDirectory);
+	void CreateTestScene(const std::filesystem::path & resourcesDirectory);
 	
 	void GameLoop();
 	void HandleInput();
-	void Update(sf::Time elapsedTime);
+	void Update(const sf::Time & elapsedTime);
 	void Render();
 
 	std::shared_ptr<sf::RenderWindow>		_window;

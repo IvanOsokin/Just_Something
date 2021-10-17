@@ -29,7 +29,7 @@ void TestScene::ProcessInput(const sf::Event & event)
 	_character->ProcessInput(event);
 }
 
-void TestScene::Update(sf::Time elapsedTime)
+void TestScene::Update(const sf::Time & elapsedTime)
 {
 	_character->Update(elapsedTime);
 	_enemy->Update(elapsedTime, _character->GetSprite());

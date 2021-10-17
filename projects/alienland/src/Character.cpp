@@ -30,7 +30,7 @@ void Character::ProcessInput(const sf::Event& /*event*/)
 	}																	// и не происходит переопределение базового вектора
 }
 
-void Character::Update(sf::Time elapsedTime)
+void Character::Update(const sf::Time & elapsedTime)
 {
 	_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
 }

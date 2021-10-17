@@ -12,7 +12,7 @@ public:
 	void Init(std::shared_ptr<sf::RenderWindow> renderWindow, const std::filesystem::path & resourcesDirectory);
 
 	void ProcessInput(const sf::Event & event);
-	void Update(sf::Time elapsedTime);
+	void Update(const sf::Time & elapsedTime);
 	void Render();
 
 	bool ShouldTerminate() const { return _shouldTerminate; }

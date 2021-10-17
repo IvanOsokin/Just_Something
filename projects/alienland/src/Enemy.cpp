@@ -16,20 +16,10 @@ void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_p
 //{
 //}
 
-void Enemy::Update(sf::Time elapsedTime, const sf::Sprite & sprite)
+void Enemy::Update(const sf::Time & elapsedTime, const sf::Sprite & sprite)
 {
-	sf::Vector2f characterPosition(sprite.getPosition());
-	_pos = _sprite.getPosition();
-
-	sf::Vector2f speedVector = characterPosition - _pos;
-	float speedVectorLength = static_cast<float>(pow((pow(speedVector.x, 2) + pow(speedVector.y, 2)), 0.5));
-
-	const float eps = 2.0f;			// Необходим eps, чтобы враг не дергался, когда догоняет игрока
-	if (speedVectorLength >= eps)
-	{
-		_unitSpeedVector = speedVector / speedVectorLength;
-		_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
-	}
+	Position(elapsedTime, sprite);
+	Rotate();
 }
 
 void Enemy::Render(sf::RenderTarget & renderTarget)
@@ -48,4 +38,36 @@ bool Enemy::LoadTexture(const std::string& enemyTexturePath)
 	_sprite.setTexture(_texture);
 	LOG_INFO() << "The enemy's texture was loaded.";
 	return true;
+}
+
+void Enemy::Position(const sf::Time & elapsedTime, const sf::Sprite & sprite)
+{
+	sf::Vector2f characterPosition(sprite.getPosition());
+	_pos = _sprite.getPosition();
+
+	sf::Vector2f speedVector = characterPosition - _pos;
+	float speedVectorLength = std::powf((std::powf(speedVector.x, 2.0f) + std::powf(speedVector.y, 2.0f)), 0.5f);
+
+	const float eps = 2.0f;			// Необходим eps, чтобы враг не дергался, когда догоняет игрока
+	if (speedVectorLength >= eps)
+	{
+		_unitSpeedVector = speedVector / speedVectorLength;
+		_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
+	}
+}
+
+void Enemy::Rotate()
+{
+	const float pi = 3.141593f;
+	const float fromRadToDeg = 180.0f / pi;
+
+	const float angle = std::acosf(_unitSpeedVector.x);
+
+	if (_unitSpeedVector.y < 0)
+	{
+		_sprite.setRotation((2 * pi - angle) * fromRadToDeg);
+		return;
+	}
+
+	_sprite.setRotation(angle * fromRadToDeg);
 }
