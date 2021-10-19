@@ -13,7 +13,7 @@ public:
 
 private:
 	bool			LoadTexture(const std::string & alienTexturePath);
-	void			Position(const sf::Time & elapsedTime, const sf::Sprite& sprite);
+	void			Position(const sf::Time & elapsedTime, const sf::Sprite & sprite);
 	void			Rotate();
 
 	sf::Sprite					_sprite;
