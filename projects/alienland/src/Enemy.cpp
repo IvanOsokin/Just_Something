@@ -12,13 +12,9 @@ void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_p
 	LoadTexture(enemyTexturePathStr);
 }
 
-//void Enemy::ProcessInput(const sf::Event& /*event*/)
-//{
-//}
-
-void Enemy::Update(const sf::Time & elapsedTime, const sf::Sprite & sprite)
+void Enemy::Update(const sf::Time & elapsedTime, const sf::Vector2f & pos)
 {
-	Position(elapsedTime, sprite);
+	MoveTo(pos, elapsedTime);
 	Rotate();
 }
 
@@ -27,7 +23,7 @@ void Enemy::Render(sf::RenderTarget & renderTarget)
 	renderTarget.draw(_sprite);
 }
 
-bool Enemy::LoadTexture(const std::string& enemyTexturePath)
+bool Enemy::LoadTexture(const std::string & enemyTexturePath)
 {
 	if (!_texture.loadFromFile(enemyTexturePath))
 	{
@@ -40,15 +36,19 @@ bool Enemy::LoadTexture(const std::string& enemyTexturePath)
 	return true;
 }
 
-void Enemy::Position(const sf::Time & elapsedTime, const sf::Sprite & sprite)
+void Enemy::MoveTo(const sf::Vector2f & pos, const sf::Time & elapsedTime)
 {
-	sf::Vector2f characterPosition(sprite.getPosition());
 	_pos = _sprite.getPosition();
 
-	sf::Vector2f speedVector = characterPosition - _pos;
+	if (_pos == pos)
+	{
+		return;
+	}
+
+	sf::Vector2f speedVector = pos - _pos;
 	float speedVectorLength = std::powf((std::powf(speedVector.x, 2.0f) + std::powf(speedVector.y, 2.0f)), 0.5f);
 
-	const float eps = 2.0f;			// Необходим eps, чтобы враг не дергался, когда догоняет игрока
+	const float eps = 0.5f;			// Необходим eps, чтобы враг не дергался, когда догоняет игрока
 	if (speedVectorLength >= eps)
 	{
 		_unitSpeedVector = speedVector / speedVectorLength;

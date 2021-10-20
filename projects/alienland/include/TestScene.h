@@ -18,10 +18,10 @@ public:
 	bool ShouldTerminate() const { return _shouldTerminate; }
 
 private:
-	void EventLogging(const sf::Event& event);
+	void EventLogging(const sf::Event & event);
 	void ProcessSceneInput(const sf::Event & event);
 	template <typename T>
-	void SetInitialPosition(std::unique_ptr<T> & character);
+	void SetInitialPosition(std::unique_ptr<T> & object);
 	//void SetInitialPosition(std::unique_ptr<Enemy> & enemy);
 	//bool TerminateIfEmptyWindow();
 	
