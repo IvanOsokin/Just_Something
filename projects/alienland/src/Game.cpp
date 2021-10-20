@@ -72,10 +72,10 @@ void Game::GameLoop()
 	{
 		timeSinceLastUpdate += frameClock.restart();
 		
+		HandleInput();
 		while (timeSinceLastUpdate >= deltaTime)
 		{
 			timeSinceLastUpdate -= deltaTime;
-			HandleInput();
 			Update(deltaTime);
 		}
 
