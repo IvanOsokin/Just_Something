@@ -65,23 +65,18 @@ void Game::GameLoop()
 
 	const auto deltaTime = sf::microseconds(1000);
 
-	long upd = 0;
-	long ren = 0;
-
 	sf::Clock frameClock;
-	sf::Clock updateClock;
 	sf::Time  timeSinceLastUpdate = sf::Time::Zero;
 
 	while (!_shouldTerminate)
 	{
-		timeSinceLastUpdate += updateClock.restart();
+		timeSinceLastUpdate += frameClock.restart();
 		
 		while (timeSinceLastUpdate >= deltaTime)
 		{
 			timeSinceLastUpdate -= deltaTime;
 			HandleInput();
 			Update(deltaTime);
-			++upd;
 		}
 
 		Render();
@@ -91,11 +86,5 @@ void Game::GameLoop()
 		{
 			sf::sleep(expectedTps - elapsedTime);
 		}
-		frameClock.restart();
-		
-		++ren;
 	}
-
-	LOG_DEBUG() << "The number of updates: " << upd;
-	LOG_DEBUG() << "The number of renders: " << ren;
 }
