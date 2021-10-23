@@ -5,7 +5,7 @@ class Enemy
 public:
 	void				Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<sf::RenderWindow> window);
 
-	const sf::Vector2f  ProcessInput(std::shared_ptr<sf::RenderWindow> window);
+	const sf::Vector2f	ProcessInput(std::shared_ptr<sf::RenderWindow> window);
 	void				Update(const sf::Time & elapsedTime);
 	void				Render(sf::RenderTarget & renderTarget);
 	void				MoveTo(const sf::Vector2f & dest);

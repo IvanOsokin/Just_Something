@@ -19,7 +19,7 @@ const sf::Vector2f Enemy::ProcessInput(std::shared_ptr<sf::RenderWindow> window)
 		return _dest;
 	}
 
-	return sf::Vector2f(sf::Mouse::getPosition(*window));
+	return(sf::Vector2f(sf::Mouse::getPosition(*window)));
 }
 
 void Enemy::Update(const sf::Time & elapsedTime)
