@@ -32,7 +32,7 @@ void TestScene::ProcessInput(const sf::Event & event)
 void TestScene::Update(const sf::Time & elapsedTime)
 {
 	_character->Update(elapsedTime);
-	_enemy->MoveTo(_character->GetPosition());
+	_enemy->MoveTo(_enemy->ProcessInput(_window.lock()));
 	_enemy->Update(elapsedTime);
 }
 

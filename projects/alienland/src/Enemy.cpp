@@ -12,9 +12,14 @@ void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_p
 	LoadTexture(enemyTexturePathStr);
 }
 
-void Enemy::ProcessInput()
+const sf::Vector2f Enemy::ProcessInput(std::shared_ptr<sf::RenderWindow> window)
 {
+	if (!sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	{
+		return _dest;
+	}
 
+	return sf::Vector2f(sf::Mouse::getPosition(*window));
 }
 
 void Enemy::Update(const sf::Time & elapsedTime)

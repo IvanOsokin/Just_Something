@@ -11,6 +11,7 @@ add_subdirectory(compile_check)
 add_subdirectory(less_001)
 add_subdirectory(less_002)
 add_subdirectory(less_003)
+add_subdirectory(less_004)
 
 add_subdirectory(libcore)
 add_subdirectory(alienland)
