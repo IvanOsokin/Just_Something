@@ -27,12 +27,13 @@ void TestScene::ProcessInput(const sf::Event & event)
 	EventLogging(event);
 	ProcessSceneInput(event);
 	_character->ProcessInput(event);
+	_enemy->MoveTo(_character->GetPosition());
 }
 
 void TestScene::Update(const sf::Time & elapsedTime)
 {
 	_character->Update(elapsedTime);
-	_enemy->Update(elapsedTime, _character->GetCharacterPosition());
+	_enemy->Update(elapsedTime);
 }
 
 void TestScene::Render()
@@ -88,5 +89,6 @@ void TestScene::SetInitialPosition(std::unique_ptr<T> & object)
 	object->GetSprite().setOrigin(textureSize.x / 2.0f, textureSize.y / 2.0f);
 	
 	auto windowSize = _window.lock()->getSize();
-	object->GetSprite().setPosition(windowSize.x / 2.0f, windowSize.y / 2.0f);
+	object->SetPosition(sf::Vector2f(windowSize.x / 2.0f, windowSize.y / 2.0f));
+	object->GetSprite().setPosition(object->GetPosition());
 }

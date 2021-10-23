@@ -12,15 +12,25 @@ void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_p
 	LoadTexture(enemyTexturePathStr);
 }
 
-void Enemy::Update(const sf::Time & elapsedTime, const sf::Vector2f & pos)
+void Enemy::ProcessInput()
 {
-	MoveTo(pos, elapsedTime);
+
+}
+
+void Enemy::Update(const sf::Time & elapsedTime)
+{
+	Move(elapsedTime);
 	Rotate();
 }
 
 void Enemy::Render(sf::RenderTarget & renderTarget)
 {
 	renderTarget.draw(_sprite);
+}
+
+void Enemy::MoveTo(const sf::Vector2f & dest)
+{
+	_dest = dest;
 }
 
 bool Enemy::LoadTexture(const std::string & enemyTexturePath)
@@ -36,16 +46,9 @@ bool Enemy::LoadTexture(const std::string & enemyTexturePath)
 	return true;
 }
 
-void Enemy::MoveTo(const sf::Vector2f & pos, const sf::Time & elapsedTime)
+void Enemy::Move(const sf::Time & elapsedTime)
 {
-	_pos = _sprite.getPosition();
-
-	if (_pos == pos)
-	{
-		return;
-	}
-
-	sf::Vector2f speedVector = pos - _pos;
+	sf::Vector2f speedVector = _dest - _pos;
 	float speedVectorLength = std::powf((std::powf(speedVector.x, 2.0f) + std::powf(speedVector.y, 2.0f)), 0.5f);
 
 	const float eps = 0.5f;			// Необходим eps, чтобы враг не дергался, когда догоняет игрока
@@ -53,6 +56,7 @@ void Enemy::MoveTo(const sf::Vector2f & pos, const sf::Time & elapsedTime)
 	{
 		_unitSpeedVector = speedVector / speedVectorLength;
 		_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
+		_pos = _sprite.getPosition();
 	}
 }
 
