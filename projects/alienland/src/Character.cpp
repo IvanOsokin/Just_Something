@@ -1,9 +1,7 @@
 #include "Character.h"
 
-void Character::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<sf::RenderWindow> window)
+void Character::Init(const std::filesystem::path & resourcesDirectory)
 {
-	Assert(window);
-
 	//Loading the character's texture and asigning it to the sprite
 	const std::string characterTextureName = "character-1.png";
 	auto characterTexturePath = resourcesDirectory / characterTextureName;
