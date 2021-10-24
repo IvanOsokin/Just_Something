@@ -14,7 +14,7 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 {
 	Assert(window);
 	_window = window;
-	_character->Init(resourcesDirectory, window);
+	_character->Init(resourcesDirectory);
 	SetInitialPosition(_character);
 
 	Assert(_character);
@@ -27,12 +27,13 @@ void TestScene::ProcessInput(const sf::Event & event)
 	EventLogging(event);
 	ProcessSceneInput(event);
 	_character->ProcessInput(event);
+	_enemy->ProcessInput(event);
 }
 
 void TestScene::Update(const sf::Time & elapsedTime)
 {
 	_character->Update(elapsedTime);
-	_enemy->MoveTo(_enemy->ProcessInput(_window.lock()));
+	// _enemy->MoveTo(_enemy->ProcessInput(_window.lock()));
 	//_enemy->MoveTo(_character->GetPosition());
 	_enemy->Update(elapsedTime);
 }

@@ -12,15 +12,26 @@ void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_p
 	LoadTexture(enemyTexturePathStr);
 }
 
-const sf::Vector2f Enemy::ProcessInput(std::shared_ptr<sf::RenderWindow> window)
+void Enemy::ProcessInput(const sf::Event& event)
 {
-	if (!sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	if (/*event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right ||*/
+		event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
 	{
-		return _dest;
+		auto target = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
+		MoveTo(target);
+		LOG_DEBUG() << "Enemy move to " << target.x << " " << target.y;
 	}
-
-	return(sf::Vector2f(sf::Mouse::getPosition(*window)));
 }
+//
+// const sf::Vector2f Enemy::ProcessInput(std::shared_ptr<sf::RenderWindow> window)
+// {
+// 	if (!sf::Mouse::isButtonPressed(sf::Mouse::Right))
+// 	{
+// 		return _dest;
+// 	}
+//
+// 	return(sf::Vector2f(sf::Mouse::getPosition(*window)));
+// }
 
 void Enemy::Update(const sf::Time & elapsedTime)
 {
@@ -35,7 +46,8 @@ void Enemy::Render(sf::RenderTarget & renderTarget)
 
 void Enemy::MoveTo(const sf::Vector2f & dest)
 {
-	_dest = dest;
+	_targetPos = dest;
+	// _dest = dest;
 }
 
 bool Enemy::LoadTexture(const std::string & enemyTexturePath)
@@ -53,15 +65,22 @@ bool Enemy::LoadTexture(const std::string & enemyTexturePath)
 
 void Enemy::Move(const sf::Time & elapsedTime)
 {
-	sf::Vector2f speedVector = _dest - _pos;
+	if (!_targetPos)
+	{
+		return;
+	}
+
+	sf::Vector2f speedVector = *_targetPos - _pos;
 	float speedVectorLength = std::powf((std::powf(speedVector.x, 2.0f) + std::powf(speedVector.y, 2.0f)), 0.5f);
 
+	_unitSpeedVector = speedVector / speedVectorLength;
+	_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
+	_pos = _sprite.getPosition();
+
 	const float eps = 0.5f;			// Необходим eps, чтобы враг не дергался, когда догоняет игрока
-	if (speedVectorLength >= eps)
+	if (speedVectorLength < eps)
 	{
-		_unitSpeedVector = speedVector / speedVectorLength;
-		_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
-		_pos = _sprite.getPosition();
+		_targetPos.reset();
 	}
 }
 
