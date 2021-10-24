@@ -54,10 +54,10 @@ void TestScene::EventLogging(const sf::Event & event)
 	switch (event.type)
 	{
 	case sf::Event::KeyPressed: 
-		LOG_INFO() << event.key.code << "\t- code of pressed button";
+		LOG_INFO() << std::setw(3) << event.key.code << " - code of pressed button";
 		break;
 	case sf::Event::MouseButtonPressed:
-		LOG_INFO() << event.mouseButton.button << "\t- code of pressed mouse button";
+		LOG_INFO() << event.mouseButton.button << " - code of pressed mouse button";
 		break;
 	default:
 		break;
