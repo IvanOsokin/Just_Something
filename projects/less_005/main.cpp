@@ -3,16 +3,18 @@
 
 class Animal
 {
+public:
+	virtual void MakeSound() const { std::cout << "There is no sound" << std::endl; }
+	virtual void Print() const { std::cout << "This is not what you'd like to see" << std::endl; }
+
+	virtual ~Animal() = default;
+
 protected:
 	Animal(int value)
 		: _value(value)
 	{}
 
 	int GetValue() const { return _value; }
-
-public:
-	virtual void MakeSound() { std::cout << "There is no sound" << std::endl; }
-	virtual void Print() { std::cout << "This is not what you'd like to see" << std::endl; }
 
 private:
 	int _value;
@@ -25,8 +27,10 @@ public:
 		: Animal(value)
 	{}
 
-	virtual void MakeSound() { std::cout << "\"Meow\"" << std::endl; }
-	virtual void Print() { std::cout << "Cat's value is " << GetValue() << ". The cat says "; }
+	~Cat() override {};
+
+	void MakeSound() const override { std::cout << "\"Meow\"" << std::endl; }
+	void Print() const override { std::cout << "Cat's value is " << GetValue() << ". The cat says "; }
 };
 
 class Pig : public Animal
@@ -36,8 +40,10 @@ public:
 		: Animal(value)
 	{}
 
-	virtual void MakeSound() { std::cout << "\"Oink\"" << std::endl; };
-	virtual void Print() { std::cout << "Pig's value is " << GetValue() << ". The pig says "; }
+	~Pig() override {};
+
+	void MakeSound() const override { std::cout << "\"Oink\"" << std::endl; };
+	void Print() const override { std::cout << "Pig's value is " << GetValue() << ". The pig says "; }
 };
 
 class Fox : public Animal
@@ -47,8 +53,10 @@ public:
 		: Animal(value)
 	{}
 
-	virtual void MakeSound() { std::cout << "\"Yipping\"" << std::endl; };
-	virtual void Print() { std::cout << "Fox's value is " << GetValue() << ". The fox says "; }
+	~Fox() override {};
+
+	void MakeSound() const override { std::cout << "\"Yipping\"" << std::endl; };
+	void Print() const override { std::cout << "Fox's value is " << GetValue() << ". The fox says "; }
 };
 
 int main()
@@ -77,7 +85,7 @@ int main()
 	//	arr[i]->Print();
 	//	arr[i]->MakeSound();
 	//}
-	for (const auto& it : arr)
+	for (const auto* it : arr)
 	{
 		it->Print();
 		it->MakeSound();
@@ -102,7 +110,7 @@ int main()
 	//	(*it)->MakeSound();
 	//}
 
-	for (const auto& it : aniVec)
+	for (const auto* it : aniVec)
 	{
 		it->Print();
 		it->MakeSound();
@@ -112,7 +120,7 @@ int main()
 
 	Animal arr2[] = { Cat(11), Pig(22), Fox(33) };
 
-	for (auto& it2 : arr2)
+	for (const auto& it2 : arr2)
 	{
 		it2.Print();
 		it2.MakeSound();
