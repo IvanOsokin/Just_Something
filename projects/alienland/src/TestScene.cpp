@@ -2,10 +2,12 @@
 
 #include "Character.h"
 #include "Enemy.h"
+#include "BulletManager.h"
 
 TestScene::TestScene()
 	: _character(std::make_unique<Character>())
 	, _enemy(std::make_unique<Enemy>())
+	, _bulletManager(std::make_shared<BulletManager>())
 {}
 
 TestScene::~TestScene() = default;
@@ -20,6 +22,8 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 	Assert(_character);
 	_enemy->Init(resourcesDirectory, window);
 	SetInitialPosition(_enemy);
+
+	_bulletManager->Init(resourcesDirectory);
 }
 
 void TestScene::ProcessInput(const sf::Event & event)

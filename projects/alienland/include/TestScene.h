@@ -2,6 +2,7 @@
 
 class Character;
 class Enemy;
+class BulletManager;
 
 class TestScene
 {
@@ -27,6 +28,7 @@ private:
 	
 	std::unique_ptr<Character>			_character;
 	std::unique_ptr<Enemy>				_enemy;
+	std::shared_ptr<BulletManager>		_bulletManager;
 	std::weak_ptr<sf::RenderWindow>		_window;
 	bool								_shouldTerminate = false;
 };
