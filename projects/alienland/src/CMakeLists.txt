@@ -5,4 +5,6 @@ target_sources(${PROJECT_NAME} PRIVATE
 	Character.cpp
 	Enemy.cpp
 	Bullet.cpp
+	BulletFactory.cpp
+	BulletManager.cpp
 )
