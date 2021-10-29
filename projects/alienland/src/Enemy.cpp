@@ -88,15 +88,15 @@ void Enemy::Move(const sf::Time & elapsedTime)
 void Enemy::Rotate()
 {
 	const float pi = 3.141593f;
-	const float fromRadToDeg = 180.0f / pi;
+	static const float s_fromRadToDeg = 180.0f / pi;
 
 	const float angle = std::acosf(_unitSpeedVector.x);
 
 	if (_unitSpeedVector.y < 0)
 	{
-		_sprite.setRotation((2 * pi - angle) * fromRadToDeg);
+		_sprite.setRotation((2 * pi - angle) * s_fromRadToDeg);
 		return;
 	}
 
-	_sprite.setRotation(angle * fromRadToDeg);
+	_sprite.setRotation(angle * s_fromRadToDeg);
 }
