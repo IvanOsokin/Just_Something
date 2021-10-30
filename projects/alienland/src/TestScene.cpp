@@ -23,7 +23,7 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 	_enemy->Init(resourcesDirectory, window);
 	SetInitialPosition(_enemy);
 
-	_bulletManager->Init(resourcesDirectory);
+	_bulletManager->Init(shared_from_this(), resourcesDirectory);
 }
 
 void TestScene::ProcessInput(const sf::Event & event)

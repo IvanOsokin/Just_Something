@@ -4,13 +4,14 @@ class Character;
 class Enemy;
 class BulletManager;
 
-class TestScene
+class TestScene : public std::enable_shared_from_this<TestScene>
 {
 public:
 	TestScene();
 	~TestScene();
 
 	void Init(std::shared_ptr<sf::RenderWindow> renderWindow, const std::filesystem::path & resourcesDirectory);
+	std::shared_ptr<sf::RenderWindow> GetRenderWindow() const { return _window.lock(); }
 
 	void ProcessInput(const sf::Event & event);
 	void Update(const sf::Time & elapsedTime);

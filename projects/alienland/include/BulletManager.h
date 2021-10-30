@@ -1,5 +1,6 @@
 #pragma once
 
+class TestScene;
 class BulletFactory;
 
 class BulletManager
@@ -7,8 +8,10 @@ class BulletManager
 public:
 	BulletManager();
 
-	void Init(const std::filesystem::path & resourcesDirectory);
+	void Init(std::shared_ptr<TestScene> testScene, const std::filesystem::path & resourcesDirectory);
 
 private:
-	std::shared_ptr<BulletFactory> _bulletFactory;
+	std::shared_ptr<BulletFactory>  _bulletFactory;
+	std::weak_ptr<TestScene>		_testScene;
+	sf::IntRect						_sceneBorder;
 };
