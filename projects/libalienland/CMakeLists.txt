@@ -1,19 +1,18 @@
-project(Alienland)
+project(alienlandlib)
 
 set(EXTERNAL_SFML_ENABLED ON)
 include(${EXTERNAL_CMAKE_FILE})
 include(${CMAKE_HELPERS_FILE_DIR}/config.cmake)
 
-add_executable(${PROJECT_NAME})
+add_library(${PROJECT_NAME} STATIC)
 add_subdirectory(include)
 add_subdirectory(src)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_enable_cpplatest(${PROJECT_NAME})
-target_set_binary_output(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 target_treat_all_warnings_as_error(${PROJECT_NAME})
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(${PROJECT_NAME} PUBLIC
 	sfml-graphics
 	sfml-system
 	sfml-window

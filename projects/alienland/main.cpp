@@ -1,6 +1,13 @@
+#include <filesystem>
+#include <memory>
+
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+
 #include "Game.h"
 #include "Log/DebuggerDisplaySink.h"
 #include "Log/FileLogSink.h"
+#include "Log/Log.h"
 
 int main(int /*argc*/, char **argv)
 {
