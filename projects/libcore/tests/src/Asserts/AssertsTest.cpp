@@ -89,6 +89,8 @@ private:
 	std::shared_ptr<void>			_owner;
 };
 
+#pragma warning(push)
+#pragma warning(disable: 4127)
 
 TEST_F(TestAssertFixture, CheckTrueAssert)
 {
@@ -117,6 +119,8 @@ TEST_F(TestAssertFixture, CheckFalseAssertWithMessage)
 	Assert2(2 + 2 == 5, "Test message: assetion failed.");
 	VerifyAssertFailed("Test message: assetion failed.");
 }
+
+#pragma warning(pop)
 
 TEST_F(TestAssertFixture, CheckTrueVerify)
 {
