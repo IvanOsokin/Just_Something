@@ -27,7 +27,7 @@ public:
 		: Animal(value)
 	{}
 
-	~Cat() {};
+	~Cat() {}
 
 	void MakeSound() const override { std::cout << "\"Meow\"" << std::endl; }
 	void Print() const override { std::cout << "Cat's value is " << GetValue() << ". The cat says "; }
@@ -40,7 +40,7 @@ public:
 		: Animal(value)
 	{}
 
-	~Pig() {};
+	~Pig() {}
 
 	void MakeSound() const override { std::cout << "\"Oink\"" << std::endl; };
 	void Print() const override { std::cout << "Pig's value is " << GetValue() << ". The pig says "; }
@@ -53,7 +53,7 @@ public:
 		: Animal(value)
 	{}
 
-	~Fox() override {};
+	~Fox() {}
 
 	void MakeSound() const override { std::cout << "\"Yipping\"" << std::endl; };
 	void Print() const override { std::cout << "Fox's value is " << GetValue() << ". The fox says "; }
