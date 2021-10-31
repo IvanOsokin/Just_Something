@@ -18,3 +18,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 	sfml-window
 	corelib
 )
+
+option(PROJECTS_ALIENLANDLIB_TEST_ENABLED OFF)
+if (PROJECTS_ALIENLANDLIB_TEST_ENABLED)
+	add_subdirectory(tests)
+endif()
