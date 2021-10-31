@@ -13,4 +13,4 @@ add_subdirectory(less_002)
 add_subdirectory(less_003)
 
 add_subdirectory(libcore)
-add_subdirectory(alienland)
+add_subdirectory(libalienland)
