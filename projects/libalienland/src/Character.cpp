@@ -1,9 +1,7 @@
 #include "Character.h"
 
-void Character::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<sf::RenderWindow> window)
+void Character::Init(const std::filesystem::path & resourcesDirectory)
 {
-	Assert(window);
-
 	//Loading the character's texture and asigning it to the sprite
 	const std::string characterTextureName = "character-1.png";
 	auto characterTexturePath = resourcesDirectory / characterTextureName;
@@ -23,16 +21,17 @@ void Character::ProcessInput(const sf::Event& /*event*/)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { _unitSpeedVector.x -= 1; }
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { _unitSpeedVector.x += 1; }
 
-	if (_unitSpeedVector.x != 0 && _unitSpeedVector.y != 0)				// Ётот блок изначально был добавлен в метод Update.
-	{																	// ѕри нажатии двух клавиш происходила задержка.
-		const float decreasingCoef = static_cast<float>(pow(2, 0.5));	// Ћоги показывали, что идет посто€нное уменьшение _unitSpeedVector
-		_unitSpeedVector /= decreasingCoef;								// “.е. ProcessInput не вызываетс€ и _unitSpeedVector не обнул€етс€ 
-	}																	// и не происходит переопределение базового вектора
+	if (_unitSpeedVector.x != 0 && _unitSpeedVector.y != 0)			
+	{																
+		const float decreasingCoef = static_cast<float>(pow(2, 0.5));
+		_unitSpeedVector /= decreasingCoef;							 
+	}																
 }
 
 void Character::Update(const sf::Time & elapsedTime)
 {
 	_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
+	_pos = _sprite.getPosition();
 }
 
 void Character::Render(sf::RenderTarget& renderTarget)

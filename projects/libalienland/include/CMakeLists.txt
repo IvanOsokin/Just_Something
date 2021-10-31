@@ -5,6 +5,8 @@ target_sources(${PROJECT_NAME} PRIVATE
 	Character.h
 	Enemy.h
 	Bullet.h
+	BulletFactory.h
+	BulletManager.h
 )
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE Internal/pch.h)
