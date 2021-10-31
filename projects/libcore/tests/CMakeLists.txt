@@ -9,7 +9,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 	gtest_main
 	corelib
 )
-target_precompile_headers(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../include/Internal/pch.h")
+target_enable_cpplatest(${PROJECT_NAME})
+target_treat_all_warnings_as_error(${PROJECT_NAME})
+target_precompile_headers(${PROJECT_NAME} REUSE_FROM corelib)
 
 add_subdirectory(src)
 add_subdirectory(include)

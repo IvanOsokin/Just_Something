@@ -59,7 +59,7 @@ public:
 		return Core::LogStreamHandler(_severity, _line, _file);
 	};
 
-	int GetLine() const
+	size_t GetLine() const
 	{
 		return _line;
 	}
@@ -77,7 +77,7 @@ public:
 private:
 	std::shared_ptr<HistoryLogSink>		_logSink;
 	Core::LogMessageSeverity			_severity = Core::LogMessageSeverity::Info;
-	const int							_line = __LINE__;
+	const size_t						_line = __LINE__;
 	const char *						_file = __FILE__;
 };
 
@@ -128,7 +128,7 @@ TEST(LogTest, LoggerSendOneMessage)
 	ASSERT_NE(historyLogSink->GetLastMessageData(), nullptr);
 
 	auto & data = *historyLogSink->GetLastMessageData();
-	EXPECT_EQ(data.line, line);
+	EXPECT_EQ(data.line, static_cast<size_t>(line));
 	EXPECT_EQ(data.file, file);
 	EXPECT_EQ(std::string_view(data.file), std::string_view(file));
 	EXPECT_EQ(data.message, message);
@@ -158,8 +158,8 @@ TEST(LogTest, LoggerSendMoreMessages)
 			receivedMessage.timepoint >= originMessage.timepoint;
 	};
 	
-	const int n = 10;
-	for (int i = 0; i < n; ++i)
+	const size_t n = 10;
+	for (size_t i = 0; i < n; ++i)
 	{
 		Core::GetLogger().Message(originMessage.severity, originMessage.message, originMessage.line, originMessage.file);
 
