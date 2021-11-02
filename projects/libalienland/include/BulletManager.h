@@ -8,10 +8,11 @@ class BulletManager
 public:
 	BulletManager();
 
-	void Init(std::shared_ptr<TestScene> testScene, const std::filesystem::path & resourcesDirectory);
+	void Init(const sf::IntRect & sceneBorder, const std::filesystem::path & resourcesDirectory);
 
 private:
+	std::vector<std::string> FillBulletTextureTitle() const;
+
 	std::shared_ptr<BulletFactory>  _bulletFactory;
-	std::weak_ptr<TestScene>		_testScene;
 	sf::IntRect						_sceneBorder;
 };
