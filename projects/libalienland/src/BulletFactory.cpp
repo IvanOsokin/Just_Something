@@ -1,23 +1,8 @@
 #include "BulletFactory.h"
 
-void BulletFactory::Init(const std::filesystem::path & resourcesDirectory)
+void BulletFactory::Init(const std::filesystem::path & resourcesDirectory,
+						 const std::vector<std::string> & bulletTextureTitle)
 {
-	//std::vector<std::string> bulletTexturePath;
-	//bulletTexturePath.emplace_back(std::string("bullet-0.png"));
-	//bulletTexturePath.emplace_back(std::string("bullet-1.png"));
-
-	//for (auto& iter : bulletTexturePath)
-	//{
-	//	auto texturePath = resourcesDirectory / iter;
-	//	iter = texturePath.generic_string();
-	//}
-
-	//Assert2(LoadTexture(bulletTexturePath), "Not all textures of bullets were loaded.");
-
-	std::vector<std::string> bulletTextureTitle;
-	bulletTextureTitle.emplace_back(std::string("bullet-0.png"));
-	bulletTextureTitle.emplace_back(std::string("bullet-1.png"));
-
 	std::vector<std::string> bulletTexturePath;
 	bulletTexturePath.reserve(bulletTextureTitle.size());
 
@@ -27,10 +12,10 @@ void BulletFactory::Init(const std::filesystem::path & resourcesDirectory)
 		bulletTexturePath.emplace_back(texturePath.generic_string());
 	}
 
-	Assert2(LoadTexture(bulletTexturePath), "Not all textures of bullets were loaded.");
+	LoadTexture(bulletTexturePath);
 }
 
-sf::Sprite BulletFactory::GetSprite()
+sf::Sprite BulletFactory::GetSprite(/*Some conditions*/)
 {
 	sf::Sprite bulletSprite;
 	bulletSprite.setTexture(*_textures.begin());
@@ -38,21 +23,29 @@ sf::Sprite BulletFactory::GetSprite()
 	return bulletSprite;
 }
 
-bool BulletFactory::LoadTexture(const std::vector<std::string> & bulletsTexturesPath)
+void BulletFactory::LoadTexture(const std::vector<std::string> & bulletsTexturesPath)
 {
-	sf::Texture texture;
+	std::size_t count = 0;
+	bool isSuccess = true;
 
 	for (const auto & iter : bulletsTexturesPath)
 	{
+		sf::Texture texture;
+
 		if (!texture.loadFromFile(iter))
 		{
-			LOG_ERROR() << "Failed to load all the textures of bullets.";
-			return false;
+			// Прикрутить std::error_code
+			LOG_ERROR() << "Failed to load the \"bullet-" << count << ".png\" texture.";
+			isSuccess = false;
 		}
 
 		_textures.emplace_back(texture);
+
+		++count;
 	}
 
-	LOG_INFO() << "The bullets' textures were loaded.";
-	return true;
+	if (isSuccess)
+	{
+		LOG_INFO() << "Successful loading of textures of bullets.";
+	}
 }
