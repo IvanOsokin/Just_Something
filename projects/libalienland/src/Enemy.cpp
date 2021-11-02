@@ -47,7 +47,7 @@ bool Enemy::LoadTexture(const std::string & enemyTexturePath)
 	}
 
 	_sprite.setTexture(_texture);
-	LOG_INFO() << "The enemy's texture was loaded.";
+	LOG_INFO() << "Successful loading the enemy texture.";
 	return true;
 }
 

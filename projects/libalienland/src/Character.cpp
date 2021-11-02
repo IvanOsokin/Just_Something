@@ -48,6 +48,6 @@ bool Character::LoadTexture(const std::string & characterTexturePath)
 	}
 
 	_sprite.setTexture(_texture);
-	LOG_INFO() << "The character's texture was loaded.";
+	LOG_INFO() << "Successful loading the character texture.";
 	return true;
 }
