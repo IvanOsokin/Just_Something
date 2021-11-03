@@ -27,9 +27,9 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 	// values of arguments in 'position' and 'size' by the texture parameters
 	sf::Vector2i position(0, 0);
 	sf::Vector2i size(_window.lock()->getSize());
-
-	sf::IntRect sceneBorder(position, size);
-	_bulletManager->Init(sceneBorder, resourcesDirectory);
+	sf::IntRect  sceneBorder(position, size);
+	
+	_bulletManager->Init(resourcesDirectory, sceneBorder, _enemy);
 }
 
 void TestScene::ProcessInput(const sf::Event & event)
@@ -87,7 +87,7 @@ void TestScene::ProcessSceneInput(const sf::Event & event)
 }
 
 template <typename T>
-void TestScene::SetInitialPosition(std::unique_ptr<T> & object)
+void TestScene::SetInitialPosition(std::shared_ptr<T> & object)
 {
 	if (!_window.lock())
 	{
