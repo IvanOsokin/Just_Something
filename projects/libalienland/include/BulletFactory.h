@@ -1,3 +1,5 @@
+#pragma once
+
 // Класс BulletFactory:
 // 1. Загружает и хранит все текстуры пуль;
 // 2. Возвращает спрайт пули, соответсвующий определенным условиям, переданным в параметры
@@ -6,9 +8,6 @@
 //	- загружаемая текстура инициализируется пустой текстурой текстурой
 //  - в log-файл выводится сообщение об ошибке с указанием имени незагруженной текстуры
 //  - фиксируется ошибка загрузки текстуры
-
-#pragma once
-
 class BulletFactory
 {
 public:
@@ -16,7 +15,7 @@ public:
 	sf::Sprite	GetSprite(/*Some conditions*/);
 
 private:
-	void		LoadTexture(const std::vector<std::string> & bulletsTexturesPath);
+	void		LoadTextures(const std::vector<std::string> & bulletsTexturesPath);
 
 	std::vector<sf::Texture> _textures;
 };

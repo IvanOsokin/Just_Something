@@ -12,7 +12,7 @@ void BulletFactory::Init(const std::filesystem::path & resourcesDirectory,
 		bulletTexturePath.emplace_back(texturePath.generic_string());
 	}
 
-	LoadTexture(bulletTexturePath);
+	LoadTextures(bulletTexturePath);
 }
 
 sf::Sprite BulletFactory::GetSprite(/*Some conditions*/)
@@ -23,7 +23,7 @@ sf::Sprite BulletFactory::GetSprite(/*Some conditions*/)
 	return bulletSprite;
 }
 
-void BulletFactory::LoadTexture(const std::vector<std::string> & bulletsTexturesPath)
+void BulletFactory::LoadTextures(const std::vector<std::string> & bulletsTexturesPath)
 {
 	std::size_t count = 0;
 	bool isSuccess = true;
