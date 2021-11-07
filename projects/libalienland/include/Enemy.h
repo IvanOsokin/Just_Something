@@ -4,6 +4,7 @@ class Enemy
 {
 public:
 	void				Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<sf::RenderWindow> window);
+	void				InitBoundingBox();
 
 	void				ProcessInput(const sf::Event & event);
 	void				Update(const sf::Time & elapsedTime);
@@ -21,9 +22,12 @@ private:
 
 	sf::Sprite					_sprite;
 	sf::Texture					_texture;
+	sf::RectangleShape			_boundingBox;
+
 	sf::Vector2f				_pos;
-	sf::Vector2f				_speed;
+	//sf::Vector2f				_speed;
 	sf::Vector2f				_unitSpeedVector;
+
 	float						_baseSpeed = 300.0f;
 
 	std::optional<sf::Vector2f>	_targetPos;

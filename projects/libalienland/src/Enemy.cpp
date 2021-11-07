@@ -18,7 +18,6 @@ void Enemy::ProcessInput(const sf::Event & event)
 	{
 		auto target = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 		MoveTo(target);
-		LOG_DEBUG() << "Enemy move to " << target.x << " " << target.y;
 	}
 }
 
@@ -31,11 +30,26 @@ void Enemy::Update(const sf::Time & elapsedTime)
 void Enemy::Render(sf::RenderTarget & renderTarget)
 {
 	renderTarget.draw(_sprite);
+	renderTarget.draw(_boundingBox);
 }
 
 void Enemy::MoveTo(const sf::Vector2f & dest)
 {
 	_targetPos = dest;
+}
+
+void Enemy::InitBoundingBox()
+{
+	_boundingBox.setOutlineColor(sf::Color::Yellow);
+	_boundingBox.setFillColor(sf::Color::Transparent);
+	_boundingBox.setOutlineThickness(2.0f);
+
+	/////// Depending on the type of the enemy /////////
+	_boundingBox.setSize(sf::Vector2f(84.0f, 32.0f));
+	////////////////////////////////////////////////////
+	_boundingBox.setOrigin(_boundingBox.getSize().x / 2.0f + 32, _boundingBox.getSize().y / 2.0f - 14);
+	_boundingBox.setPosition(_sprite.getPosition());
+	_boundingBox.setRotation(_sprite.getRotation());
 }
 
 bool Enemy::LoadTexture(const std::string & enemyTexturePath)
@@ -67,6 +81,7 @@ void Enemy::Move(const sf::Time & elapsedTime)
 		_unitSpeedVector = speedVector / speedVectorLength;
 		_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
 		_pos = _sprite.getPosition();
+		_boundingBox.setPosition(_pos);
 	}
 	else
 	{
@@ -95,8 +110,14 @@ void Enemy::Rotate()
 	if (_unitSpeedVector.y < 0)
 	{
 		_sprite.setRotation((2 * pi - angle) * s_fromRadToDeg);
+		///// Template data /////
+		_boundingBox.setRotation(_sprite.getRotation());
+		/////////////////////////
 		return;
 	}
 
 	_sprite.setRotation(angle * s_fromRadToDeg);
+	///// Template data /////
+	_boundingBox.setRotation(_sprite.getRotation());
+	/////////////////////////
 }
