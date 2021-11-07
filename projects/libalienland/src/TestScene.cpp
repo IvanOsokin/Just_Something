@@ -5,8 +5,8 @@
 #include "BulletManager.h"
 
 TestScene::TestScene()
-	: _character(std::make_unique<Character>())
-	, _enemy(std::make_unique<Enemy>())
+	: _character(std::make_shared<Character>())
+	, _enemy(std::make_shared<Enemy>())
 	, _bulletManager(std::make_shared<BulletManager>())
 {}
 
@@ -16,12 +16,13 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 {
 	Assert(window);
 	_window = window;
-	_character->Init(resourcesDirectory);
+	_character->Init(resourcesDirectory, _bulletManager);
 	SetInitialPosition(_character);
 
 	Assert(_character);
 	_enemy->Init(resourcesDirectory, window);
 	SetInitialPosition(_enemy);
+	_enemy->InitBoundingBox();
 
 	// Once the scene will be initialized by a texture it will be needed to substitute
 	// values of arguments in 'position' and 'size' by the texture parameters
@@ -36,15 +37,18 @@ void TestScene::ProcessInput(const sf::Event & event)
 {
 	EventLogging(event);
 	ProcessSceneInput(event);
-	_character->ProcessInput(event);
+	_character->ProcessInput(*_window.lock(), event);
 	_enemy->ProcessInput(event);
 }
 
 void TestScene::Update(const sf::Time & elapsedTime)
 {
 	_character->Update(elapsedTime);
+
 	_enemy->MoveTo(_character->GetPosition());
 	_enemy->Update(elapsedTime);
+
+	_bulletManager->Update(elapsedTime);
 }
 
 void TestScene::Render()
@@ -57,6 +61,7 @@ void TestScene::Render()
 	
 	_character->Render(*window);
 	_enemy->Render(*window);
+	_bulletManager->Render(*window);
 }
 
 void TestScene::EventLogging(const sf::Event & event)
