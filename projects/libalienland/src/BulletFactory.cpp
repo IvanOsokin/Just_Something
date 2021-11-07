@@ -18,7 +18,7 @@ void BulletFactory::Init(const std::filesystem::path & resourcesDirectory,
 	LoadTextures(bulletTexturePath);
 }
 
-sf::Sprite BulletFactory::GetSprite(/*Depending on WeaponID*/)
+sf::Sprite BulletFactory::GetSprite(/*WeaponID*/)
 {
 	sf::Sprite bulletSprite;
 	bulletSprite.setTexture(*_textures.begin());
@@ -26,16 +26,9 @@ sf::Sprite BulletFactory::GetSprite(/*Depending on WeaponID*/)
 	return bulletSprite;
 }
 
-sf::Vector2f BulletFactory::GetInitPosition(/*Depending on WeaponID,*/ const sf::Vector2f & characterPos, const float & angle)
+float BulletFactory::GetInitPosition(/*WeaponID*/)
 {
-	const float pi = 3.141593f;
-	static const float s_fromRadToDeg = 180.0f / pi;
-
-	sf::Vector2f tipWeaponPosition;
-	tipWeaponPosition.x = (*_distanceToWeaponTip.begin()) * std::cosf(angle) * s_fromRadToDeg;
-	tipWeaponPosition.y = (*_distanceToWeaponTip.begin()) * std::sinf(angle) * s_fromRadToDeg;
-
-	return characterPos + tipWeaponPosition;
+	return *_distanceToWeaponTip.begin();
 }
 
 void BulletFactory::LoadTextures(const std::vector<std::string> & bulletsTexturesPath)

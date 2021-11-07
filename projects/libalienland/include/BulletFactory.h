@@ -3,9 +3,9 @@
 // Класс BulletFactory:
 // 1. Загружает и хранит:
 //   - все текстуры пуль;
-//   - базовые расстояния от центра текстуры персонажа до цончика оружия в зависимости от типа оружия
+//   - базовые расстояния от _sprite.getOrigin() персонажа до кончика оружия
 // 2. Возвращает спрайт пули в зависимости от типа оружия
-// 3. Возвращает начальное положение спрайта пули в зависимости от типа оружия
+// 3. Возвращает расстояния от _sprite.getOrigin() персонажа до кончика оружия в зависимости от типа оружия
 // 
 // При неудаче загрузки текстуры:
 //	- загружаемая текстура инициализируется пустой текстурой
@@ -17,8 +17,8 @@ public:
 	void		 Init(const std::filesystem::path & resourcesDirectory,
 					  const std::vector<std::string> & bulletTextureTitle,
 					  const std::vector<float> & distanceToWeaponTip);
-	sf::Sprite	 GetSprite(/*Depending on WeaponID*/);
-	sf::Vector2f GetInitPosition(/*Depending on WeaponID,*/ const sf::Vector2f & characterPos, const float & angle);
+	sf::Sprite	 GetSprite(/*WeaponID*/);
+	float		 GetInitPosition(/*WeaponID*/);
 
 private:
 	void		LoadTextures(const std::vector<std::string> & bulletsTexturesPath);
