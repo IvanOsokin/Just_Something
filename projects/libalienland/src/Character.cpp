@@ -1,7 +1,11 @@
 #include "Character.h"
 
-void Character::Init(const std::filesystem::path & resourcesDirectory)
+#include "BulletManager.h"
+
+void Character::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager)
 {
+	_bulletManager = bulletManager;
+
 	//Loading the character's texture and asigning it to the sprite
 	const std::string characterTextureName = "character-1.png";
 	auto characterTexturePath = resourcesDirectory / characterTextureName;
@@ -11,30 +15,21 @@ void Character::Init(const std::filesystem::path & resourcesDirectory)
 	LoadTexture(characterTexturePathStr);
 }
 
-void Character::ProcessInput(const sf::Event& /*event*/)
+void Character::ProcessInput(const sf::RenderWindow & window, const sf::Event & event)
 {
-	_unitSpeedVector.x = 0;
-	_unitSpeedVector.y = 0;
-	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { _unitSpeedVector.y -= 1; }
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { _unitSpeedVector.y += 1; }
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { _unitSpeedVector.x -= 1; }
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { _unitSpeedVector.x += 1; }
-
-	if (_unitSpeedVector.x != 0 && _unitSpeedVector.y != 0)			
-	{																
-		const float decreasingCoef = static_cast<float>(pow(2, 0.5));
-		_unitSpeedVector /= decreasingCoef;							 
-	}																
+	ProcessKeyboard();
+	ProcessMouse(window, event);
 }
 
 void Character::Update(const sf::Time & elapsedTime)
 {
-	_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
-	_pos = _sprite.getPosition();
+	Move(elapsedTime);
+	Rotate();
+	//LOG_DEBUG() << "Angle = " << _sprite.getRotation();
+
 }
 
-void Character::Render(sf::RenderTarget& renderTarget)
+void Character::Render(sf::RenderTarget & renderTarget)
 {
 	renderTarget.draw(_sprite);
 }
@@ -50,4 +45,68 @@ bool Character::LoadTexture(const std::string & characterTexturePath)
 	_sprite.setTexture(_texture);
 	LOG_INFO() << "Successful loading the character texture.";
 	return true;
+}
+
+void Character::ProcessKeyboard()
+{
+	_unitSpeedVector.x = 0;
+	_unitSpeedVector.y = 0;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { _unitSpeedVector.y -= 1; }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { _unitSpeedVector.y += 1; }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { _unitSpeedVector.x -= 1; }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { _unitSpeedVector.x += 1; }
+
+	if (_unitSpeedVector.x != 0 && _unitSpeedVector.y != 0)
+	{
+		const float decreasingCoef = static_cast<float>(pow(2, 0.5));
+		_unitSpeedVector /= decreasingCoef;
+	}
+}
+
+void Character::ProcessMouse(const sf::RenderWindow & window, const sf::Event & event)
+{
+	_currentCursorPosition = sf::Vector2f(sf::Mouse::getPosition(window));
+
+	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+	{
+		auto targetPos = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
+
+		_bulletManager->AddBullet(_sprite.getPosition(), _sprite.getRotation() + 15, targetPos);	// 15 град - угол между изначальным
+	}																								// положением и концом оружия
+}
+
+void Character::Move(const sf::Time & elapsedTime)
+{
+	_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
+	_pos = _sprite.getPosition();
+}
+
+void Character::Rotate()
+{
+	sf::Vector2f viewDirectionVector = _currentCursorPosition - _pos;
+
+	float viewDirectionVectorLength = std::powf((std::powf(viewDirectionVector.x, 2.0f) + std::powf(viewDirectionVector.y, 2.0f)), 0.5f);
+
+	const float eps = 1.0f;
+	if (viewDirectionVectorLength <= eps)
+	{
+		return;
+	}
+
+	sf::Vector2f unitViewDirectionVector;
+	unitViewDirectionVector = viewDirectionVector / viewDirectionVectorLength;
+
+	const float pi = 3.141593f;
+	static const float s_fromRadToDeg = 180.0f / pi;
+
+	const float angle = std::acosf(unitViewDirectionVector.x);
+
+	if (unitViewDirectionVector.y < 0)
+	{
+		_sprite.setRotation((2 * pi - angle) * s_fromRadToDeg);
+		return;
+	}
+
+	_sprite.setRotation(angle* s_fromRadToDeg);
 }
