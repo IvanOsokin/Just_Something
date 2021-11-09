@@ -29,7 +29,7 @@ public:
 	void Render(sf::RenderTarget & renderTarget);
 
 	const sf::Vector2f& GetBulletBottomPosition() const { return _bulletVertexes._bottom; }
-	const sf::Vector2f& GetBulletPosition() const { return _bulletVertexes._tip; }
+	const sf::Vector2f& GetBulletTipPosition() const { return _bulletVertexes._tip; }
 
 private:
 	sf::Sprite	 _sprite;
