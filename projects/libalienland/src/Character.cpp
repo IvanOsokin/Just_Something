@@ -72,8 +72,16 @@ void Character::ProcessMouse(const sf::RenderWindow & window, const sf::Event & 
 	{
 		auto targetPos = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 
+		// Исключить выстрел, когда курсор мыши на игроке
+		auto vectorToWeaponTip = targetPos - _sprite.getPosition();
+		float distToWeaponTip = std::powf((std::powf(vectorToWeaponTip.x, 2.0f) + std::powf(vectorToWeaponTip.y, 2.0f)), 0.5f);
+		if (distToWeaponTip < 122.33f)	// 122.33f - расстояние от _sprite.getOrigin() до кончика оружия.
+		{								// Это расстояние либо будет меняться в зависимости от типа оружия,
+			return;						// либо оно будет единым для всех типов оружия
+		}
+
 		_bulletManager->AddBullet(_sprite.getPosition(), _sprite.getRotation() + 15, targetPos);	// 15 град - угол между изначальным
-	}																								// положением и концом оружия
+	}																								// положением спрайта и концом оружия
 }
 
 void Character::Move(const sf::Time & elapsedTime)
