@@ -35,23 +35,19 @@ void Bullet::Init(const sf::Vector2f & initPos, const sf::Vector2f & targetPos)
 	const float angle = std::acosf(_unitSpeedVector.x);
 
 	if (_unitSpeedVector.y < 0)
-	{
 		_sprite.setRotation((2 * pi - angle) * s_fromRadToDeg);
-	}
 	else
-	{
 		_sprite.setRotation(angle * s_fromRadToDeg);
-	}
 
 	// Initializing points for checking on the bullet sprite
-	sf::Vector2f bulletBottom = _sprite.getOrigin();
-
-	static const float s_fromDegToRad = pi / 180.0f;
+	const float bulletLength = static_cast<float>(_sprite.getTexture()->getSize().x);
 
 	sf::Vector2f bulletTip;
-	float bulletLength = static_cast<float>(_sprite.getTexture()->getSize().x);
-	bulletTip.x = bulletLength * std::cosf(angle * s_fromDegToRad);
-	bulletTip.y = bulletLength * std::sinf(angle * s_fromDegToRad);
+
+	if (_unitSpeedVector.y < 0)
+		bulletTip = sf::Vector2( bulletLength * std::cosf(2 * pi - angle), bulletLength * std::sinf(2 * pi - angle) );
+	else
+		bulletTip = sf::Vector2(bulletLength * std::cosf(angle), bulletLength * std::sinf(angle));
 
 	_bulletVertexes._bottom = _sprite.getPosition();
 	_bulletVertexes._tip = _bulletVertexes._bottom + bulletTip;

@@ -24,7 +24,7 @@ void BulletManager::AddBullet(const sf::Vector2f & currentCharacterPos, const fl
 	sf::Vector2f initBulletPos = CalcInitBulletPos(currentCharacterPos, currentCharacterRot, _bulletFactory->GetInitPosition(/*WeaponID*/));
 
 	// Make bullet speed storage
-	Bullet bullet(2000.0f, _bulletFactory->GetSprite());
+	Bullet bullet(2000.0f, _bulletFactory->GetSprite(/*WeaponID*/));
 
 	bullet.Init(initBulletPos, targetPos);
 
@@ -39,8 +39,6 @@ void BulletManager::Update(const sf::Time & elapsedTime)
 	}
 
 	ProcessCollision();
-
-	//LOG_DEBUG() << "_bullets.size() = " << _bullets.size();
 }
 
 void BulletManager::Render(sf::RenderTarget & renderTarget)
