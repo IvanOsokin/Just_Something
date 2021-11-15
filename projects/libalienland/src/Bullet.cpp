@@ -1,24 +1,10 @@
 #include "Bullet.h"
 
-Bullet::Bullet(const float & baseSpeed, const sf::Sprite & sprite)
-	: _sprite(sprite)
-	, _baseSpeed(baseSpeed)
-{}
-
-Bullet::~Bullet() = default;
-
-Bullet& Bullet::operator= (const Bullet & bullet)
+void Bullet::Init(const float & baseSpeed, const sf::Sprite & sprite, const sf::Vector2f & initPos, const sf::Vector2f & targetPos)
 {
-	_sprite = bullet._sprite;
-	_bulletVertexes = bullet._bulletVertexes;
-	_unitSpeedVector = bullet._unitSpeedVector;
-	_baseSpeed = bullet._baseSpeed;
+	_sprite = sprite;
+	_baseSpeed = baseSpeed;
 
-	return *this;
-}
-
-void Bullet::Init(const sf::Vector2f & initPos, const sf::Vector2f & targetPos)
-{
 	// Set initial position of the bullet on the tip of the weapon
 	_sprite.setOrigin(0.0f, _sprite.getTexture()->getSize().y / 2.0f);
 	_sprite.setPosition(initPos);

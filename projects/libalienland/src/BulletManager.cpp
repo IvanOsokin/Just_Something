@@ -24,9 +24,9 @@ void BulletManager::AddBullet(const sf::Vector2f & currentCharacterPos, const fl
 	sf::Vector2f initBulletPos = CalcInitBulletPos(currentCharacterPos, currentCharacterRot, _bulletFactory->GetInitPosition(/*WeaponID*/));
 
 	// Make bullet speed storage
-	Bullet bullet(2000.0f, _bulletFactory->GetSprite(/*WeaponID*/));
+	Bullet bullet;
 
-	bullet.Init(initBulletPos, targetPos);
+	bullet.Init(2000.0f, _bulletFactory->GetSprite(/*WeaponID*/), initBulletPos, targetPos);	// 2000 - base bullet speed
 
 	_bullets.emplace_back(bullet);
 }
