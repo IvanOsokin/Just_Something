@@ -25,6 +25,7 @@ private:
 	void SetInitialPosition(std::shared_ptr<T> & object);
 	//void SetInitialPosition(std::unique_ptr<Enemy> & enemy);
 	//bool TerminateIfEmptyWindow();
+	void RemoveEnemy();
 	
 	std::shared_ptr<Character>			_character;
 	std::shared_ptr<Enemy>				_enemy;

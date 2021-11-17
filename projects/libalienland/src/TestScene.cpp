@@ -38,17 +38,28 @@ void TestScene::ProcessInput(const sf::Event & event)
 	EventLogging(event);
 	ProcessSceneInput(event);
 	_character->ProcessInput(*_window.lock(), event);
-	_enemy->ProcessInput(event);
+	if (_enemy)
+	{
+		_enemy->ProcessInput(event);
+	}
 }
 
 void TestScene::Update(const sf::Time & elapsedTime)
 {
 	_character->Update(elapsedTime);
 
-	_enemy->MoveTo(_character->GetPosition());
-	_enemy->Update(elapsedTime);
-
+	if (_enemy)
+	{
+		//_enemy->MoveTo(_character->GetPosition());
+		_enemy->Update(elapsedTime);
+	}
+	
 	_bulletManager->Update(elapsedTime);
+
+	if (_enemy)
+	{
+		RemoveEnemy();
+	}
 }
 
 void TestScene::Render()
@@ -60,7 +71,10 @@ void TestScene::Render()
 	}
 	
 	_character->Render(*window);
-	_enemy->Render(*window);
+	if (_enemy)
+	{
+		_enemy->Render(*window);
+	}
 	_bulletManager->Render(*window);
 }
 
@@ -107,4 +121,12 @@ void TestScene::SetInitialPosition(std::shared_ptr<T> & object)
 	auto windowSize = _window.lock()->getSize();
 	object->SetPosition(sf::Vector2f(windowSize.x / 2.0f, windowSize.y / 2.0f));
 	object->GetSprite().setPosition(object->GetPosition());
+}
+
+void TestScene::RemoveEnemy()
+{
+	if (_enemy->IsDead())
+	{
+		_enemy.reset();
+	}
 }
