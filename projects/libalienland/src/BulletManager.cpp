@@ -52,7 +52,11 @@ void BulletManager::Render(sf::RenderTarget & renderTarget)
 void BulletManager::ProcessCollision()
 {
 	SceneBorderCollision();
-	EnemyCollision();
+
+	if (_enemy)
+	{
+		EnemyCollision();
+	}
 }
 
 void BulletManager::SceneBorderCollision()
@@ -68,7 +72,20 @@ void BulletManager::SceneBorderCollision()
 
 void BulletManager::EnemyCollision()
 {
+	_bullets.erase(std::remove_if(_bullets.begin(),
+								  _bullets.end(),
+								  [*this](const Bullet & bullet)
+								  {
+									  if (_enemy->IsDead())
+									  {
+										  return false;
+									  }
 
+									  _enemy->SetRemoveCondition(_enemy->GetBoundingBox().getGlobalBounds().
+															     contains(static_cast<float>(bullet.GetBulletTipPosition().x),
+																		  static_cast<float>(bullet.GetBulletTipPosition().y)));
+									  return _enemy->IsDead();}),
+				   _bullets.end());
 }
 
 sf::Vector2f BulletManager::CalcInitBulletPos(const sf::Vector2f & currentCharacterPos,
