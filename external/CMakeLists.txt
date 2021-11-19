@@ -9,3 +9,5 @@ endif()
 if (EXTERNAL_GOOGLETEST_ENABLED)
 	add_subdirectory(googletest)
 endif()
+
+add_subdirectory(corelib)
