@@ -10,4 +10,6 @@ if (EXTERNAL_GOOGLETEST_ENABLED)
 	add_subdirectory(googletest)
 endif()
 
-add_subdirectory(corelib)
+if (NOT TARGET corelib)
+	add_subdirectory(corelib)
+endif()
