@@ -42,7 +42,7 @@ void BulletFactory::LoadTextures(const std::vector<std::string> & bulletsTexture
 
 		if (!texture.loadFromFile(iter))
 		{
-			// Прикрутить std::error_code
+			// РџСЂРёРєСЂСѓС‚РёС‚СЊ std::error_code
 			LOG_ERROR() << "Failed to load the \"bullet-" << count << ".png\" texture.";
 			isSuccess = false;
 		}

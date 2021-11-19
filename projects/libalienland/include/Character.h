@@ -1,6 +1,6 @@
 #pragma once
 
-// Добавить описание класса
+// Р”РѕР±Р°РІРёС‚СЊ РѕРїРёСЃР°РЅРёРµ РєР»Р°СЃСЃР°
 class BulletManager;
 
 class Character

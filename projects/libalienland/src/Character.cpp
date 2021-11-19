@@ -72,16 +72,16 @@ void Character::ProcessMouse(const sf::RenderWindow & window, const sf::Event & 
 	{
 		auto targetPos = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 
-		// Исключить выстрел, когда курсор мыши на игроке
+		// РСЃРєР»СЋС‡РёС‚СЊ РІС‹СЃС‚СЂРµР», РєРѕРіРґР° РєСѓСЂСЃРѕСЂ РјС‹С€Рё РЅР° РёРіСЂРѕРєРµ
 		auto vectorToWeaponTip = targetPos - _sprite.getPosition();
 		float distToWeaponTip = std::powf((std::powf(vectorToWeaponTip.x, 2.0f) + std::powf(vectorToWeaponTip.y, 2.0f)), 0.5f);
-		if (distToWeaponTip < 122.33f)	// 122.33f - расстояние от _sprite.getOrigin() до кончика оружия.
-		{								// Это расстояние либо будет меняться в зависимости от типа оружия,
-			return;						// либо оно будет единым для всех типов оружия
+		if (distToWeaponTip < 122.33f)	// 122.33f - СЂР°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ _sprite.getOrigin() РґРѕ РєРѕРЅС‡РёРєР° РѕСЂСѓР¶РёСЏ.
+		{								// Р­С‚Рѕ СЂР°СЃСЃС‚РѕСЏРЅРёРµ Р»РёР±Рѕ Р±СѓРґРµС‚ РјРµРЅСЏС‚СЊСЃСЏ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РёРїР° РѕСЂСѓР¶РёСЏ,
+			return;						// Р»РёР±Рѕ РѕРЅРѕ Р±СѓРґРµС‚ РµРґРёРЅС‹Рј РґР»СЏ РІСЃРµС… С‚РёРїРѕРІ РѕСЂСѓР¶РёСЏ
 		}
 
-		_bulletManager->AddBullet(_sprite.getPosition(), _sprite.getRotation() + 15, targetPos);	// 15 град - угол между изначальным
-	}																								// положением спрайта и концом оружия
+		_bulletManager->AddBullet(_sprite.getPosition(), _sprite.getRotation() + 15, targetPos);	// 15 РіСЂР°Рґ - СѓРіРѕР» РјРµР¶РґСѓ РёР·РЅР°С‡Р°Р»СЊРЅС‹Рј
+	}																								// РїРѕР»РѕР¶РµРЅРёРµРј СЃРїСЂР°Р№С‚Р° Рё РєРѕРЅС†РѕРј РѕСЂСѓР¶РёСЏ
 }
 
 void Character::Move(const sf::Time & elapsedTime)

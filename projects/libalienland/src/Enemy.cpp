@@ -75,7 +75,7 @@ void Enemy::Move(const sf::Time & elapsedTime)
 	sf::Vector2f speedVector = *_targetPos - _pos;
 	float speedVectorLength = std::powf((std::powf(speedVector.x, 2.0f) + std::powf(speedVector.y, 2.0f)), 0.5f);
 
-	const float eps = 0.5f;			// Необходим eps, чтобы враг не дергался, когда догоняет игрока
+	const float eps = 0.5f;			// РќРµРѕР±С…РѕРґРёРј eps, С‡С‚РѕР±С‹ РІСЂР°Рі РЅРµ РґРµСЂРіР°Р»СЃСЏ, РєРѕРіРґР° РґРѕРіРѕРЅСЏРµС‚ РёРіСЂРѕРєР°
 	if (speedVectorLength >= eps)
 	{
 		_unitSpeedVector = speedVector / speedVectorLength;
@@ -88,12 +88,12 @@ void Enemy::Move(const sf::Time & elapsedTime)
 		_targetPos.reset();
 	}
 
-	// Раскомментить, когда начальные позиции врага и персонажа будут отличаться
+	// Р Р°СЃРєРѕРјРјРµРЅС‚РёС‚СЊ, РєРѕРіРґР° РЅР°С‡Р°Р»СЊРЅС‹Рµ РїРѕР·РёС†РёРё РІСЂР°РіР° Рё РїРµСЂСЃРѕРЅР°Р¶Р° Р±СѓРґСѓС‚ РѕС‚Р»РёС‡Р°С‚СЊСЃСЏ
 	//_unitSpeedVector = speedVector / speedVectorLength;
 	//_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
 	//_pos = _sprite.getPosition();
 
-	//const float eps = 0.5f;			// Необходим eps, чтобы враг не дергался, когда догоняет игрока
+	//const float eps = 0.5f;			// РќРµРѕР±С…РѕРґРёРј eps, С‡С‚РѕР±С‹ РІСЂР°Рі РЅРµ РґРµСЂРіР°Р»СЃСЏ, РєРѕРіРґР° РґРѕРіРѕРЅСЏРµС‚ РёРіСЂРѕРєР°
 	//if (speedVectorLength < eps)
 	//{
 	//	_targetPos.reset();
