@@ -1,6 +1,6 @@
 #include "Bullet.h"
 
-void Bullet::Init(const float & baseSpeed, const sf::Sprite & sprite, const sf::Vector2f & initPos, const sf::Vector2f & targetPos)
+void Bullet::Init(float baseSpeed, const sf::Sprite & sprite, const sf::Vector2f & initPos, const sf::Vector2f & targetPos)
 {
 	_sprite = sprite;
 	_baseSpeed = baseSpeed;

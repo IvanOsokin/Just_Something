@@ -25,11 +25,12 @@ private:
 	void SetInitialPosition(std::shared_ptr<T> & object);
 	//void SetInitialPosition(std::unique_ptr<Enemy> & enemy);
 	//bool TerminateIfEmptyWindow();
-	void RemoveEnemy();
+	void RemoveDeadEnemy();
 	
-	std::shared_ptr<Character>			_character;
-	std::shared_ptr<Enemy>				_enemy;
-	std::shared_ptr<BulletManager>		_bulletManager;
-	std::weak_ptr<sf::RenderWindow>		_window;
-	bool								_shouldTerminate = false;
+	std::weak_ptr<sf::RenderWindow> _window;
+	std::shared_ptr<BulletManager> _bulletManager;
+	std::shared_ptr<Character> _character;
+	std::shared_ptr<Enemy> _enemy;
+
+	bool _shouldTerminate = false;
 };

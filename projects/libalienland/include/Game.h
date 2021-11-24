@@ -19,7 +19,8 @@ private:
 	void Update(const sf::Time & elapsedTime);
 	void Render();
 
-	std::shared_ptr<sf::RenderWindow>		_window;
-	std::shared_ptr<TestScene>				_testScene;
-	bool									_shouldTerminate = false;
+	std::shared_ptr<sf::RenderWindow> _window;
+	std::shared_ptr<TestScene> _testScene;
+
+	bool _shouldTerminate = false;
 };

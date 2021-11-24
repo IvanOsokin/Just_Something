@@ -11,18 +11,18 @@
 //	- загружаемая текстура инициализируется пустой текстурой
 //  - в log-файл выводится сообщение об ошибке с указанием имени незагруженной текстуры
 //  - фиксируется ошибка загрузки текстуры
+
 class BulletFactory
 {
 public:
-	void		 Init(const std::filesystem::path & resourcesDirectory,
-					  const std::vector<std::string> & bulletTextureTitle,
-					  const std::vector<float> & distanceToWeaponTip);
-	sf::Sprite	 GetSprite(/*WeaponID*/);
-	float		 GetInitPosition(/*WeaponID*/);
+	void Init(const std::filesystem::path & resourcesDirectory, const std::vector<std::string> & bulletTextureTitle, const std::vector<float> & distanceToWeaponTip);
+	
+	sf::Sprite GetSprite(/*WeaponID*/);
+	float GetInitPosition(/*WeaponID*/);
 
 private:
-	void		LoadTextures(const std::vector<std::string> & bulletsTexturesPath);
+	void LoadTextures(const std::vector<std::string> & bulletsTexturesPath);
 
-	std::vector<sf::Texture>	_textures;
-	std::vector<float>			_distanceToWeaponTip;		// Distance between the center of the character sprite and the tip of the weapon
+	std::vector<sf::Texture> _textures;
+	std::vector<float> _distanceToWeaponTip;
 };

@@ -5,9 +5,9 @@
 #include "BulletManager.h"
 
 TestScene::TestScene()
-	: _character(std::make_shared<Character>())
+	: _bulletManager(std::make_shared<BulletManager>())
+	, _character(std::make_shared<Character>())
 	, _enemy(std::make_shared<Enemy>())
-	, _bulletManager(std::make_shared<BulletManager>())
 {}
 
 TestScene::~TestScene() = default;
@@ -58,7 +58,7 @@ void TestScene::Update(const sf::Time & elapsedTime)
 
 	if (_enemy)
 	{
-		RemoveEnemy();
+		RemoveDeadEnemy();
 	}
 }
 
@@ -123,7 +123,7 @@ void TestScene::SetInitialPosition(std::shared_ptr<T> & object)
 	object->GetSprite().setPosition(object->GetPosition());
 }
 
-void TestScene::RemoveEnemy()
+void TestScene::RemoveDeadEnemy()
 {
 	if (_enemy->IsDead())
 	{

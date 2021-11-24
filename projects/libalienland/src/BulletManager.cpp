@@ -10,23 +10,20 @@ BulletManager::BulletManager()
 
 BulletManager::~BulletManager() = default;
 
-void BulletManager::Init(const std::filesystem::path & resourcesDirectory,
-						 const sf::IntRect & sceneBorder,
-						 std::shared_ptr<Enemy> enemy)
+void BulletManager::Init(const std::filesystem::path & resourcesDirectory, const sf::IntRect & sceneBorder, std::shared_ptr<Enemy> enemy)
 {
 	_sceneBorder = sceneBorder;
 	_enemy = enemy;
 	_bulletFactory->Init(resourcesDirectory, FillBulletTextureTitle(), DistanceToWeaponTip());
 }
 
-void BulletManager::AddBullet(const sf::Vector2f & currentCharacterPos, const float & currentCharacterRot, const sf::Vector2f & targetPos)
+void BulletManager::AddBullet(const sf::Vector2f & currentCharacterPos, float currentCharacterRot, const sf::Vector2f & targetPos)
 {
 	sf::Vector2f initBulletPos = CalcInitBulletPos(currentCharacterPos, currentCharacterRot, _bulletFactory->GetInitPosition(/*WeaponID*/));
 
-	// Make bullet speed storage
 	Bullet bullet;
-
-	bullet.Init(2000.0f, _bulletFactory->GetSprite(/*WeaponID*/), initBulletPos, targetPos);	// 2000 - base bullet speed
+	const auto bulletSpeed = 200.f;
+	bullet.Init(bulletSpeed, _bulletFactory->GetSprite(/*WeaponID*/), initBulletPos, targetPos);
 
 	_bullets.emplace_back(bullet);
 }
@@ -61,36 +58,47 @@ void BulletManager::ProcessCollision()
 
 void BulletManager::SceneBorderCollision()
 {
-	_bullets.erase(std::remove_if(_bullets.begin(),
-								  _bullets.end(),
-								  [*this](const Bullet & bullet)
-								  {
-				   					  return !_sceneBorder.contains(static_cast<int>(bullet.GetBulletBottomPosition().x),
-				   													static_cast<int>(bullet.GetBulletBottomPosition().y));}),
-				  _bullets.end());
+	auto bulletsForRemoving = std::remove_if(_bullets.begin(), _bullets.end(), [*this](const Bullet & bullet)
+	{
+		bool shouldRemoveBullet = !_sceneBorder.contains(static_cast<int>(bullet.GetBulletBottomPosition().x),
+														 static_cast<int>(bullet.GetBulletBottomPosition().y));
+		return shouldRemoveBullet;
+	});
+
+	_bullets.erase(bulletsForRemoving, _bullets.end());
 }
 
 void BulletManager::EnemyCollision()
 {
-	_bullets.erase(std::remove_if(_bullets.begin(),
-								  _bullets.end(),
-								  [*this](const Bullet & bullet)
-								  {
-									  if (_enemy->IsDead())
-									  {
-										  return false;
-									  }
+	if (_bullets.empty())
+	{
+		return;
+	}
 
-									  _enemy->SetRemoveCondition(_enemy->GetBoundingBox().getGlobalBounds().
-															     contains(static_cast<float>(bullet.GetBulletTipPosition().x),
-																		  static_cast<float>(bullet.GetBulletTipPosition().y)));
-									  return _enemy->IsDead();}),
-				   _bullets.end());
+	auto currentEnemyBBox = _enemy->GetBoundingBox().getGlobalBounds();
+	auto bullet = _bullets.cbegin();
+	bool shouldRemove = false;
+
+	while (bullet != _bullets.cend() || shouldRemove)
+	{
+		shouldRemove = currentEnemyBBox.contains(static_cast<float>(bullet->GetBulletTipPosition().x),
+												 static_cast<float>(bullet->GetBulletTipPosition().y));
+		if (shouldRemove)
+		{
+			_enemy->SetRemoveCondition(shouldRemove);
+			break;
+		}
+
+		++bullet;
+	}
+
+	if (bullet != _bullets.cend())
+	{
+		_bullets.erase(bullet);
+	}
 }
 
-sf::Vector2f BulletManager::CalcInitBulletPos(const sf::Vector2f & currentCharacterPos,
-											  const float & currentCharacterRot,
-											  const float & distToWeaponTip)
+sf::Vector2f BulletManager::CalcInitBulletPos(const sf::Vector2f & currentCharacterPos, float currentCharacterRot, float distToWeaponTip)
 {
 	const float pi = 3.141593f;
 	static const float s_fromDegToRad = pi / 180.0f;
