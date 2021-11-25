@@ -15,17 +15,16 @@ void Character::Init(const std::filesystem::path & resourcesDirectory, std::shar
 	LoadTexture(characterTexturePathStr);
 }
 
-void Character::ProcessInput(const sf::RenderWindow & window, const sf::Event & event)
+void Character::ProcessInput(const sf::Event & event)
 {
 	ProcessKeyboard();
-	ProcessMouse(window, event);
+	ProcessMouse(event);
 }
 
 void Character::Update(const sf::Time & elapsedTime)
 {
 	Move(elapsedTime);
 	Rotate();
-	//LOG_DEBUG() << "Angle = " << _sprite.getRotation();
 
 }
 
@@ -64,24 +63,26 @@ void Character::ProcessKeyboard()
 	}
 }
 
-void Character::ProcessMouse(const sf::RenderWindow & window, const sf::Event & event)
+void Character::ProcessMouse(const sf::Event & event)
 {
-	_currentCursorPosition = sf::Vector2f(sf::Mouse::getPosition(window));
-
+	if (event.type == sf::Event::EventType::MouseMoved)
+	{
+		_currentCursorPosition = sf::Vector2f(static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y));
+	}
+	
 	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 	{
 		auto targetPos = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 
-		// Исключить выстрел, когда курсор мыши на игроке
 		auto vectorToWeaponTip = targetPos - _sprite.getPosition();
 		float distToWeaponTip = std::powf((std::powf(vectorToWeaponTip.x, 2.0f) + std::powf(vectorToWeaponTip.y, 2.0f)), 0.5f);
-		if (distToWeaponTip < 122.33f)	// 122.33f - расстояние от _sprite.getOrigin() до кончика оружия.
-		{								// Это расстояние либо будет меняться в зависимости от типа оружия,
-			return;						// либо оно будет единым для всех типов оружия
+		if (distToWeaponTip < 122.33f)	// 122.33f - distance between _sprite.getOrigin() and the weapon tip.
+		{								// This distance will change depending on weapon type
+			return;						// or will be the same for different weapon types
 		}
 
-		_bulletManager->AddBullet(_sprite.getPosition(), _sprite.getRotation() + 15, targetPos);	// 15 град - угол между изначальным
-	}																								// положением спрайта и концом оружия
+		_bulletManager->AddBullet(_sprite.getPosition(), _sprite.getRotation() + 15, targetPos);	// 15 deg - angle between the initial
+	}																								// sprite position and the weapon tip
 }
 
 void Character::Move(const sf::Time & elapsedTime)
@@ -116,5 +117,5 @@ void Character::Rotate()
 		return;
 	}
 
-	_sprite.setRotation(angle* s_fromRadToDeg);
+	_sprite.setRotation(angle * s_fromRadToDeg);
 }

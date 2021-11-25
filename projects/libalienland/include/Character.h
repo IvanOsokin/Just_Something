@@ -8,7 +8,7 @@ class Character
 public:
 	void Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager);
 
-	void ProcessInput(const sf::RenderWindow & window, const sf::Event & event);
+	void ProcessInput(const sf::Event & event);
 	void Update(const sf::Time & elapsedTime);
 	void Render(sf::RenderTarget & renderTarget);
 
@@ -20,7 +20,7 @@ private:
 	bool LoadTexture(const std::string & characterTexturePath);
 		 
 	void ProcessKeyboard();
-	void ProcessMouse(const sf::RenderWindow & window, const sf::Event & event);
+	void ProcessMouse(const sf::Event & event);
 		 
 	void Move(const sf::Time & elapsedTime);
 	void Rotate();
