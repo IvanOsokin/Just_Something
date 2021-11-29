@@ -28,7 +28,7 @@ private:
 	std::vector<float> DistanceToWeaponTip() const;
 
 	std::shared_ptr<BulletFactory>		_bulletFactory;
-	std::shared_ptr<Enemy>				_enemy;
+	std::weak_ptr<Enemy>				_enemy;
 	std::vector<Bullet>					_bullets;
 	sf::IntRect							_sceneBorder;
 };

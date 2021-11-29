@@ -50,7 +50,7 @@ void BulletManager::ProcessCollision()
 {
 	SceneBorderCollision();
 
-	if (_enemy)
+	if (_enemy.lock())
 	{
 		EnemyCollision();
 	}
@@ -75,7 +75,9 @@ void BulletManager::EnemyCollision()
 		return;
 	}
 
-	auto currentEnemyBBox = _enemy->GetBoundingBox().getGlobalBounds();
+	auto enemy = _enemy.lock();
+
+	auto currentEnemyBBox = enemy->GetBoundingBox().getGlobalBounds();
 	auto bullet = _bullets.cbegin();
 	bool shouldRemove = false;
 
@@ -85,7 +87,7 @@ void BulletManager::EnemyCollision()
 												 static_cast<float>(bullet->GetBulletTipPosition().y));
 		if (shouldRemove)
 		{
-			_enemy->SetRemoveCondition(shouldRemove);
+			enemy->SetRemoveCondition(shouldRemove);
 			break;
 		}
 
