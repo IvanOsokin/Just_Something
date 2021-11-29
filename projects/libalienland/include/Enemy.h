@@ -24,15 +24,12 @@ private:
 	void Move(const sf::Time & elapsedTime);
 	void Rotate();
 
-	std::optional<sf::Vector2f>	_targetPos;
-
-	sf::RectangleShape _boundingBox;
-	sf::Texture _texture;
-	sf::Sprite _sprite;
-
-	sf::Vector2f _unitSpeedVector;
-	sf::Vector2f _pos;
-	
-	float _baseSpeed = 300.0f;
-	bool _isDead = false;
+	std::optional<sf::Vector2f>		_targetPos;
+	sf::RectangleShape				_boundingBox;
+	sf::Texture						_texture;
+	sf::Sprite						_sprite;
+	sf::Vector2f					_unitSpeedVector;
+	sf::Vector2f					_pos;
+	float							_baseSpeed = 300.0f;
+	bool							_isDead = false;
 };

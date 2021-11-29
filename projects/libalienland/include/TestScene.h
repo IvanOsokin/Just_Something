@@ -27,10 +27,9 @@ private:
 	//bool TerminateIfEmptyWindow();
 	void RemoveDeadEnemy();
 	
-	std::weak_ptr<sf::RenderWindow> _window;
-	std::shared_ptr<BulletManager> _bulletManager;
-	std::shared_ptr<Character> _character;
-	std::shared_ptr<Enemy> _enemy;
-
-	bool _shouldTerminate = false;
+	std::weak_ptr<sf::RenderWindow>			_window;
+	std::shared_ptr<BulletManager>			_bulletManager;
+	std::shared_ptr<Character>				_character;
+	std::shared_ptr<Enemy>					_enemy;
+	bool									_shouldTerminate = false;
 };

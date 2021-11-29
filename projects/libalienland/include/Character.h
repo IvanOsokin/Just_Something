@@ -27,12 +27,11 @@ private:
 
 	std::shared_ptr<BulletManager> _bulletManager;
 
-	sf::Vector2f _pos;
-	sf::Vector2f _speed;
-	sf::Vector2f _unitSpeedVector;
-	sf::Vector2f _currentCursorPosition;
-	sf::Texture _texture;
-	sf::Sprite _sprite;
-	
-	float _baseSpeed = 400.0f;
+	sf::Vector2f	_pos;
+	sf::Vector2f	_speed;
+	sf::Vector2f	_unitSpeedVector;
+	sf::Vector2f	_currentCursorPosition;
+	sf::Texture		_texture;
+	sf::Sprite		_sprite;
+	float			_baseSpeed = 400.0f;
 };

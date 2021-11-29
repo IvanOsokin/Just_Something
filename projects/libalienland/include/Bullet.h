@@ -25,10 +25,10 @@ private:
 	{
 		sf::Vector2f _tip;
 		sf::Vector2f _bottom;
-	}_bulletVertexes;
+	};
 
-	sf::Vector2f _unitSpeedVector;
-	sf::Sprite _sprite;
-
-	float _baseSpeed;
+	sf::Vector2f		_unitSpeedVector;
+	sf::Sprite			_sprite;
+	CheckPoint			_bulletVertexes;
+	float				_baseSpeed = 0.0f;
 };

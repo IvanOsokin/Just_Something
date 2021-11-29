@@ -23,6 +23,6 @@ public:
 private:
 	void LoadTextures(const std::vector<std::string> & bulletsTexturesPath);
 
-	std::vector<sf::Texture> _textures;
-	std::vector<float> _distanceToWeaponTip;
+	std::vector<sf::Texture>	_textures;
+	std::vector<float>			_distanceToWeaponTip;
 };

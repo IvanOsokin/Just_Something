@@ -14,8 +14,8 @@ public:
 
 	void AddBullet(const sf::Vector2f & currentCharacterPos, float currentCharacterRot, const sf::Vector2f & targetPos);
 
-	void Update (const sf::Time & elapsedTime);
-	void Render (sf::RenderTarget & renderTarget);
+	void Update(const sf::Time & elapsedTime);
+	void Render(sf::RenderTarget & renderTarget);
 
 private:
 	void ProcessCollision();
@@ -27,10 +27,8 @@ private:
 	std::vector<std::string> FillBulletTextureTitle() const;
 	std::vector<float> DistanceToWeaponTip() const;
 
-	std::shared_ptr<BulletFactory> _bulletFactory;
-	std::shared_ptr<Enemy> _enemy;
-
-	std::vector<Bullet> _bullets;
-
-	sf::IntRect _sceneBorder;
+	std::shared_ptr<BulletFactory>		_bulletFactory;
+	std::shared_ptr<Enemy>				_enemy;
+	std::vector<Bullet>					_bullets;
+	sf::IntRect							_sceneBorder;
 };
