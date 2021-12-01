@@ -17,7 +17,9 @@ void Game::Start(const std::filesystem::path & resourcesDirectory)
 	CreateWindow();
 	CreateTestScene(resourcesDirectory);
 
+	PreGameLoop();
 	GameLoop();
+	PostGameLoop();
 }
 
 void Game::CreateWindow()
@@ -34,6 +36,16 @@ void Game::CreateTestScene(const std::filesystem::path & resourcesDirectory)
 		return;
 	}
 	_testScene->Init(_window, resourcesDirectory);
+}
+
+void Game::PreGameLoop()
+{
+	_testScene->PreGameLoop();
+}
+
+void Game::PostGameLoop()
+{
+	_testScene->PostGameLoop();
 }
 
 void Game::HandleInput()
@@ -66,7 +78,8 @@ void Game::GameLoop()
 	const auto deltaTime = sf::microseconds(1000);
 
 	sf::Clock frameClock;
-	sf::Time  timeSinceLastUpdate = sf::Time::Zero;
+	// Guarantee at least one update before render.
+	sf::Time  timeSinceLastUpdate = deltaTime;
 
 	while (!_shouldTerminate)
 	{
@@ -78,7 +91,7 @@ void Game::GameLoop()
 			timeSinceLastUpdate -= deltaTime;
 			Update(deltaTime);
 		}
-
+		
 		Render();
 
 		const auto elapsedTime = frameClock.getElapsedTime();

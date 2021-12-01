@@ -33,8 +33,24 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 	_bulletManager->Init(resourcesDirectory, sceneBorder, _enemy);
 }
 
+void TestScene::PreGameLoop()
+{
+	auto window = _window.lock();
+	if (!Verify2(window, "Failed to prepare TestScene, window must be alive."))
+	{
+		return;
+	}
+	ImGui::SFML::Init(*window);
+}
+
+void TestScene::PostGameLoop()
+{
+	ImGui::SFML::Shutdown();
+}
+
 void TestScene::ProcessInput(const sf::Event & event)
 {
+	ImGui::SFML::ProcessEvent(event);
 	EventLogging(event);
 	ProcessSceneInput(event);
 	_character->ProcessInput(event);
@@ -46,6 +62,13 @@ void TestScene::ProcessInput(const sf::Event & event)
 
 void TestScene::Update(const sf::Time & elapsedTime)
 {
+	auto window = _window.lock();
+	if (!Verify2(window, "Failed to update TestScene, window must be alive."))
+	{
+		return;
+	}
+	ImGui::SFML::Update(*window, elapsedTime);
+
 	_character->Update(elapsedTime);
 
 	if (_enemy)
@@ -60,6 +83,8 @@ void TestScene::Update(const sf::Time & elapsedTime)
 	{
 		RemoveDeadEnemy();
 	}
+
+	ImGui::EndFrame();
 }
 
 void TestScene::Render()
@@ -76,6 +101,8 @@ void TestScene::Render()
 		_enemy->Render(*window);
 	}
 	_bulletManager->Render(*window);
+
+	ImGui::SFML::Render(*window);
 }
 
 void TestScene::EventLogging(const sf::Event & event)

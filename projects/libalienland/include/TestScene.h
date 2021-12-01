@@ -11,6 +11,8 @@ public:
 	~TestScene();
 
 	void Init(std::shared_ptr<sf::RenderWindow> renderWindow, const std::filesystem::path & resourcesDirectory);
+	void PreGameLoop();
+	void PostGameLoop();
 
 	void ProcessInput(const sf::Event & event);
 	void Update(const sf::Time & elapsedTime);

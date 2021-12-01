@@ -13,7 +13,9 @@ public:
 private:
 	void CreateWindow();
 	void CreateTestScene(const std::filesystem::path & resourcesDirectory);
-	
+
+	void PreGameLoop();
+	void PostGameLoop();
 	void GameLoop();
 	void HandleInput();
 	void Update(const sf::Time & elapsedTime);

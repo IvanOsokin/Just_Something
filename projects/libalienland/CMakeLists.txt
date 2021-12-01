@@ -1,6 +1,7 @@
 project(alienlandlib)
 
 set(EXTERNAL_SFML_ENABLED ON)
+set(EXTERNAL_IMGUI_ENABLED ON)
 include(${EXTERNAL_CMAKE_FILE})
 include(${CMAKE_HELPERS_FILE_DIR}/config.cmake)
 
@@ -16,6 +17,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 	sfml-graphics
 	sfml-system
 	sfml-window
+	ImGui-SFML
 	corelib
 )
 
