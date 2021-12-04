@@ -1,4 +1,5 @@
 target_sources(${PROJECT_NAME} PRIVATE
+	Imgui/Impl/FrameProcessor.cpp
 	Imgui/ImguiController.cpp
 	Imgui/ImguiDebugWidget.cpp
 

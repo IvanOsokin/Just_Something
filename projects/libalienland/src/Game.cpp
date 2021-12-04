@@ -50,6 +50,7 @@ void Game::PostGameLoop()
 
 void Game::PreFrame()
 {
+	_testScene->PreFrame();
 }
 
 void Game::HandleInput()
@@ -76,6 +77,7 @@ void Game::Render()
 
 void Game::PostFrame()
 {
+	_testScene->PostFrame();
 }
 
 void Game::GameLoop()

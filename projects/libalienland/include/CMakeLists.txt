@@ -1,4 +1,5 @@
 target_sources(${PROJECT_NAME} PRIVATE
+	Imgui/Impl/FrameProcessor.h
 	Imgui/ImguiController.h
 	Imgui/ImguiDebugWidget.h
 	Imgui/ImguiWidgetBase.h

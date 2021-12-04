@@ -1,5 +1,6 @@
 #include "Imgui/ImguiController.h"
 
+#include "Imgui/ImguiDebugWidget.h"
 #include "Imgui/ImguiWidgetBase.h"
 
 ImguiController::ImguiController() = default;
@@ -8,6 +9,10 @@ ImguiController::~ImguiController() = default;
 void ImguiController::Init(const Settings& settings)
 {
 	_window = settings.window;
+
+	auto debugWidget = std::make_unique<ImguiDebugWidget>();
+	debugWidget->Init();
+	_widgets.emplace_back(std::move(debugWidget));
 }
 
 void ImguiController::Prepare()

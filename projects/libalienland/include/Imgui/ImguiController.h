@@ -28,5 +28,6 @@ private:
 	using ImguiWidgetPtr = std::unique_ptr<ImguiWidgetBase>;
 
 	std::weak_ptr<sf::RenderWindow>				_window;
+	bool										_open = false;
 	std::vector<ImguiWidgetPtr>					_widgets;
 };
