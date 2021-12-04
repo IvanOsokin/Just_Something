@@ -1,8 +1,13 @@
 #pragma once
 
+class ImguiWidgetBase;
+
 class ImguiController
 {
 public:
+	ImguiController();
+	~ImguiController();
+
 	struct Settings
 	{
 		std::shared_ptr<sf::RenderWindow>		window;
@@ -12,11 +17,16 @@ public:
 	void Prepare();
 	void CleanUp();
 
+	void BeginFrame();
 	void ProcessInput(const sf::Event & event);
 	void BeginUpdate(sf::Time elapsedTime);
 	void EndUpdate();
 	void Render();
+	void EndFrame();
 
 private:
-	std::weak_ptr<sf::RenderWindow>			_window;
+	using ImguiWidgetPtr = std::unique_ptr<ImguiWidgetBase>;
+
+	std::weak_ptr<sf::RenderWindow>				_window;
+	std::vector<ImguiWidgetPtr>					_widgets;
 };

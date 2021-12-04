@@ -15,9 +15,11 @@ public:
 	void PreGameLoop();
 	void PostGameLoop();
 
+	void PreFrame();
 	void ProcessInput(const sf::Event & event);
 	void Update(const sf::Time & elapsedTime);
 	void Render();
+	void PostFrame();
 
 	bool ShouldTerminate() const { return _shouldTerminate; }
 		

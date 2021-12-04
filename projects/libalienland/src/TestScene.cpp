@@ -57,6 +57,14 @@ void TestScene::PostGameLoop()
 	}
 }
 
+void TestScene::PreFrame()
+{
+	if (_imguiController)
+	{
+		_imguiController->BeginFrame();
+	}
+}
+
 void TestScene::ProcessInput(const sf::Event & event)
 {
 	if (_imguiController)
@@ -117,6 +125,14 @@ void TestScene::Render()
 	if (_imguiController)
 	{
 		_imguiController->Render();
+	}
+}
+
+void TestScene::PostFrame()
+{
+	if (_imguiController)
+	{
+		_imguiController->EndFrame();
 	}
 }
 

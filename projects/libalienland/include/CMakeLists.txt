@@ -1,5 +1,7 @@
 target_sources(${PROJECT_NAME} PRIVATE
 	Imgui/ImguiController.h
+	Imgui/ImguiDebugWidget.h
+	Imgui/ImguiWidgetBase.h
 
 	Internal/pch.h
 

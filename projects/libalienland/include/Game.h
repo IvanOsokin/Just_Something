@@ -15,11 +15,14 @@ private:
 	void CreateTestScene(const std::filesystem::path & resourcesDirectory);
 
 	void PreGameLoop();
-	void PostGameLoop();
 	void GameLoop();
+	void PostGameLoop();
+
+	void PreFrame();
 	void HandleInput();
 	void Update(const sf::Time & elapsedTime);
 	void Render();
+	void PostFrame();
 
 	std::shared_ptr<sf::RenderWindow>	_window;
 	std::shared_ptr<TestScene>			_testScene;
