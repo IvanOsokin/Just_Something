@@ -48,6 +48,11 @@ void Game::PostGameLoop()
 	_testScene->PostGameLoop();
 }
 
+void Game::PreFrame()
+{
+	_testScene->PreFrame();
+}
+
 void Game::HandleInput()
 {
 	sf::Event e;
@@ -70,6 +75,11 @@ void Game::Render()
 	_window->display();
 }
 
+void Game::PostFrame()
+{
+	_testScene->PostFrame();
+}
+
 void Game::GameLoop()
 {
 	const size_t expectedFps = 60;
@@ -84,7 +94,8 @@ void Game::GameLoop()
 	while (!_shouldTerminate)
 	{
 		timeSinceLastUpdate += frameClock.restart();
-		
+
+		PreFrame();
 		HandleInput();
 		while (timeSinceLastUpdate >= deltaTime)
 		{
@@ -93,6 +104,7 @@ void Game::GameLoop()
 		}
 		
 		Render();
+		PostFrame();
 
 		const auto elapsedTime = frameClock.getElapsedTime();
 		if (elapsedTime < expectedTps)
