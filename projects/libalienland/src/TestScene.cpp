@@ -3,6 +3,7 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "BulletManager.h"
+#include "Imgui/ImguiController.h"
 
 TestScene::TestScene()
 	: _bulletManager(std::make_shared<BulletManager>())
@@ -31,26 +32,37 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 	sf::IntRect  sceneBorder(position, size);
 	
 	_bulletManager->Init(resourcesDirectory, sceneBorder, _enemy);
+
+	ImguiController::Settings settings;
+	{
+		settings.window = window;
+	}
+	_imguiController = std::make_shared<ImguiController>();
+	_imguiController->Init(settings);
 }
 
 void TestScene::PreGameLoop()
 {
-	auto window = _window.lock();
-	if (!Verify2(window, "Failed to prepare TestScene, window must be alive."))
+	if (_imguiController)
 	{
-		return;
+		_imguiController->Prepare();
 	}
-	ImGui::SFML::Init(*window);
 }
 
 void TestScene::PostGameLoop()
 {
-	ImGui::SFML::Shutdown();
+	if (_imguiController)
+	{
+		_imguiController->CleanUp();
+	}
 }
 
 void TestScene::ProcessInput(const sf::Event & event)
 {
-	ImGui::SFML::ProcessEvent(event);
+	if (_imguiController)
+	{
+		_imguiController->ProcessInput(event);
+	}
 	EventLogging(event);
 	ProcessSceneInput(event);
 	_character->ProcessInput(event);
@@ -62,13 +74,10 @@ void TestScene::ProcessInput(const sf::Event & event)
 
 void TestScene::Update(const sf::Time & elapsedTime)
 {
-	auto window = _window.lock();
-	if (!Verify2(window, "Failed to update TestScene, window must be alive."))
+	if (_imguiController)
 	{
-		return;
+		_imguiController->BeginUpdate(elapsedTime);
 	}
-	ImGui::SFML::Update(*window, elapsedTime);
-
 	_character->Update(elapsedTime);
 
 	if (_enemy)
@@ -84,7 +93,10 @@ void TestScene::Update(const sf::Time & elapsedTime)
 		RemoveDeadEnemy();
 	}
 
-	ImGui::EndFrame();
+	if (_imguiController)
+	{
+		_imguiController->EndUpdate();
+	}
 }
 
 void TestScene::Render()
@@ -102,7 +114,10 @@ void TestScene::Render()
 	}
 	_bulletManager->Render(*window);
 
-	ImGui::SFML::Render(*window);
+	if (_imguiController)
+	{
+		_imguiController->Render();
+	}
 }
 
 void TestScene::EventLogging(const sf::Event & event)

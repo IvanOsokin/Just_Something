@@ -1,5 +1,8 @@
 target_sources(${PROJECT_NAME} PRIVATE
+	Imgui/ImguiController.h
+
 	Internal/pch.h
+
 	Game.h
 	TestScene.h
 	Character.h

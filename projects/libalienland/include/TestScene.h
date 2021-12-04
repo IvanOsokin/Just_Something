@@ -1,5 +1,6 @@
 #pragma once
 
+class ImguiController;
 class Character;
 class Enemy;
 class BulletManager;
@@ -30,6 +31,7 @@ private:
 	void RemoveDeadEnemy();
 	
 	std::weak_ptr<sf::RenderWindow>			_window;
+	std::shared_ptr<ImguiController>		_imguiController;
 	std::shared_ptr<BulletManager>			_bulletManager;
 	std::shared_ptr<Character>				_character;
 	std::shared_ptr<Enemy>					_enemy;
