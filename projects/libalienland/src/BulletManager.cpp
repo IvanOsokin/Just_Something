@@ -97,26 +97,21 @@ void BulletManager::EnemyCollision()
 	auto enemy = _enemy.lock();
 
 	auto currentEnemyBBox = enemy->GetBoundingBox().getGlobalBounds();
-	auto bullet = _bullets.cbegin();
-	bool shouldRemove = false;
-
-	while (bullet != _bullets.cend() || shouldRemove)
+	
+	auto shouldRemove = std::find_if(_bullets.begin(), _bullets.end(), [&currentEnemyBBox](const Bullet & bullet)
 	{
-		shouldRemove = currentEnemyBBox.contains(static_cast<float>(bullet->GetBulletTipPosition().x),
-												 static_cast<float>(bullet->GetBulletTipPosition().y));
-		if (shouldRemove)
-		{
-			enemy->SetRemoveCondition(shouldRemove);
-			break;
-		}
+		bool shouldRemoveBullet = currentEnemyBBox.contains(static_cast<float>(bullet.GetBulletTipPosition().x),
+															static_cast<float>(bullet.GetBulletTipPosition().y));
+		return shouldRemoveBullet;
+	});
 
-		++bullet;
+	if (shouldRemove == _bullets.end())
+	{
+		return;
 	}
 
-	if (bullet != _bullets.cend())
-	{
-		_bullets.erase(bullet);
-	}
+	enemy->SetRemoveCondition(true);
+	_bullets.erase(shouldRemove);
 }
 
 sf::Vector2f BulletManager::CalcInitBulletPos(const sf::Vector2f & currentCharacterPos, float currentCharacterRot, float distToWeaponTip)
