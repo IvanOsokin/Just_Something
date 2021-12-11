@@ -28,6 +28,12 @@ void BulletManager::AddBullet(const sf::Vector2f & currentCharacterPos, float cu
 	_bullets.emplace_back(bullet);
 }
 
+float BulletManager::GetCurrentDistFormOriginToWeaponTip(/*Weapon ID*/) const
+{
+	return _bulletFactory->GetInitPosition(/*Weapon ID*/);
+}
+
+
 void BulletManager::Update(const sf::Time & elapsedTime)
 {
 	for (auto & bullet : _bullets)
@@ -126,8 +132,8 @@ std::vector<float> BulletManager::DistanceToWeaponTip() const
 {
 	std::vector<float> distBetweenCharacterCenterAndWeaponTip;
 
-	distBetweenCharacterCenterAndWeaponTip.emplace_back(122.33f);
-	distBetweenCharacterCenterAndWeaponTip.emplace_back(122.33f);
+	distBetweenCharacterCenterAndWeaponTip.emplace_back(133.0f);
+	distBetweenCharacterCenterAndWeaponTip.emplace_back(133.0f);
 
 	return distBetweenCharacterCenterAndWeaponTip;
 }
