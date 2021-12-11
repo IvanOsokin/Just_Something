@@ -13,6 +13,7 @@ public:
 	void Init(const std::filesystem::path & resourcesDirectory, const sf::IntRect & sceneBorder, std::shared_ptr<Enemy> enemy);
 
 	void AddBullet(const sf::Vector2f & currentCharacterPos, float currentCharacterRot, const sf::Vector2f & targetPos);
+	float GetCurrentDistFormOriginToWeaponTip(/*Weapon ID*/) const;
 
 	void Update(const sf::Time & elapsedTime);
 	void Render(sf::RenderTarget & renderTarget);
