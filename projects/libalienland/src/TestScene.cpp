@@ -164,7 +164,7 @@ void TestScene::ProcessSceneInput(const sf::Event & event)
 }
 
 template <typename T>
-void TestScene::SetInitialPosition(std::shared_ptr<T> & object)
+void TestScene::SetInitialPosition(std::shared_ptr<T> object)
 {
 	if (!_window.lock())
 	{
@@ -172,11 +172,8 @@ void TestScene::SetInitialPosition(std::shared_ptr<T> & object)
 		object->GetSprite().setPosition( 0.0f, 0.0f );
 		return;
 	}
-
-	auto textureSize = object->GetSprite().getTexture()->getSize();
-	object->GetSprite().setOrigin(textureSize.x / 2.0f, textureSize.y / 2.0f);
 	
-	auto windowSize = _window.lock()->getSize();
+	const auto windowSize = _window.lock()->getSize();
 	object->SetPosition(sf::Vector2f(windowSize.x / 2.0f, windowSize.y / 2.0f));
 	object->GetSprite().setPosition(object->GetPosition());
 }
