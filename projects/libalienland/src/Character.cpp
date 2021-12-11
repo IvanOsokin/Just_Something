@@ -12,7 +12,12 @@ void Character::Init(const std::filesystem::path & resourcesDirectory, std::shar
 
 	std::string characterTexturePathStr = characterTexturePath.generic_string();
 
-	LoadTexture(characterTexturePathStr);
+	if (!LoadTexture(characterTexturePathStr))
+	{
+		return;
+	}
+
+	_sprite.setOrigin(108.0f, 119.0f);
 }
 
 void Character::ProcessInput(const sf::Event & event)
@@ -31,6 +36,11 @@ void Character::Update(const sf::Time & elapsedTime)
 void Character::Render(sf::RenderTarget & renderTarget)
 {
 	renderTarget.draw(_sprite);
+}
+
+float Character::GetDistFromOriginToWeaponTip() const
+{
+	return _bulletManager->GetCurrentDistFormOriginToWeaponTip(/*Weapon ID*/);
 }
 
 bool Character::LoadTexture(const std::string & characterTexturePath)
@@ -72,17 +82,20 @@ void Character::ProcessMouse(const sf::Event & event)
 	
 	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 	{
-		auto targetPos = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
+		const auto targetPos = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 
-		auto vectorToWeaponTip = targetPos - _sprite.getPosition();
-		float distToWeaponTip = std::powf((std::powf(vectorToWeaponTip.x, 2.0f) + std::powf(vectorToWeaponTip.y, 2.0f)), 0.5f);
-		if (distToWeaponTip < 122.33f)	// 122.33f - distance between _sprite.getOrigin() and the weapon tip.
-		{								// This distance will change depending on weapon type
-			return;						// or will be the same for different weapon types
+		const auto viewDirectionVector = targetPos - _sprite.getPosition();
+		const float viewDirectionVectorLength = std::powf((std::powf(viewDirectionVector.x, 2.0f) + std::powf(viewDirectionVector.y, 2.0f)), 0.5f);
+
+		const float distFromOriginToWeaponTip = GetDistFromOriginToWeaponTip();
+
+		if (viewDirectionVectorLength < distFromOriginToWeaponTip)
+		{
+			return;
 		}
 
-		_bulletManager->AddBullet(_sprite.getPosition(), _sprite.getRotation() + 15, targetPos);	// 15 deg - angle between the initial
-	}																								// sprite position and the weapon tip
+		_bulletManager->AddBullet(_sprite.getPosition(), _sprite.getRotation(), targetPos);
+	}
 }
 
 void Character::Move(const sf::Time & elapsedTime)
