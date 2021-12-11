@@ -9,7 +9,13 @@ void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_p
 
 	std::string enemyTexturePathStr = enemyTexturePath.generic_string();
 
-	LoadTexture(enemyTexturePathStr);
+	if (!LoadTexture(enemyTexturePathStr))
+	{
+		return;
+	}
+
+	const auto textureSize = _texture.getSize();
+	_sprite.setOrigin(textureSize.x / 2.0f, textureSize.y / 2.0f);
 }
 
 void Enemy::ProcessInput(const sf::Event & event)
