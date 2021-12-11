@@ -27,7 +27,7 @@ private:
 	void EventLogging(const sf::Event & event);
 	void ProcessSceneInput(const sf::Event & event);
 	template <typename T>
-	void SetInitialPosition(std::shared_ptr<T> & object);
+	void SetInitialPosition(std::shared_ptr<T> object);
 	//void SetInitialPosition(std::unique_ptr<Enemy> & enemy);
 	//bool TerminateIfEmptyWindow();
 	void RemoveDeadEnemy();
