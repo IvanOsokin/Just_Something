@@ -17,14 +17,27 @@ void BulletManager::Init(const std::filesystem::path & resourcesDirectory, const
 	_bulletFactory->Init(resourcesDirectory, FillBulletTextureTitle(), DistanceToWeaponTip());
 }
 
-void BulletManager::AddBullet(const sf::Vector2f & currentCharacterPos, float currentCharacterRot, const sf::Vector2f & targetPos)
+void BulletManager::AddBullet(const sf::Vector2f& currentCharacterPos, float currentCharacterRot, const sf::Vector2f& targetPos)
 {
-	sf::Vector2f initBulletPos = CalcInitBulletPos(currentCharacterPos, currentCharacterRot, _bulletFactory->GetInitPosition(/*WeaponID*/));
+	auto initPosition = _bulletFactory->GetInitPosition(/*WeaponID*/);
+
+	if (!initPosition)
+	{
+		initPosition = 0.0f;
+	}
+
+	sf::Vector2f initBulletPos = CalcInitBulletPos(currentCharacterPos, currentCharacterRot, *initPosition);
 
 	Bullet bullet;
 	const auto bulletSpeed = 200.f;
-	bullet.Init(bulletSpeed, _bulletFactory->GetSprite(/*WeaponID*/), initBulletPos, targetPos);
+	auto bulletSprite = _bulletFactory->GetSprite(/*WeaponID*/);
 
+	if (!bulletSprite)
+	{
+		bulletSprite = sf::Sprite();
+	}
+
+	bullet.Init(bulletSpeed, *bulletSprite, initBulletPos, targetPos);
 	_bullets.emplace_back(bullet);
 }
 
