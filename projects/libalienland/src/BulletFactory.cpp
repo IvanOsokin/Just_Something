@@ -9,25 +9,37 @@ void BulletFactory::Init(const std::filesystem::path & resourcesDirectory,
 	std::vector<std::string> bulletTexturePath;
 	bulletTexturePath.reserve(bulletTextureTitle.size());
 
-	for (const auto & iter : bulletTextureTitle)
+	for (const auto & textureTitle : bulletTextureTitle)
 	{
-		auto texturePath = resourcesDirectory / iter;
+		auto texturePath = resourcesDirectory / textureTitle;
 		bulletTexturePath.emplace_back(texturePath.generic_string());
 	}
 
 	LoadTextures(bulletTexturePath);
 }
 
-sf::Sprite BulletFactory::GetSprite(/*WeaponID*/)
+std::optional<sf::Sprite> BulletFactory::GetSprite(/*WeaponID*/)
 {
+	if (_textures.empty())
+	{
+		LOG_ERROR() << "Cannot get access to bullets textures.";
+		return std::nullopt;
+	}
+
 	sf::Sprite bulletSprite;
 	bulletSprite.setTexture(*_textures.begin());
 
 	return bulletSprite;
 }
 
-float BulletFactory::GetInitPosition(/*WeaponID*/)
+std::optional<float> BulletFactory::GetInitPosition(/*WeaponID*/)
 {
+	if (_distanceToWeaponTip.empty())
+	{
+		LOG_ERROR() << "Cannot get access to bullets distance to weapon tip.";
+		return std::nullopt;
+	}
+
 	return *_distanceToWeaponTip.begin();
 }
 
@@ -36,11 +48,11 @@ void BulletFactory::LoadTextures(const std::vector<std::string> & bulletsTexture
 	std::size_t count = 0;
 	bool isSuccess = true;
 
-	for (const auto & iter : bulletsTexturesPath)
+	for (const auto & texturePath : bulletsTexturesPath)
 	{
 		sf::Texture texture;
 
-		if (!texture.loadFromFile(iter))
+		if (!texture.loadFromFile(texturePath))
 		{
 			// Прикрутить std::error_code
 			LOG_ERROR() << "Failed to load the \"bullet-" << count << ".png\" texture.";
