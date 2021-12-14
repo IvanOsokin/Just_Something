@@ -16,6 +16,6 @@ public:
 	void EndFrame() override;
 
 private:
-
 	std::unique_ptr<FrameProcessor>		_fpsCounter;
+	int									_fpsCounterHistoryLength = 0;
 };

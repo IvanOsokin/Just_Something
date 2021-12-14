@@ -3,48 +3,54 @@
 class FrameProcessor
 {
 public:
-	struct Settings
-	{
-		size_t			framesHistoryLength = 300;
-	};
-	void Init(const Settings & settings);
+	using ClockType = std::chrono::system_clock;
+	using Duration = ClockType::duration;
+	using TimePoint = ClockType::time_point;
+
+	void ResetHistory(size_t historyLength);
 
 	void FrameStart();
 	void FrameEnd();
 
-	float CalcFramesPerSecond() const;
-	std::chrono::microseconds CalcTimePerFrame() const;
+	void RecalculateFramesPerSecond();
+	void RecalculateTimePerFrame();
 
-private:
-	using ClockType = std::chrono::system_clock;
-	using Duration = ClockType::duration;
-	using TimePoint = ClockType::time_point;
+	float GetFramesPerSecond() const;
+	std::chrono::microseconds GetTimePerFrame() const;
 
 	struct FrameInfo
 	{
 		TimePoint	start;
 		Duration	elapsedTime;
-		bool		empty = true;
 	};
-	struct FrameIncompleteInfo
-	{
-		TimePoint	start;
-	};
-
-	void AddFrame(FrameInfo frame);
-
 	enum class FrameByPassStatus
 	{
 		Continue,
 		Stop
 	};
 	using FrameByPassCallback = std::function<FrameByPassStatus(const FrameInfo &)>;
+
+	/**
+	 * \brief Iteration by ready frames. If no frames are ready, callback won't be called.
+	 */
 	void ForeachFrame(const FrameByPassCallback & callback) const;
 
-	const FrameInfo & GetFirstFrame() const;
-	const FrameInfo & GetLastFrame() const;
+private:
+	struct FrameIncompleteInfo
+	{
+		TimePoint	start;
+	};
+	struct CachedCalculations
+	{
+		float							fps = 0.0f;
+		std::chrono::microseconds		tps {};
+	};
 
-	size_t						_frameOffset = 0;
+	void AddFrame(FrameInfo frame);
+
+	size_t						_frameStart = 0;
+	size_t						_frameEnd = 0;
 	std::vector<FrameInfo>		_frames;
 	FrameIncompleteInfo			_incompleteFrame;
+	CachedCalculations			_cache;
 };

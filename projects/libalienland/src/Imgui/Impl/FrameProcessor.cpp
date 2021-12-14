@@ -1,8 +1,11 @@
 #include "Imgui/Impl/FrameProcessor.h"
 
-void FrameProcessor::Init(const Settings& settings)
+void FrameProcessor::ResetHistory(size_t historyLength)
 {
-	_frames.resize(settings.framesHistoryLength);
+	_frames.resize(historyLength);
+	_frameStart = 0;
+	_frameEnd = 0;
+	_cache = {};
 }
 
 void FrameProcessor::FrameStart()
@@ -13,25 +16,24 @@ void FrameProcessor::FrameStart()
 void FrameProcessor::FrameEnd()
 {
 	FrameInfo frame;
-	frame.empty = false;
 	frame.start = _incompleteFrame.start;
 	frame.elapsedTime = ClockType::now() - _incompleteFrame.start;
 
 	AddFrame(std::move(frame));
 }
 
-float FrameProcessor::CalcFramesPerSecond() const
+void FrameProcessor::RecalculateFramesPerSecond()
 {
-	bool firstFrame = true;
+	bool noFrameProcessed = true;
 	TimePoint firstFrameStart;
 	TimePoint lastFrameStart;
 	size_t frames = 0;
 	FrameByPassCallback callback = [&](const FrameInfo & frame)
 	{
-		if (firstFrame)
+		if (noFrameProcessed)
 		{
 			firstFrameStart = frame.start;
-			firstFrame = false;
+			noFrameProcessed = false;
 		}
 		lastFrameStart = frame.start;
 		frames += 1;
@@ -42,17 +44,18 @@ float FrameProcessor::CalcFramesPerSecond() const
 	const Duration allFramesDuration = lastFrameStart - firstFrameStart;
 	if (allFramesDuration <= Duration::zero())
 	{
-		return 0.0f;
+		_cache.fps = 0.0f;
+		return;
 	}
 
 	using PrecisionType = std::chrono::microseconds;
 	const auto duration = std::chrono::duration_cast<PrecisionType>(allFramesDuration).count();
 	const double seconds = duration / static_cast<double>(PrecisionType::period::den);
 
-	return static_cast<float>(frames / seconds);
+	_cache.fps = static_cast<float>(frames / seconds);
 }
 
-std::chrono::microseconds FrameProcessor::CalcTimePerFrame() const
+void FrameProcessor::RecalculateTimePerFrame()
 {
 	double seconds = 0.0;
 	size_t frames = 0;
@@ -64,18 +67,35 @@ std::chrono::microseconds FrameProcessor::CalcTimePerFrame() const
 	};
 	ForeachFrame(callback);
 
-	if (frames != 0)
+	if (frames == 0)
 	{
-		const auto mcs = static_cast<uint64_t>(seconds * 1'000'000);
-		return std::chrono::microseconds(mcs) / frames;
+		_cache.tps = std::chrono::microseconds::zero();
+		return;
 	}
-	return std::chrono::microseconds::zero();
+
+	const auto mcs = static_cast<uint64_t>(seconds * 1'000'000);
+	_cache.tps = std::chrono::microseconds(mcs) / frames;
+}
+
+float FrameProcessor::GetFramesPerSecond() const
+{
+	return _cache.fps;
+}
+
+std::chrono::microseconds FrameProcessor::GetTimePerFrame() const
+{
+	return _cache.tps;
 }
 
 void FrameProcessor::AddFrame(FrameInfo frame)
 {
-	_frames[_frameOffset] = std::move(frame);
-	_frameOffset = (_frameOffset + 1) % _frames.size();
+	_frames[_frameEnd] = std::move(frame);
+
+	_frameEnd = (_frameEnd + 1) % _frames.size();
+	if (_frameStart == _frameEnd)
+	{
+		_frameStart += 1;
+	}
 }
 
 void FrameProcessor::ForeachFrame(const FrameByPassCallback& callback) const
@@ -83,45 +103,24 @@ void FrameProcessor::ForeachFrame(const FrameByPassCallback& callback) const
 	auto ProcessIteration = [&](size_t frameOffset)
 	{
 		const auto & frame = _frames[frameOffset];
-		auto status = FrameByPassStatus::Stop;
-		if (!frame.empty)
-		{
-			status = callback(frame);
-		}
+		const auto status = callback(frame);
 		return status;
 	};
 
 	auto byPassSatus = FrameByPassStatus::Continue;
-	for (size_t frameOffset = _frameOffset; 
-		frameOffset < _frames.size() && byPassSatus != FrameByPassStatus::Stop; 
+	size_t frameEnd = _frameStart < _frameEnd ? _frameEnd : _frames.size();
+	for (size_t frameOffset = _frameStart; 
+		frameOffset < frameEnd && byPassSatus != FrameByPassStatus::Stop; 
 		++frameOffset)
 	{
 		byPassSatus = ProcessIteration(frameOffset);
 	}
 
-	if (_frameOffset == 0)
-	{
-		return;
-	}
-
+	frameEnd = _frameStart > _frameEnd ? _frameEnd : 0;
 	for (size_t frameOffset = 0; 
-		frameOffset < _frameOffset && byPassSatus != FrameByPassStatus::Stop; 
+		frameOffset < frameEnd && byPassSatus != FrameByPassStatus::Stop; 
 		++frameOffset)
 	{
 		byPassSatus = ProcessIteration(frameOffset);
 	}
-}
-
-const FrameProcessor::FrameInfo& FrameProcessor::GetFirstFrame() const
-{
-	return _frames[_frameOffset];
-}
-
-const FrameProcessor::FrameInfo& FrameProcessor::GetLastFrame() const
-{
-	if (_frameOffset > 0)
-	{
-		return _frames[_frameOffset - 1];
-	}
-	return _frames.back();
 }
