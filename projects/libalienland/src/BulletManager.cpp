@@ -43,7 +43,7 @@ void BulletManager::AddBullet(const sf::Vector2f& currentCharacterPos, float cur
 
 float BulletManager::GetCurrentDistFormOriginToWeaponTip(/*Weapon ID*/) const
 {
-	return _bulletFactory->GetInitPosition(/*Weapon ID*/);
+	return _bulletFactory->GetInitPosition(/*Weapon ID*/).value_or(0.0f);
 }
 
 
