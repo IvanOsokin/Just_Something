@@ -40,7 +40,7 @@ void Character::Render(sf::RenderTarget & renderTarget)
 
 float Character::GetDistFromOriginToWeaponTip() const
 {
-	return _bulletManager->GetCurrentDistFormOriginToWeaponTip(/*Weapon ID*/);
+	return _bulletManager.lock()->GetCurrentDistFormOriginToWeaponTip(/*Weapon ID*/);
 }
 
 bool Character::LoadTexture(const std::string & characterTexturePath)
@@ -94,7 +94,7 @@ void Character::ProcessMouse(const sf::Event & event)
 			return;
 		}
 
-		_bulletManager->AddBullet(_sprite.getPosition(), _sprite.getRotation(), targetPos);
+		_bulletManager.lock()->AddBullet(_sprite.getPosition(), _sprite.getRotation(), targetPos);
 	}
 }
 
