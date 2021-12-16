@@ -21,29 +21,19 @@ void BulletManager::AddBullet(const sf::Vector2f& currentCharacterPos, float cur
 {
 	auto initPosition = _bulletFactory->GetInitPosition(/*WeaponID*/);
 
-	if (!initPosition)
-	{
-		initPosition = 0.0f;
-	}
-
-	sf::Vector2f initBulletPos = CalcInitBulletPos(currentCharacterPos, currentCharacterRot, *initPosition);
+	sf::Vector2f initBulletPos = CalcInitBulletPos(currentCharacterPos, currentCharacterRot, initPosition.value_or(0.0f));
 
 	Bullet bullet;
 	const auto bulletSpeed = 200.f;
 	auto bulletSprite = _bulletFactory->GetSprite(/*WeaponID*/);
 
-	if (!bulletSprite)
-	{
-		bulletSprite = sf::Sprite();
-	}
-
-	bullet.Init(bulletSpeed, *bulletSprite, initBulletPos, targetPos);
+	bullet.Init(bulletSpeed, bulletSprite.value_or(sf::Sprite()), initBulletPos, targetPos);
 	_bullets.emplace_back(bullet);
 }
 
 float BulletManager::GetCurrentDistFormOriginToWeaponTip(/*Weapon ID*/) const
 {
-	return _bulletFactory->GetInitPosition(/*Weapon ID*/);
+	return _bulletFactory->GetInitPosition(/*Weapon ID*/).value_or(0.0f);
 }
 
 
@@ -77,7 +67,7 @@ void BulletManager::ProcessCollision()
 
 void BulletManager::SceneBorderCollision()
 {
-	auto bulletsForRemoving = std::remove_if(_bullets.begin(), _bullets.end(), [*this](const Bullet & bullet)
+	auto bulletsForRemoving = std::remove_if(_bullets.begin(), _bullets.end(), [this](const Bullet & bullet)
 	{
 		bool shouldRemoveBullet = !_sceneBorder.contains(static_cast<int>(bullet.GetBulletBottomPosition().x),
 														 static_cast<int>(bullet.GetBulletBottomPosition().y));
