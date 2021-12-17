@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Utils.h"
 
 void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<sf::RenderWindow> window)
 {
@@ -79,7 +80,7 @@ void Enemy::Move(const sf::Time & elapsedTime)
 	}
 
 	sf::Vector2f speedVector = *_targetPos - _pos;
-	float speedVectorLength = std::powf((std::powf(speedVector.x, 2.0f) + std::powf(speedVector.y, 2.0f)), 0.5f);
+	float speedVectorLength = Utils::VectorLength(speedVector);
 
 	const float eps = 0.5f;			// Необходим eps, чтобы враг не дергался, когда догоняет игрока
 	if (speedVectorLength >= eps)
@@ -108,21 +109,18 @@ void Enemy::Move(const sf::Time & elapsedTime)
 
 void Enemy::Rotate()
 {
-	const float pi = 3.141593f;
-	static const float s_fromRadToDeg = 180.0f / pi;
-
 	const float angle = std::acosf(_unitSpeedVector.x);
 
 	if (_unitSpeedVector.y < 0)
 	{
-		_sprite.setRotation((2 * pi - angle) * s_fromRadToDeg);
+		_sprite.setRotation(Utils::RadiansToDegrees(2 * pi - angle));
 		///// Template data /////
 		_boundingBox.setRotation(_sprite.getRotation());
 		/////////////////////////
 		return;
 	}
 
-	_sprite.setRotation(angle * s_fromRadToDeg);
+	_sprite.setRotation(Utils::RadiansToDegrees(angle));
 	///// Template data /////
 	_boundingBox.setRotation(_sprite.getRotation());
 	/////////////////////////

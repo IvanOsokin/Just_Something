@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include "Utils.h"
 
 void Bullet::Init(float baseSpeed, const sf::Sprite & sprite, const sf::Vector2f & initPos, const sf::Vector2f & targetPos)
 {
@@ -11,19 +12,16 @@ void Bullet::Init(float baseSpeed, const sf::Sprite & sprite, const sf::Vector2f
 
 	// Calculate the unit speed vector
 	sf::Vector2f speedVector = targetPos - initPos;
-	float speedVectorLength = std::powf((std::powf(speedVector.x, 2.0f) + std::powf(speedVector.y, 2.0f)), 0.5f);
+	float speedVectorLength = Utils::VectorLength(speedVector);
 	_unitSpeedVector = speedVector / speedVectorLength;
 
 	// Rotate the bullet sprite
-	const float pi = 3.141593f;
-	static const float s_fromRadToDeg = 180.0f / pi;
-
 	const float angle = std::acosf(_unitSpeedVector.x);
 
 	if (_unitSpeedVector.y < 0)
-		_sprite.setRotation((2 * pi - angle) * s_fromRadToDeg);
+		_sprite.setRotation(Utils::RadiansToDegrees(2 * pi - angle));
 	else
-		_sprite.setRotation(angle * s_fromRadToDeg);
+		_sprite.setRotation(Utils::RadiansToDegrees(angle));
 
 	// Initializing points for checking on the bullet sprite
 	const float bulletLength = static_cast<float>(_sprite.getTexture()->getSize().x);

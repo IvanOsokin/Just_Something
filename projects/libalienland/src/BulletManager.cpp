@@ -3,6 +3,7 @@
 #include "BulletFactory.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "Utils.h"
 
 BulletManager::BulletManager()
 	: _bulletFactory(std::make_shared<BulletFactory>())
@@ -106,12 +107,9 @@ void BulletManager::EnemyCollision()
 
 sf::Vector2f BulletManager::CalcInitBulletPos(const sf::Vector2f & currentCharacterPos, float currentCharacterRot, float distToWeaponTip)
 {
-	const float pi = 3.141593f;
-	static const float s_fromDegToRad = pi / 180.0f;
-
 	sf::Vector2f tipWeaponPosition;
-	tipWeaponPosition.x = distToWeaponTip * std::cosf(currentCharacterRot * s_fromDegToRad);
-	tipWeaponPosition.y = distToWeaponTip * std::sinf(currentCharacterRot * s_fromDegToRad);
+	tipWeaponPosition.x = distToWeaponTip * std::cosf(Utils::DegreesToRadians(currentCharacterRot));
+	tipWeaponPosition.y = distToWeaponTip * std::sinf(Utils::DegreesToRadians(currentCharacterRot));
 
 	return currentCharacterPos + tipWeaponPosition;
 }

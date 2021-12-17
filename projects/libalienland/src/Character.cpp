@@ -1,6 +1,7 @@
 #include "Character.h"
 
 #include "BulletManager.h"
+#include "Utils.h"
 
 void Character::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager)
 {
@@ -108,7 +109,7 @@ void Character::Rotate()
 {
 	sf::Vector2f viewDirectionVector = _currentCursorPosition - _pos;
 
-	float viewDirectionVectorLength = std::powf((std::powf(viewDirectionVector.x, 2.0f) + std::powf(viewDirectionVector.y, 2.0f)), 0.5f);
+	float viewDirectionVectorLength = Utils::VectorLength(viewDirectionVector);
 
 	const float eps = 1.0f;
 	if (viewDirectionVectorLength <= eps)
@@ -119,16 +120,13 @@ void Character::Rotate()
 	sf::Vector2f unitViewDirectionVector;
 	unitViewDirectionVector = viewDirectionVector / viewDirectionVectorLength;
 
-	const float pi = 3.141593f;
-	static const float s_fromRadToDeg = 180.0f / pi;
-
 	const float angle = std::acosf(unitViewDirectionVector.x);
-
+	
 	if (unitViewDirectionVector.y < 0)
 	{
-		_sprite.setRotation((2 * pi - angle) * s_fromRadToDeg);
+		_sprite.setRotation(Utils::RadiansToDegrees(2 * pi - angle));
 		return;
 	}
 
-	_sprite.setRotation(angle * s_fromRadToDeg);
+	_sprite.setRotation(Utils::RadiansToDegrees(angle));
 }
