@@ -19,7 +19,7 @@ void Bullet::Init(float baseSpeed, const sf::Sprite & sprite, const sf::Vector2f
 	const float angle = std::acosf(_unitSpeedVector.x);
 
 	if (_unitSpeedVector.y < 0)
-		_sprite.setRotation(Utils::RadiansToDegrees(2 * pi - angle));
+		_sprite.setRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
 	else
 		_sprite.setRotation(Utils::RadiansToDegrees(angle));
 
@@ -29,7 +29,7 @@ void Bullet::Init(float baseSpeed, const sf::Sprite & sprite, const sf::Vector2f
 	sf::Vector2f bulletTip;
 
 	if (_unitSpeedVector.y < 0)
-		bulletTip = sf::Vector2( bulletLength * std::cosf(2 * pi - angle), bulletLength * std::sinf(2 * pi - angle) );
+		bulletTip = sf::Vector2(bulletLength * std::cosf(2 * Utils::pi - angle), bulletLength * std::sinf(2 * Utils::pi - angle));
 	else
 		bulletTip = sf::Vector2(bulletLength * std::cosf(angle), bulletLength * std::sinf(angle));
 

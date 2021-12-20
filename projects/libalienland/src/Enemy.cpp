@@ -113,7 +113,7 @@ void Enemy::Rotate()
 
 	if (_unitSpeedVector.y < 0)
 	{
-		_sprite.setRotation(Utils::RadiansToDegrees(2 * pi - angle));
+		_sprite.setRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
 		///// Template data /////
 		_boundingBox.setRotation(_sprite.getRotation());
 		/////////////////////////

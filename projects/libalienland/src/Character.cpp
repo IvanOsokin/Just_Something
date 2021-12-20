@@ -69,7 +69,7 @@ void Character::ProcessKeyboard()
 
 	if (_unitSpeedVector.x != 0 && _unitSpeedVector.y != 0)
 	{
-		const float decreasingCoef = static_cast<float>(pow(2, 0.5));
+		const float decreasingCoef = std::sqrtf(2.0f);
 		_unitSpeedVector /= decreasingCoef;
 	}
 }
@@ -86,7 +86,7 @@ void Character::ProcessMouse(const sf::Event & event)
 		const auto targetPos = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 
 		const auto viewDirectionVector = targetPos - _sprite.getPosition();
-		const float viewDirectionVectorLength = std::powf((std::powf(viewDirectionVector.x, 2.0f) + std::powf(viewDirectionVector.y, 2.0f)), 0.5f);
+		const float viewDirectionVectorLength = Utils::VectorLength(viewDirectionVector);
 
 		const float distFromOriginToWeaponTip = GetDistFromOriginToWeaponTip();
 
@@ -124,7 +124,7 @@ void Character::Rotate()
 	
 	if (unitViewDirectionVector.y < 0)
 	{
-		_sprite.setRotation(Utils::RadiansToDegrees(2 * pi - angle));
+		_sprite.setRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
 		return;
 	}
 
