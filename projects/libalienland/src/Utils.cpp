@@ -1,24 +1,25 @@
 #include "Utils.h"
 
-static const float s_fromRadToDeg = 180.0f / pi;
-static const float s_fromDegToRad = pi / 180.0f;
-
+namespace
+{
+	const float fromRadToDeg = 180.0f / Utils::pi;
+	const float fromDegToRad = Utils::pi / 180.0f;
+}
 
 namespace Utils
 {
 	float DegreesToRadians(float degrees)
 	{
-		return 	degrees * s_fromDegToRad;
-		;
+		return 	degrees * fromDegToRad;
 	}
 
 	float RadiansToDegrees(float radians)
 	{
-		return radians * s_fromRadToDeg;
+		return radians * fromRadToDeg;
 	}
 
 	float VectorLength(const sf::Vector2f & vector)
 	{
-		return std::powf((std::powf(vector.x, 2.0f) + std::powf(vector.y, 2.0f)), 0.5f);
+		return std::sqrtf((vector.x * vector.x) + (vector.y * vector.y));
 	}
 }
