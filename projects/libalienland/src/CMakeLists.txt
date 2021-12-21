@@ -10,4 +10,5 @@ target_sources(${PROJECT_NAME} PRIVATE
 	Bullet.cpp
 	BulletFactory.cpp
 	BulletManager.cpp
+	Utils.cpp
 )

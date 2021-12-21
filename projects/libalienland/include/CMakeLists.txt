@@ -13,6 +13,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 	Bullet.h
 	BulletFactory.h
 	BulletManager.h
+	Utils.h
 )
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE Internal/pch.h)

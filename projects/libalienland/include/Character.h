@@ -26,7 +26,7 @@ private:
 	void Move(const sf::Time & elapsedTime);
 	void Rotate();
 
-	std::shared_ptr<BulletManager> _bulletManager;
+	std::weak_ptr<BulletManager> _bulletManager;
 
 	sf::Vector2f	_pos;
 	sf::Vector2f	_speed;

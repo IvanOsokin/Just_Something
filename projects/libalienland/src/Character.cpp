@@ -1,6 +1,7 @@
 #include "Character.h"
 
 #include "BulletManager.h"
+#include "Utils.h"
 
 void Character::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager)
 {
@@ -40,7 +41,7 @@ void Character::Render(sf::RenderTarget & renderTarget)
 
 float Character::GetDistFromOriginToWeaponTip() const
 {
-	return _bulletManager->GetCurrentDistFormOriginToWeaponTip(/*Weapon ID*/);
+	return _bulletManager.lock()->GetCurrentDistFormOriginToWeaponTip(/*Weapon ID*/);
 }
 
 bool Character::LoadTexture(const std::string & characterTexturePath)
@@ -68,7 +69,7 @@ void Character::ProcessKeyboard()
 
 	if (_unitSpeedVector.x != 0 && _unitSpeedVector.y != 0)
 	{
-		const float decreasingCoef = static_cast<float>(pow(2, 0.5));
+		const float decreasingCoef = std::sqrtf(2.0f);
 		_unitSpeedVector /= decreasingCoef;
 	}
 }
@@ -85,7 +86,7 @@ void Character::ProcessMouse(const sf::Event & event)
 		const auto targetPos = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 
 		const auto viewDirectionVector = targetPos - _sprite.getPosition();
-		const float viewDirectionVectorLength = std::powf((std::powf(viewDirectionVector.x, 2.0f) + std::powf(viewDirectionVector.y, 2.0f)), 0.5f);
+		const float viewDirectionVectorLength = Utils::VectorLength(viewDirectionVector);
 
 		const float distFromOriginToWeaponTip = GetDistFromOriginToWeaponTip();
 
@@ -94,7 +95,7 @@ void Character::ProcessMouse(const sf::Event & event)
 			return;
 		}
 
-		_bulletManager->AddBullet(_sprite.getPosition(), _sprite.getRotation(), targetPos);
+		_bulletManager.lock()->AddBullet(_sprite.getPosition(), _sprite.getRotation(), targetPos);
 	}
 }
 
@@ -108,7 +109,7 @@ void Character::Rotate()
 {
 	sf::Vector2f viewDirectionVector = _currentCursorPosition - _pos;
 
-	float viewDirectionVectorLength = std::powf((std::powf(viewDirectionVector.x, 2.0f) + std::powf(viewDirectionVector.y, 2.0f)), 0.5f);
+	float viewDirectionVectorLength = Utils::VectorLength(viewDirectionVector);
 
 	const float eps = 1.0f;
 	if (viewDirectionVectorLength <= eps)
@@ -119,16 +120,13 @@ void Character::Rotate()
 	sf::Vector2f unitViewDirectionVector;
 	unitViewDirectionVector = viewDirectionVector / viewDirectionVectorLength;
 
-	const float pi = 3.141593f;
-	static const float s_fromRadToDeg = 180.0f / pi;
-
 	const float angle = std::acosf(unitViewDirectionVector.x);
-
+	
 	if (unitViewDirectionVector.y < 0)
 	{
-		_sprite.setRotation((2 * pi - angle) * s_fromRadToDeg);
+		_sprite.setRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
 		return;
 	}
 
-	_sprite.setRotation(angle * s_fromRadToDeg);
+	_sprite.setRotation(Utils::RadiansToDegrees(angle));
 }

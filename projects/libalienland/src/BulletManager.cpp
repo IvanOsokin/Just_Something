@@ -3,6 +3,7 @@
 #include "BulletFactory.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "Utils.h"
 
 BulletManager::BulletManager()
 	: _bulletFactory(std::make_shared<BulletFactory>())
@@ -21,23 +22,13 @@ void BulletManager::AddBullet(const sf::Vector2f& currentCharacterPos, float cur
 {
 	auto initPosition = _bulletFactory->GetInitPosition(/*WeaponID*/);
 
-	if (!initPosition)
-	{
-		initPosition = 0.0f;
-	}
-
-	sf::Vector2f initBulletPos = CalcInitBulletPos(currentCharacterPos, currentCharacterRot, *initPosition);
+	sf::Vector2f initBulletPos = CalcInitBulletPos(currentCharacterPos, currentCharacterRot, initPosition.value_or(0.0f));
 
 	Bullet bullet;
 	const auto bulletSpeed = 200.f;
 	auto bulletSprite = _bulletFactory->GetSprite(/*WeaponID*/);
 
-	if (!bulletSprite)
-	{
-		bulletSprite = sf::Sprite();
-	}
-
-	bullet.Init(bulletSpeed, *bulletSprite, initBulletPos, targetPos);
+	bullet.Init(bulletSpeed, bulletSprite.value_or(sf::Sprite()), initBulletPos, targetPos);
 	_bullets.emplace_back(bullet);
 }
 
@@ -77,7 +68,7 @@ void BulletManager::ProcessCollision()
 
 void BulletManager::SceneBorderCollision()
 {
-	auto bulletsForRemoving = std::remove_if(_bullets.begin(), _bullets.end(), [*this](const Bullet & bullet)
+	auto bulletsForRemoving = std::remove_if(_bullets.begin(), _bullets.end(), [this](const Bullet & bullet)
 	{
 		bool shouldRemoveBullet = !_sceneBorder.contains(static_cast<int>(bullet.GetBulletBottomPosition().x),
 														 static_cast<int>(bullet.GetBulletBottomPosition().y));
@@ -116,12 +107,9 @@ void BulletManager::EnemyCollision()
 
 sf::Vector2f BulletManager::CalcInitBulletPos(const sf::Vector2f & currentCharacterPos, float currentCharacterRot, float distToWeaponTip)
 {
-	const float pi = 3.141593f;
-	static const float s_fromDegToRad = pi / 180.0f;
-
 	sf::Vector2f tipWeaponPosition;
-	tipWeaponPosition.x = distToWeaponTip * std::cosf(currentCharacterRot * s_fromDegToRad);
-	tipWeaponPosition.y = distToWeaponTip * std::sinf(currentCharacterRot * s_fromDegToRad);
+	tipWeaponPosition.x = distToWeaponTip * std::cosf(Utils::DegreesToRadians(currentCharacterRot));
+	tipWeaponPosition.y = distToWeaponTip * std::sinf(Utils::DegreesToRadians(currentCharacterRot));
 
 	return currentCharacterPos + tipWeaponPosition;
 }
