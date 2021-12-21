@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "Enemy.h"
 #include "Utils.h"
+#include "SfmlUtils.h"
 
 BulletManager::BulletManager()
 	: _bulletFactory(std::make_shared<BulletFactory>())
@@ -70,8 +71,8 @@ void BulletManager::SceneBorderCollision()
 {
 	auto bulletsForRemoving = std::remove_if(_bullets.begin(), _bullets.end(), [this](const Bullet & bullet)
 	{
-		bool shouldRemoveBullet = !_sceneBorder.contains(static_cast<int>(bullet.GetBulletBottomPosition().x),
-														 static_cast<int>(bullet.GetBulletBottomPosition().y));
+		sf::Vector2f bulletBottomPosition = bullet.GetBulletBottomPosition();
+		bool shouldRemoveBullet = !_sceneBorder.contains(Utils::ToVector2i(bulletBottomPosition));
 		return shouldRemoveBullet;
 	});
 
@@ -91,8 +92,7 @@ void BulletManager::EnemyCollision()
 	
 	auto hitEnemyBullet = std::find_if(_bullets.begin(), _bullets.end(), [&currentEnemyBBox](const Bullet & bullet)
 	{
-		bool shouldRemoveBullet = currentEnemyBBox.contains(static_cast<float>(bullet.GetBulletTipPosition().x),
-															static_cast<float>(bullet.GetBulletTipPosition().y));
+		bool shouldRemoveBullet = currentEnemyBBox.contains(bullet.GetBulletTipPosition());
 		return shouldRemoveBullet;
 	});
 
