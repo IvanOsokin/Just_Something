@@ -11,4 +11,5 @@ target_sources(${PROJECT_NAME} PRIVATE
 	BulletFactory.cpp
 	BulletManager.cpp
 	Utils.cpp
+	SfmlUtils.cpp
 )
