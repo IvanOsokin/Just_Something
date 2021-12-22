@@ -79,12 +79,12 @@ void Character::ProcessMouse(const sf::Event & event)
 {
 	if (event.type == sf::Event::EventType::MouseMoved)
 	{
-		_currentCursorPosition = Utils::ToVector2f(event.mouseMove.x, event.mouseMove.y);
+		_currentCursorPosition = Utils::VectorCast<float>(event.mouseMove.x, event.mouseMove.y);
 	}
 	
 	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 	{
-		const auto targetPos = Utils::ToVector2f(event.mouseButton.x, event.mouseButton.y);
+		const auto targetPos = Utils::VectorCast<float>(event.mouseButton.x, event.mouseButton.y);
 
 		const auto viewDirectionVector = targetPos - _sprite.getPosition();
 		const float viewDirectionVectorLength = Utils::VectorLength(viewDirectionVector);

@@ -24,7 +24,7 @@ void Enemy::ProcessInput(const sf::Event & event)
 {
 	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
 	{
-		auto target = Utils::ToVector2f(event.mouseButton.x, event.mouseButton.y);
+		auto target = Utils::VectorCast<float>(event.mouseButton.x, event.mouseButton.y);
 		MoveTo(target);
 	}
 }

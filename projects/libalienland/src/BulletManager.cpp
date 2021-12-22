@@ -72,7 +72,7 @@ void BulletManager::SceneBorderCollision()
 	auto bulletsForRemoving = std::remove_if(_bullets.begin(), _bullets.end(), [this](const Bullet & bullet)
 	{
 		sf::Vector2f bulletBottomPosition = bullet.GetBulletBottomPosition();
-		bool shouldRemoveBullet = !_sceneBorder.contains(Utils::ToVector2i(bulletBottomPosition));
+		bool shouldRemoveBullet = !_sceneBorder.contains(Utils::VectorCast<int>(bulletBottomPosition));
 		return shouldRemoveBullet;
 	});
 
