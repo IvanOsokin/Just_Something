@@ -8,9 +8,9 @@ namespace Utils
 		return sf::Vector2<T1>(static_cast<T1>(x), static_cast<T1>(y));
 	}
 
-	template<typename T, typename Vector>
-	sf::Vector2<T> VectorCast(const Vector & vector)
+	template<typename T1, typename T2>
+	sf::Vector2<T1> VectorCast(const sf::Vector2<T2> & vector)
 	{
-		return VectorCast<T>(vector.x, vector.y);
+		return VectorCast<T1>(vector.x, vector.y);
 	}
 }
