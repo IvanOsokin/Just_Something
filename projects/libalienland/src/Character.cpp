@@ -2,6 +2,7 @@
 
 #include "BulletManager.h"
 #include "Utils.h"
+#include "SfmlUtils.h"
 
 void Character::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager)
 {
@@ -78,12 +79,12 @@ void Character::ProcessMouse(const sf::Event & event)
 {
 	if (event.type == sf::Event::EventType::MouseMoved)
 	{
-		_currentCursorPosition = sf::Vector2f(static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y));
+		_currentCursorPosition = Utils::VectorCast<float>(event.mouseMove.x, event.mouseMove.y);
 	}
 	
 	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 	{
-		const auto targetPos = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
+		const auto targetPos = Utils::VectorCast<float>(event.mouseButton.x, event.mouseButton.y);
 
 		const auto viewDirectionVector = targetPos - _sprite.getPosition();
 		const float viewDirectionVectorLength = Utils::VectorLength(viewDirectionVector);

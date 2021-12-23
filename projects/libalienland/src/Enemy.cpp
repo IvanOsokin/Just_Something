@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Utils.h"
+#include "SfmlUtils.h"
 
 void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<sf::RenderWindow> window)
 {
@@ -23,7 +24,7 @@ void Enemy::ProcessInput(const sf::Event & event)
 {
 	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right)
 	{
-		auto target = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
+		auto target = Utils::VectorCast<float>(event.mouseButton.x, event.mouseButton.y);
 		MoveTo(target);
 	}
 }
