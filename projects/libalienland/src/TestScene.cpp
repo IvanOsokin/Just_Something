@@ -3,6 +3,7 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "BulletManager.h"
+#include "SfmlUtils.h"
 #include "Imgui/ImguiController.h"
 
 TestScene::TestScene()
@@ -29,7 +30,7 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 	// values of arguments in 'position' and 'size' by the texture parameters
 	sf::Vector2i position(0, 0);
 	sf::Vector2i size(_window.lock()->getSize());
-	sf::IntRect  sceneBorder(position, size);
+	const sf::IntRect  sceneBorder(position, size);
 	
 	_bulletManager->Init(resourcesDirectory, sceneBorder, _enemy);
 
@@ -39,6 +40,14 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 	}
 	_imguiController = std::make_shared<ImguiController>();
 	_imguiController->Init(settings);
+
+	auto mapTexture = LoadMapTexture(resourcesDirectory);
+	if (mapTexture)
+	{
+		_mapTexture = *std::move(mapTexture);
+		_mapSprite.setTexture(_mapTexture);
+		_mapSprite.setTextureRect(sceneBorder);
+	}
 }
 
 void TestScene::PreGameLoop()
@@ -71,7 +80,7 @@ void TestScene::ProcessInput(const sf::Event & event)
 	{
 		_imguiController->ProcessInput(event);
 	}
-	EventLogging(event);
+	// EventLogging(event);
 	ProcessSceneInput(event);
 	_character->ProcessInput(event);
 	if (_enemy)
@@ -114,6 +123,8 @@ void TestScene::Render()
 	{
 		return;
 	}
+
+	window->draw(_mapSprite);
 	
 	_character->Render(*window);
 	if (_enemy)
@@ -176,6 +187,19 @@ void TestScene::SetInitialPosition(std::shared_ptr<T> object)
 	const auto windowSize = _window.lock()->getSize();
 	object->SetPosition(sf::Vector2f(windowSize.x / 2.0f, windowSize.y / 2.0f));
 	object->GetSprite().setPosition(object->GetPosition());
+}
+
+std::unique_ptr<sf::Texture> TestScene::LoadMapTexture(const std::filesystem::path & resourcesDirectory)
+{
+	const auto mapTexturePath = (resourcesDirectory / "stone01.jpg").generic_string();
+	auto texture = std::make_unique<sf::Texture>();
+	if (!texture->loadFromFile(mapTexturePath))
+	{
+		return {};
+	}
+	LOG_INFO() << "Map texture has been loaded.";
+	texture->setRepeated(true);
+	return texture;
 }
 
 void TestScene::RemoveDeadEnemy()
