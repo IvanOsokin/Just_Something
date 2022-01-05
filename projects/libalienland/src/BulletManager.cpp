@@ -128,8 +128,8 @@ std::vector<float> BulletManager::DistanceToWeaponTip() const
 {
 	std::vector<float> distBetweenCharacterCenterAndWeaponTip;
 
-	distBetweenCharacterCenterAndWeaponTip.emplace_back(133.0f);
-	distBetweenCharacterCenterAndWeaponTip.emplace_back(133.0f);
+	distBetweenCharacterCenterAndWeaponTip.emplace_back(79.0f);
+	distBetweenCharacterCenterAndWeaponTip.emplace_back(79.0f);
 
 	return distBetweenCharacterCenterAndWeaponTip;
 }

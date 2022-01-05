@@ -17,7 +17,7 @@ void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_p
 	}
 
 	const auto textureSize = _texture.getSize();
-	_sprite.setOrigin(textureSize.x / 2.0f, textureSize.y / 2.0f);
+	_sprite.setOrigin(65.0f, 83.0f);
 }
 
 void Enemy::ProcessInput(const sf::Event & event)
@@ -53,9 +53,9 @@ void Enemy::InitBoundingBox()
 	_boundingBox.setOutlineThickness(2.0f);
 
 	/////// Depending on the type of the enemy /////////
-	_boundingBox.setSize(sf::Vector2f(84.0f, 32.0f));
+	_boundingBox.setSize(sf::Vector2f(64.0f, 24.0f));
 	////////////////////////////////////////////////////
-	_boundingBox.setOrigin(_boundingBox.getSize().x / 2.0f + 32, _boundingBox.getSize().y / 2.0f - 14);
+	_boundingBox.setOrigin(_boundingBox.getSize().x / 2 + 14, _boundingBox.getSize().y / 2 - 3);
 	_boundingBox.setPosition(_sprite.getPosition());
 	_boundingBox.setRotation(_sprite.getRotation());
 }

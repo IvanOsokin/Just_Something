@@ -19,7 +19,7 @@ void Character::Init(const std::filesystem::path & resourcesDirectory, std::shar
 		return;
 	}
 
-	_sprite.setOrigin(108.0f, 119.0f);
+	_sprite.setOrigin(68.0f, 92.0f);
 }
 
 void Character::ProcessInput(const sf::Event & event)
