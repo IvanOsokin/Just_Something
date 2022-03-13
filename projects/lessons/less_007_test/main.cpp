@@ -1,4 +1,5 @@
 #include <filesystem>
+#include <memory>
 
 #include "UserInterface.h"
 #include "InternalCombustionEngine.h"
@@ -14,11 +15,8 @@ int main(int argc, char** argv)
 	UserInterface ui;
 	ui.ProcessInput();
 
-	InternalCombustionEngine ice;
-
-	Engine* engine = &ice;
 	TestStand testStand;
-	testStand.Start(engine, ui.GetEnvironmentTemperature(), InitializingFilePath);
+	testStand.Start(std::make_shared<InternalCombustionEngine>(), ui.GetEnvironmentTemperature(), InitializingFilePath);
 
 	return 0;
 }

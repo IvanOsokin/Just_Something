@@ -3,7 +3,11 @@
 
 #include "TestStand.h"
 
-void TestStand::Start(Engine* testEngine, double environmentTemp, const std::filesystem::path& InitializingFilePath)
+TestStand::TestStand()
+	: _testEngine(std::make_shared<Engine>())
+{}
+
+void TestStand::Start(std::shared_ptr<InternalCombustionEngine> testEngine, double environmentTemp, const std::filesystem::path& InitializingFilePath)
 {
 	Init(testEngine);
 
@@ -14,7 +18,7 @@ void TestStand::Start(Engine* testEngine, double environmentTemp, const std::fil
 	DisplayResult();
 }
 
-void TestStand::Init(Engine* testEngine)
+void TestStand::Init(std::shared_ptr<InternalCombustionEngine> testEngine)
 {
 	_testEngine = testEngine;
 }

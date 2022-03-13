@@ -1,20 +1,25 @@
 #pragma once
 
+#include <memory>
+
 #include "Engine.h"
+#include "InternalCombustionEngine.h"
 
 class Engine;
 
 class TestStand
 {
 public:
-	void Start(Engine* testEngine, double environmentTemp, const std::filesystem::path& InitializingFilePath);
+	TestStand();
+
+	void Start(std::shared_ptr<InternalCombustionEngine> testEngine, double environmentTemp, const std::filesystem::path& InitializingFilePath);
 
 private:
-	void Init(Engine* testEngine);
+	void Init(std::shared_ptr<InternalCombustionEngine> testEngine);
 	void MainCycle();
 	void DisplayResult();
 
-	Engine* _testEngine = nullptr;
+	std::shared_ptr<Engine> _testEngine;
 
 	double _duration = 0.0;
 	bool _shouldStopStand = false;
