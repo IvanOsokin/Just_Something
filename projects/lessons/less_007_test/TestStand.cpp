@@ -2,55 +2,37 @@
 #include <iostream>
 
 #include "TestStand.h"
+#include "Utils.h"
 
-TestStand::TestStand()
-	: _testEngine(std::make_shared<Engine>())
-{}
-
-void TestStand::Start(std::shared_ptr<InternalCombustionEngine> testEngine, double environmentTemp, const std::filesystem::path& InitializingFilePath)
+void TestStand::Start(std::shared_ptr<Engine> testEngine)
 {
-	Init(testEngine);
+	if (!testEngine)
+	{
+		std::cout << "Could not get an engine for testing";
+		return;
+	}
 
-	_testEngine->Start(environmentTemp, InitializingFilePath);
+	testEngine->Start();
 
-	MainCycle();
+	MainCycle(testEngine);
 
-	DisplayResult();
+	Utils::DisplayResult(_wasInterrupted, _workTime);
 }
 
-void TestStand::Init(std::shared_ptr<InternalCombustionEngine> testEngine)
-{
-	_testEngine = testEngine;
-}
-
-void TestStand::MainCycle()
+void TestStand::MainCycle(std::shared_ptr<Engine> testEngine)
 {
 	const double timeSegment = 0.01;
 	const int examineDuration = 60;
 
-	for (; _duration < examineDuration; _duration += timeSegment)
+	for (; _workTime < examineDuration; _workTime += timeSegment)
 	{
-		if (_testEngine->IsOverheated())
+		if (testEngine->IsOverheated())
 		{
-			_shouldStopStand = true;
+			_wasInterrupted = true;
 			
-			return;
+			break;
 		}
 
-		_testEngine->MainCycle(timeSegment);
+		testEngine->MainCycle(timeSegment);
 	}
-}
-
-void TestStand::DisplayResult()
-{
-	if (_shouldStopStand)
-	{
-		std::cout << _duration << " seconds since the engine has started till overheated" << std::endl;
-	}
-	else
-	{
-		std::cout << "The engine examined was not overheated" << std::endl;
-	}
-
-	std::cin.get();
 }

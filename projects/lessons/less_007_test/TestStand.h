@@ -3,24 +3,15 @@
 #include <memory>
 
 #include "Engine.h"
-#include "InternalCombustionEngine.h"
-
-class Engine;
 
 class TestStand
 {
 public:
-	TestStand();
-
-	void Start(std::shared_ptr<InternalCombustionEngine> testEngine, double environmentTemp, const std::filesystem::path& InitializingFilePath);
+	void Start(std::shared_ptr<Engine> testEngine);
 
 private:
-	void Init(std::shared_ptr<InternalCombustionEngine> testEngine);
-	void MainCycle();
-	void DisplayResult();
+	void MainCycle(std::shared_ptr<Engine> testEngine);
 
-	std::shared_ptr<Engine> _testEngine;
-
-	double _duration = 0.0;
-	bool _shouldStopStand = false;
+	double _workTime = 0.0;
+	bool _wasInterrupted = false;
 };
