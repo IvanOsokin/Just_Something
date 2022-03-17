@@ -94,7 +94,7 @@ namespace Utils
 		}
 		else
 		{
-			std::cout << "The engine examined was not overheated" << std::endl;
+			std::cout << "The engine examined hasn't been overheated" << std::endl;
 		}
 	}
 }
