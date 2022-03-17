@@ -1,4 +1,5 @@
 #include <filesystem>
+#include <iostream>
 #include <memory>
 
 #include "UserInterface.h"
@@ -15,7 +16,11 @@ int main(int argc, char** argv)
 	ui.ProcessInput();
 
 	auto ice = std::make_shared<InternalCombustionEngine>();
-	ice->Init(ui.GetEnvironmentTemperature(), InitializingFilePath);
+	if (!(ice->Init(ui.GetEnvironmentTemperature(), InitializingFilePath)))
+	{
+		std::cout << "The engine examined parameters hasn't been initialized";
+		return -1;
+	}
 
 	TestStand testStand;
 	testStand.Start(ice);
