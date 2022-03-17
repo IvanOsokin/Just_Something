@@ -24,7 +24,7 @@ public:
 
 	void Start() override;
 	void MainCycle(double time) override;
-	void Init(double environmentTemp, const std::filesystem::path& initializingFilePath);
+	bool Init(double environmentTemp, const std::filesystem::path& initializingFilePath);
 
 	bool IsOverheated() const override { return _engineTemperature > _engineParam->_tempOverheat; }
 

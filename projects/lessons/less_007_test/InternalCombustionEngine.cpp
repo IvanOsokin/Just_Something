@@ -41,14 +41,20 @@ void InternalCombustionEngine::MainCycle(double time)
 	_engineTemperature += deltaTemperature;
 }
 
-void InternalCombustionEngine::Init(double environmentTemp, const std::filesystem::path& initializingFilePath)
+bool InternalCombustionEngine::Init(double environmentTemp, const std::filesystem::path& initializingFilePath)
 {
-	_engineTemperature = _tempEnvironment = environmentTemp;
-
 	_engineParam = Utils::InitEngineParameters(initializingFilePath);
 
+	if (!_engineParam)
+	{
+		return false;
+	}
+
+	_engineTemperature = _tempEnvironment = environmentTemp;
 	_currentMoment = _engineParam->_momentPointValues.front();
 	_currentRotation = _engineParam->_rotatePointValues.front();
+
+	return true;
 }
 
 void InternalCombustionEngine::CalcCurrentMoment(int prevChartRotationValue,
