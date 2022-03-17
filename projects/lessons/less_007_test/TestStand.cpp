@@ -28,8 +28,12 @@ void TestStand::MainCycle(std::shared_ptr<Engine> testEngine)
 	{
 		if (testEngine->IsOverheated())
 		{
-			_wasInterrupted = true;
+			if (_workTime - 0 > timeSegment)	//Checks if the engine is overheated at the beginning
+			{
+				_workTime -= timeSegment;
+			}
 			
+			_wasInterrupted = true;
 			break;
 		}
 
