@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include "Engine.h"
 
 struct EngineParameters
@@ -30,7 +29,7 @@ public:
 
 private:
 	void CalcCurrentMoment(int prevChartRotationValue, int nextChartRotationValue, int prevChartMomentValue, int nextChartMomentValue);
-	bool ShouldIncr(int curValue, int nextValue);
+	bool ShouldIncr();
 
 	std::optional<EngineParameters> _engineParam;
 
@@ -41,4 +40,6 @@ private:
 	double _engineTemperature = 0.0;
 
 	bool _shouldStopWorking = false;
+	int _currenVectorIndex = 0;
+	int _nextVectorIndex = 1;
 };

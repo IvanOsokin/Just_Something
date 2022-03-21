@@ -1,8 +1,5 @@
-#include <filesystem>
-#include <iostream>
-
 #include "TestStand.h"
-#include "Utils.h"
+#include "Engine.h"
 
 void TestStand::Start(std::shared_ptr<Engine> testEngine)
 {
@@ -15,8 +12,6 @@ void TestStand::Start(std::shared_ptr<Engine> testEngine)
 	testEngine->Start();
 
 	MainCycle(testEngine);
-
-	Utils::DisplayResult(_wasInterrupted, _workTime);
 }
 
 void TestStand::MainCycle(std::shared_ptr<Engine> testEngine)
@@ -27,12 +22,7 @@ void TestStand::MainCycle(std::shared_ptr<Engine> testEngine)
 	for (; _workTime < examineDuration; _workTime += timeSegment)
 	{
 		if (testEngine->IsOverheated())
-		{
-			if (_workTime - 0 > timeSegment)	//Checks if the engine is overheated at the beginning
-			{
-				_workTime -= timeSegment;
-			}
-			
+		{			
 			_wasInterrupted = true;
 			break;
 		}

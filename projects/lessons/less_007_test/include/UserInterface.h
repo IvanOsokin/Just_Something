@@ -1,12 +1,11 @@
 #pragma once
 
-#include <string>
-
 class UserInterface
 {
 public:
 	void ProcessInput();
 	double GetEnvironmentTemperature() const { return _environmentTemp; }
+	void DisplayResult(bool wasInterrupted, double workTime);
 
 private:
 	bool IsNumber(const std::string& str);

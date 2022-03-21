@@ -1,12 +1,8 @@
-#include <filesystem>
-#include <iostream>
-#include <memory>
-
 #include "UserInterface.h"
 #include "InternalCombustionEngine.h"
 #include "TestStand.h"
 
-int main(int argc, char** argv)
+int main(int /*argc*/, char** argv)
 {
 	auto executableName = std::filesystem::path(argv[0]);
 	auto InitializingFilePath = executableName.parent_path();
@@ -24,6 +20,8 @@ int main(int argc, char** argv)
 
 	TestStand testStand;
 	testStand.Start(ice);
+
+	ui.DisplayResult(testStand.WasInterrupted(), testStand.GetWorkTime());
 
 	return 0;
 }

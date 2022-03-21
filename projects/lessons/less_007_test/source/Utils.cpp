@@ -43,8 +43,6 @@ namespace Utils
 		std::getline(initializingFile, strToParse);
 		InitVarFromString(engineParam._I, strToParse);
 
-		initializingFile.close();
-
 		return true;
 	}
 
@@ -84,17 +82,5 @@ namespace Utils
 		strToConvert >> number;
 		numberOfValues.emplace_back(number);
 		strToConvert = std::stringstream();
-	}
-
-	void Utils::DisplayResult(bool wasInterrupted, double workTime)
-	{
-		if (wasInterrupted)
-		{
-			std::cout << workTime << " seconds since the engine has started till overheated" << std::endl;
-		}
-		else
-		{
-			std::cout << "The engine examined hasn't been overheated" << std::endl;
-		}
 	}
 }

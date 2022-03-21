@@ -1,10 +1,12 @@
 project(less_007_test)
 
-add_executable(	less_007_test
-	   	main.cpp Engine.h
-		InternalCombustionEngine.h
-		InternalCombustionEngine.cpp
-		UserInterface.h
-		UserInterface.cpp
-		TestStand.h
-		TestStand.cpp)
+include(${CMAKE_HELPERS_FILE_DIR}/config.cmake)
+
+add_executable(${PROJECT_NAME} main.cpp)
+
+add_subdirectory(include)
+add_subdirectory(source)
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_enable_cpplatest(${PROJECT_NAME})
+target_treat_all_warnings_as_error(${PROJECT_NAME})

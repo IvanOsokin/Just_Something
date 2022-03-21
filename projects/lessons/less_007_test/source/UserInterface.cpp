@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "UserInterface.h"
 
 void UserInterface::ProcessInput()
@@ -14,6 +12,18 @@ void UserInterface::ProcessInput()
 	} while (!IsNumber(userInput));
 
 	_environmentTemp = std::stod(userInput);
+}
+
+void UserInterface::DisplayResult(bool wasInterrupted, double workTime)
+{
+	if (wasInterrupted)
+	{
+		std::cout << workTime << " seconds since the engine has started till overheated" << std::endl;
+	}
+	else
+	{
+		std::cout << "The engine examined hasn't been overheated" << std::endl;
+	}
 }
 
 bool UserInterface::IsNumber(const std::string& str)
