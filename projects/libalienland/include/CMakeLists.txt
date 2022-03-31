@@ -7,7 +7,6 @@ target_sources(${PROJECT_NAME} PRIVATE
 	Internal/pch.h
 
 	Game.h
-	GAmeObject.h
 	TestScene.h
 	Character.h
 	Enemy.h

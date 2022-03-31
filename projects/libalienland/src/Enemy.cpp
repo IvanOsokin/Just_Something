@@ -2,8 +2,10 @@
 #include "Utils.h"
 #include "SfmlUtils.h"
 
-void Enemy::Init(const std::filesystem::path & resourcesDirectory)
+void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<sf::RenderWindow> window)
 {
+	Assert(window);
+
 	const std::string enemyTextureName = "enemy-1.png";
 	auto enemyTexturePath = resourcesDirectory / enemyTextureName;
 
@@ -14,10 +16,8 @@ void Enemy::Init(const std::filesystem::path & resourcesDirectory)
 		return;
 	}
 
-	const auto textureSize = GetTexture().getSize();
-	GetSprite().setOrigin(65.0f, 83.0f);
-
-	InitBoundingBox();
+	const auto textureSize = _texture.getSize();
+	_sprite.setOrigin(65.0f, 83.0f);
 }
 
 void Enemy::ProcessInput(const sf::Event & event)
@@ -37,7 +37,7 @@ void Enemy::Update(const sf::Time & elapsedTime)
 
 void Enemy::Render(sf::RenderTarget & renderTarget)
 {
-	renderTarget.draw(GetSprite());
+	renderTarget.draw(_sprite);
 	renderTarget.draw(_boundingBox);
 }
 
@@ -56,19 +56,19 @@ void Enemy::InitBoundingBox()
 	_boundingBox.setSize(sf::Vector2f(64.0f, 24.0f));
 	////////////////////////////////////////////////////
 	_boundingBox.setOrigin(_boundingBox.getSize().x / 2 + 14, _boundingBox.getSize().y / 2 - 3);
-	_boundingBox.setPosition(GetSprite().getPosition());
-	_boundingBox.setRotation(GetSprite().getRotation());
+	_boundingBox.setPosition(_sprite.getPosition());
+	_boundingBox.setRotation(_sprite.getRotation());
 }
 
 bool Enemy::LoadTexture(const std::string & enemyTexturePath)
 {
-	if (!GetTexture().loadFromFile(enemyTexturePath))
+	if (!_texture.loadFromFile(enemyTexturePath))
 	{
 		LOG_ERROR() << "Failed to load the enemy's texture.";
 		return false;
 	}
 
-	GetSprite().setTexture(GetTexture());
+	_sprite.setTexture(_texture);
 	LOG_INFO() << "Successful loading the enemy texture.";
 	return true;
 }
@@ -87,8 +87,8 @@ void Enemy::Move(const sf::Time & elapsedTime)
 	if (speedVectorLength >= eps)
 	{
 		_unitSpeedVector = speedVector / speedVectorLength;
-		GetSprite().move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
-		_pos = GetSprite().getPosition();
+		_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
+		_pos = _sprite.getPosition();
 		_boundingBox.setPosition(_pos);
 	}
 	else
@@ -114,15 +114,15 @@ void Enemy::Rotate()
 
 	if (_unitSpeedVector.y < 0)
 	{
-		GetSprite().setRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
+		_sprite.setRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
 		///// Template data /////
-		_boundingBox.setRotation(GetSprite().getRotation());
+		_boundingBox.setRotation(_sprite.getRotation());
 		/////////////////////////
 		return;
 	}
 
-	GetSprite().setRotation(Utils::RadiansToDegrees(angle));
+	_sprite.setRotation(Utils::RadiansToDegrees(angle));
 	///// Template data /////
-	_boundingBox.setRotation(GetSprite().getRotation());
+	_boundingBox.setRotation(_sprite.getRotation());
 	/////////////////////////
 }
