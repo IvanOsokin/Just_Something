@@ -8,8 +8,6 @@
 
 TestScene::TestScene()
 	: _bulletManager(std::make_shared<BulletManager>())
-	, _character(std::make_shared<Character>())
-	, _enemy(std::make_shared<Enemy>())
 {}
 
 TestScene::~TestScene() = default;
@@ -18,13 +16,14 @@ void TestScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 {
 	Assert(window);
 	_window = window;
-	_character->Init(resourcesDirectory, _bulletManager);
-	SetInitialPosition(_character);
 
-	Assert(_character);
-	_enemy->Init(resourcesDirectory, window);
-	SetInitialPosition(_enemy);
-	_enemy->InitBoundingBox();
+	CreateCharacter(resourcesDirectory, _bulletManager);
+	//SetInitialPosition(_character);
+
+	Assert(_gameObject[0]);
+
+	CreateEnemy(resourcesDirectory);
+	//SetInitialPosition(_enemy);
 
 	// Once the scene will be initialized by a texture it will be needed to substitute
 	// values of arguments in 'position' and 'size' by the texture parameters
@@ -80,12 +79,12 @@ void TestScene::ProcessInput(const sf::Event & event)
 	{
 		_imguiController->ProcessInput(event);
 	}
-	// EventLogging(event);
+	//EventLogging(event);
 	ProcessSceneInput(event);
-	_character->ProcessInput(event);
-	if (_enemy)
+	
+	for (const std::shared_ptr<GameObject> entity : _gameObject)
 	{
-		_enemy->ProcessInput(event);
+		entity->ProcessInput(event);
 	}
 }
 
@@ -95,15 +94,11 @@ void TestScene::Update(const sf::Time & elapsedTime)
 	{
 		_imguiController->BeginUpdate(elapsedTime);
 	}
-	_character->Update(elapsedTime);
-
-	if (_enemy)
-	{
-		//_enemy->MoveTo(_character->GetPosition());
-		_enemy->Update(elapsedTime);
-	}
 	
-	_bulletManager->Update(elapsedTime);
+	for (const std::shared_ptr<GameObject> entity : _gameObject)
+	{
+		entity->Update(elapsedTime);
+	}
 
 	if (_enemy)
 	{
@@ -118,20 +113,18 @@ void TestScene::Update(const sf::Time & elapsedTime)
 
 void TestScene::Render()
 {
-	auto window = _window.lock();
+	auto window = _window.lock().get();
 	if (!Verify2(window, "Failed to render TestScene, window must be alive."))
 	{
 		return;
 	}
 
 	window->draw(_mapSprite);
-	
-	_character->Render(*window);
-	if (_enemy)
+
+	for (const std::shared_ptr<GameObject> entity : _gameObject)
 	{
-		_enemy->Render(*window);
+		entity->Render(*window);
 	}
-	_bulletManager->Render(*window);
 
 	if (_imguiController)
 	{
@@ -145,6 +138,20 @@ void TestScene::PostFrame()
 	{
 		_imguiController->EndFrame();
 	}
+}
+
+void TestScene::CreateCharacter(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager)
+{
+	auto character = std::make_shared<Character>();
+	character->Init(resourcesDirectory, _bulletManager);
+	_gameObject.push_back(character);
+}
+
+void TestScene::CreateEnemy(const std::filesystem::path & resourcesDirectory)
+{
+	auto enemy = std::make_shared<Enemy>();
+	enemy->Init(resourcesDirectory);
+	_gameObject.push_back(enemy);
 }
 
 void TestScene::EventLogging(const sf::Event & event)
@@ -204,8 +211,15 @@ std::unique_ptr<sf::Texture> TestScene::LoadMapTexture(const std::filesystem::pa
 
 void TestScene::RemoveDeadEnemy()
 {
-	if (_enemy->IsDead())
+	for (std::shared_ptr<GameObject> entity : _gameObject)
 	{
-		_enemy.reset();
+		if (entity->GetGameObjectID() == GameObject::GameObjectID::enemy)
+		{
+			auto enemy = static_cast<Enemy*>(entity.get());
+			if (enemy->IsDead())
+			{
+				//_enemy.reset();
+			}
+		}
 	}
 }
