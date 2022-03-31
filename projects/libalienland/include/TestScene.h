@@ -28,8 +28,8 @@ private:
 	void ProcessSceneInput(const sf::Event & event);
 	template <typename T>
 	void SetInitialPosition(std::shared_ptr<T> object);
-	//void SetInitialPosition(std::unique_ptr<Enemy> & enemy);
-	//bool TerminateIfEmptyWindow();
+
+	std::unique_ptr<sf::Texture> LoadMapTexture(const std::filesystem::path & resourcesDirectory);
 	void RemoveDeadEnemy();
 	
 	std::weak_ptr<sf::RenderWindow>			_window;
@@ -38,4 +38,7 @@ private:
 	std::shared_ptr<Character>				_character;
 	std::shared_ptr<Enemy>					_enemy;
 	bool									_shouldTerminate = false;
+
+	sf::Texture								_mapTexture;
+	sf::Sprite								_mapSprite;
 };
