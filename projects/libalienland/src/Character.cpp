@@ -1,17 +1,18 @@
 #include "Character.h"
 
 #include "BulletManager.h"
+#include "GameScene.h"
 #include "Utils.h"
 #include "SfmlUtils.h"
 
-void Character::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager)
+void Character::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<GameScene> gameScene, std::shared_ptr<BulletManager> bulletManager)
 {
+	_gameScene = gameScene;
 	_bulletManager = bulletManager;
+	SetGameObjectId(GameObject::GameObjectType::character);
 
-	//Loading the character's texture and asigning it to the sprite
 	const std::string characterTextureName = "character-1.png";
 	auto characterTexturePath = resourcesDirectory / characterTextureName;
-
 	std::string characterTexturePathStr = characterTexturePath.generic_string();
 
 	if (!LoadTexture(characterTexturePathStr))
@@ -38,6 +39,11 @@ void Character::Update(const sf::Time & elapsedTime)
 void Character::Render(sf::RenderTarget & renderTarget)
 {
 	renderTarget.draw(GetSprite());
+}
+
+void Character::ProcessCollision()
+{
+
 }
 
 float Character::GetDistFromOriginToWeaponTip() const
@@ -84,26 +90,26 @@ void Character::ProcessMouse(const sf::Event & event)
 	
 	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 	{
+		sf::Sprite& sprite = GetSprite();
 		const auto targetPos = Utils::VectorCast<float>(event.mouseButton.x, event.mouseButton.y);
-
-		const auto viewDirectionVector = targetPos - GetSprite().getPosition();
+		const auto viewDirectionVector = targetPos - sprite.getPosition();
 		const float viewDirectionVectorLength = Utils::VectorLength(viewDirectionVector);
-
 		const float distFromOriginToWeaponTip = GetDistFromOriginToWeaponTip();
 
 		if (viewDirectionVectorLength < distFromOriginToWeaponTip)
 		{
 			return;
 		}
-
-		_bulletManager.lock()->AddBullet(GetSprite().getPosition(), GetSprite().getRotation(), targetPos);
+		auto gameScene = _gameScene.lock();
+		gameScene->AddBullet(gameScene, sprite.getPosition(), sprite.getRotation(), targetPos);
 	}
 }
 
 void Character::Move(const sf::Time & elapsedTime)
 {
-	GetSprite().move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
-	_pos = GetSprite().getPosition();
+	sf::Sprite& sprite = GetSprite();
+	sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
+	_pos = sprite.getPosition();
 }
 
 void Character::Rotate()

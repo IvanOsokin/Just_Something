@@ -8,7 +8,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 
 	Game.h
 	GameObject.h
-	TestScene.h
+	GameScene.h
 	Character.h
 	Enemy.h
 	Bullet.h

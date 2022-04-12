@@ -2,11 +2,13 @@
 #include "Utils.h"
 #include "SfmlUtils.h"
 
-void Enemy::Init(const std::filesystem::path & resourcesDirectory)
+void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<GameScene> gameScene)
 {
+	_gameScene = gameScene;
+	SetGameObjectId(GameObject::GameObjectType::enemy);
+
 	const std::string enemyTextureName = "enemy-1.png";
 	auto enemyTexturePath = resourcesDirectory / enemyTextureName;
-
 	std::string enemyTexturePathStr = enemyTexturePath.generic_string();
 
 	if (!LoadTexture(enemyTexturePathStr))
@@ -16,7 +18,6 @@ void Enemy::Init(const std::filesystem::path & resourcesDirectory)
 
 	const auto textureSize = GetTexture().getSize();
 	GetSprite().setOrigin(65.0f, 83.0f);
-
 	InitBoundingBox();
 }
 
@@ -39,6 +40,11 @@ void Enemy::Render(sf::RenderTarget & renderTarget)
 {
 	renderTarget.draw(GetSprite());
 	renderTarget.draw(_boundingBox);
+}
+
+void Enemy::ProcessCollision()
+{
+
 }
 
 void Enemy::MoveTo(const sf::Vector2f & dest)

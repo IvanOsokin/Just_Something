@@ -1,5 +1,7 @@
 #pragma once
 
+#include "GameObject.h"
+
 //  Класс Bullet:
 // 1. Создает пулю и инициализирует ее:
 //    - спрайтом;
@@ -9,26 +11,22 @@
 // 2. Обновляет положение пули на сцене в зависимости от времени
 // 3. Отрисовывает пулю
 
-class Bullet
+class GameScene;
+
+class Bullet : public GameObject
 {
 public:
-	void Init(float baseSpeed, const sf::Sprite & sprite, const sf::Vector2f & initPos, const sf::Vector2f & targetPos);
+	void Init(std::shared_ptr<GameScene> gameScene, float baseSpeed, std::optional<sf::Sprite> sprite, const sf::Vector2f & initPos, const sf::Vector2f & targetPos);
 
-	void Update(const sf::Time & elapsedTime);
-	void Render(sf::RenderTarget & renderTarget);
-
-	const sf::Vector2f& GetBulletBottomPosition() const { return _bulletVertexes._bottom; }
-	const sf::Vector2f& GetBulletTipPosition() const { return _bulletVertexes._tip; }
+	void Update(const sf::Time & elapsedTime) override;
+	void Render(sf::RenderTarget & renderTarget) override;
+	void ProcessCollision() override;
 
 private:
-	struct CheckPoint
-	{
-		sf::Vector2f _tip;
-		sf::Vector2f _bottom;
-	};
+	void SceneBorderCollision();
+	void EnemyCollision();
 
-	sf::Vector2f		_unitSpeedVector;
-	sf::Sprite			_sprite;
-	CheckPoint			_bulletVertexes;
-	float				_baseSpeed = 0.0f;
+	std::weak_ptr<GameScene>	_gameScene;
+	sf::Vector2f				_unitSpeedVector;
+	float						_baseSpeed = 0.0f;
 };
