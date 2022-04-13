@@ -28,6 +28,7 @@ private:
 
 	std::optional<sf::Vector2f>		_targetPos;
 	sf::RectangleShape				_boundingBox;
+	sf::Sprite						_sprite;
 	sf::Vector2f					_unitSpeedVector;
 	sf::Vector2f					_pos;
 	float							_baseSpeed = 300.0f;

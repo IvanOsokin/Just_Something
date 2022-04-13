@@ -19,19 +19,16 @@ public:
 		bullet
 	};
 
-	GameObjectType GetGameObjectType() { return _gameObjectId; }
-	void SetGameObjectId(GameObjectType gameObjectId) { _gameObjectId = gameObjectId; }
+	GameObjectType GetGameObjectType() { return _gameObjectType; }
+	void SetGameObjectId(GameObjectType gameObjectId) { _gameObjectType = gameObjectId; }
 	bool ShouldRemove() const { return _shouldRemove; }
 	void SetShouldRemoveState(bool shouldRemove) { _shouldRemove = shouldRemove; }
 
 protected:
 	sf::Texture& GetTexture() { return _texture; }
-	sf::Sprite& GetSprite() { return _sprite; }
-	void SetSprite(sf::Sprite&& sprite) { _sprite = sprite; }
 
 private:
 	sf::Texture		_texture;
-	sf::Sprite		_sprite;
-	GameObjectType	_gameObjectId;
+	GameObjectType	_gameObjectType;
 	bool			_shouldRemove = false;
 };

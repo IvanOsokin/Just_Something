@@ -33,6 +33,7 @@ private:
 	std::weak_ptr<BulletManager>	_bulletManager;
 	std::weak_ptr<GameScene>		_gameScene;
 
+	sf::Sprite		_sprite;
 	sf::Vector2f	_pos;
 	sf::Vector2f	_speed;
 	sf::Vector2f	_unitSpeedVector;

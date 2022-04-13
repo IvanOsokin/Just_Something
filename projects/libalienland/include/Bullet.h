@@ -27,6 +27,7 @@ private:
 	void EnemyCollision();
 
 	std::weak_ptr<GameScene>	_gameScene;
+	sf::Sprite					_sprite;
 	sf::Vector2f				_unitSpeedVector;
 	float						_baseSpeed = 0.0f;
 };

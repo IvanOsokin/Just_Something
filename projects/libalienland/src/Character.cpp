@@ -19,8 +19,7 @@ void Character::Init(const std::filesystem::path & resourcesDirectory, std::shar
 	{
 		return;
 	}
-
-	GetSprite().setOrigin(68.0f, 92.0f);
+	_sprite.setOrigin(68.0f, 92.0f);
 }
 
 void Character::ProcessInput(const sf::Event & event)
@@ -38,7 +37,7 @@ void Character::Update(const sf::Time & elapsedTime)
 
 void Character::Render(sf::RenderTarget & renderTarget)
 {
-	renderTarget.draw(GetSprite());
+	renderTarget.draw(_sprite);
 }
 
 void Character::ProcessCollision()
@@ -59,7 +58,7 @@ bool Character::LoadTexture(const std::string & characterTexturePath)
 		return false;
 	}
 
-	GetSprite().setTexture(GetTexture());
+	_sprite.setTexture(GetTexture());
 	LOG_INFO() << "Successful loading the character texture.";
 	return true;
 }
@@ -90,9 +89,8 @@ void Character::ProcessMouse(const sf::Event & event)
 	
 	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 	{
-		sf::Sprite& sprite = GetSprite();
 		const auto targetPos = Utils::VectorCast<float>(event.mouseButton.x, event.mouseButton.y);
-		const auto viewDirectionVector = targetPos - sprite.getPosition();
+		const auto viewDirectionVector = targetPos - _sprite.getPosition();
 		const float viewDirectionVectorLength = Utils::VectorLength(viewDirectionVector);
 		const float distFromOriginToWeaponTip = GetDistFromOriginToWeaponTip();
 
@@ -101,15 +99,14 @@ void Character::ProcessMouse(const sf::Event & event)
 			return;
 		}
 		auto gameScene = _gameScene.lock();
-		gameScene->AddBullet(gameScene, sprite.getPosition(), sprite.getRotation(), targetPos);
+		gameScene->AddBullet(gameScene, _sprite.getPosition(), _sprite.getRotation(), targetPos);
 	}
 }
 
 void Character::Move(const sf::Time & elapsedTime)
 {
-	sf::Sprite& sprite = GetSprite();
-	sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
-	_pos = sprite.getPosition();
+	_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
+	_pos = _sprite.getPosition();
 }
 
 void Character::Rotate()
@@ -131,9 +128,9 @@ void Character::Rotate()
 	
 	if (unitViewDirectionVector.y < 0)
 	{
-		GetSprite().setRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
+		_sprite.setRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
 		return;
 	}
 
-	GetSprite().setRotation(Utils::RadiansToDegrees(angle));
+	_sprite.setRotation(Utils::RadiansToDegrees(angle));
 }
