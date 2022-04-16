@@ -142,7 +142,6 @@ void GameScene::AddBullet(std::shared_ptr<GameScene> gameScene, const sf::Vector
 {	
 	auto bullet = _bulletManager->CreateBullet(gameScene, curCharPos, curCharRot, targetPos);
 	_bullets.push_back(bullet);
-	LOG_INFO() << "A bullet has been created";
 }
 
 void GameScene::AddCharacter(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager)
@@ -169,7 +168,7 @@ void GameScene::AddBullets()
 	}
 	for (std::shared_ptr<Bullet> bullet : _bullets)
 	{
-		_gameObjects.push_back(std::move(static_cast<std::shared_ptr<Bullet>&&>(bullet)));
+		_gameObjects.push_back(bullet);
 	}
 	_bullets.clear();
 }
