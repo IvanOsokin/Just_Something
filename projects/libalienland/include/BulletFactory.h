@@ -15,7 +15,7 @@
 class BulletFactory
 {
 public:
-	void Init(const std::filesystem::path & resourcesDirectory, const std::vector<std::string> & bulletTextureTitle, std::vector<float> && distanceToWeaponTip);
+	void Init(const std::filesystem::path & resourcesDirectory, const std::vector<std::string> & bulletTextureTitle, std::vector<float> distanceToWeaponTip);
 	
 	std::optional<sf::Sprite> GetSprite(/*WeaponID*/);
 	std::optional<float> GetInitPosition(/*WeaponID*/);
