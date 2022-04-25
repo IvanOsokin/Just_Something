@@ -1,6 +1,6 @@
 #pragma once
 
-class TestScene;
+class GameScene;
 
 class Game
 {
@@ -12,7 +12,7 @@ public:
 
 private:
 	void CreateWindow();
-	void CreateTestScene(const std::filesystem::path & resourcesDirectory);
+	void CreateGameScene(const std::filesystem::path & resourcesDirectory);
 
 	void PreGameLoop();
 	void GameLoop();
@@ -25,6 +25,6 @@ private:
 	void PostFrame();
 
 	std::shared_ptr<sf::RenderWindow>	_window;
-	std::shared_ptr<TestScene>			_testScene;
+	std::shared_ptr<GameScene>			_gameScene;
 	bool								_shouldTerminate = false;
 };

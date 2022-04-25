@@ -1,11 +1,21 @@
 #include "Bullet.h"
+#include "Enemy.h"
+#include "GameScene.h"
+#include "SfmlUtils.h"
 #include "Utils.h"
 
-void Bullet::Init(float baseSpeed, const sf::Sprite & sprite, const sf::Vector2f & initPos, const sf::Vector2f & targetPos)
+void Bullet::Init(std::shared_ptr<GameScene> gameScene, float baseSpeed, std::optional<sf::Sprite> sprite, const sf::Vector2f & initPos, const sf::Vector2f & targetPos)
 {
-	_sprite = sprite;
+	_gameScene = gameScene;
 	_baseSpeed = baseSpeed;
-
+	if (!sprite)
+	{
+		LOG_ERROR() << "Could not load a sprite of the bullet";
+		return;
+	}
+	_sprite = *sprite;
+	SetGameObjectId(GameObject::GameObjectType::bullet);
+	
 	// Set initial position of the bullet on the tip of the weapon
 	_sprite.setOrigin(0.0f, _sprite.getTexture()->getSize().y / 2.0f);
 	_sprite.setPosition(initPos);
@@ -22,31 +32,61 @@ void Bullet::Init(float baseSpeed, const sf::Sprite & sprite, const sf::Vector2f
 		_sprite.setRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
 	else
 		_sprite.setRotation(Utils::RadiansToDegrees(angle));
-
-	// Initializing points for checking on the bullet sprite
-	const float bulletLength = static_cast<float>(_sprite.getTexture()->getSize().x);
-
-	sf::Vector2f bulletTip;
-
-	if (_unitSpeedVector.y < 0)
-		bulletTip = sf::Vector2(bulletLength * std::cosf(2 * Utils::pi - angle), bulletLength * std::sinf(2 * Utils::pi - angle));
-	else
-		bulletTip = sf::Vector2(bulletLength * std::cosf(angle), bulletLength * std::sinf(angle));
-
-	_bulletVertexes._bottom = _sprite.getPosition();
-	_bulletVertexes._tip = _bulletVertexes._bottom + bulletTip;
 }
 
 void Bullet::Update(const sf::Time & elapsedTime)
 {
 	sf::Vector2f offset = (_unitSpeedVector * _baseSpeed) * elapsedTime.asSeconds();
-
 	_sprite.move(offset);
-	_bulletVertexes._bottom += offset;
-	_bulletVertexes._tip += offset;
 }
 
 void Bullet::Render(sf::RenderTarget & renderTarget)
 {
 	renderTarget.draw(_sprite);
+}
+
+void Bullet::ProcessCollision()
+{
+	SceneBorderCollision();
+	if (ShouldRemove())
+	{
+		return;
+	}
+	EnemyCollision();
+}
+
+void Bullet::SceneBorderCollision()
+{
+	auto gameScene = _gameScene.lock();
+	const sf::IntRect sceneBorder = gameScene->GetSceneBorder();
+	const sf::FloatRect entityBound = _sprite.getGlobalBounds();
+	if (Utils::RectCast<float>(sceneBorder).intersects(entityBound))
+	{
+		return;
+	}
+	this->SetShouldRemoveState(true);
+	gameScene->SetShouldremoveGameObjectsState(true);
+}
+
+void Bullet::EnemyCollision()
+{
+	auto gameScene = _gameScene.lock();
+	auto gameObjects = gameScene->GetGameObjects();
+	for (auto gameObject : gameObjects)
+	{
+		if (gameObject->GetGameObjectType() != GameObject::GameObjectType::enemy)
+		{
+			continue;
+		}
+		auto enemy = static_cast<Enemy*>(gameObject.get());
+		const sf::FloatRect enemyBound = enemy->GetBoundingBox();
+		const sf::FloatRect bulletBound = this->_sprite.getGlobalBounds();
+		if (!enemyBound.intersects(bulletBound))
+		{
+			continue;
+		}
+		this->SetShouldRemoveState(true);
+		gameObject->SetShouldRemoveState(true);
+		gameScene->SetShouldremoveGameObjectsState(true);
+	}
 }

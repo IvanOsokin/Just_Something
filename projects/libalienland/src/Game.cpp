@@ -1,9 +1,9 @@
 #include "Game.h"
 
-#include "TestScene.h"
+#include "GameScene.h"
 
 Game::Game()
-	: _testScene(std::make_shared<TestScene>())
+	: _gameScene(std::make_shared<GameScene>())
 {
 }
 
@@ -15,7 +15,7 @@ void Game::Start(const std::filesystem::path & resourcesDirectory)
 	Assert(std::filesystem::is_directory(resourcesDirectory, ec));
 
 	CreateWindow();
-	CreateTestScene(resourcesDirectory);
+	CreateGameScene(resourcesDirectory);
 
 	PreGameLoop();
 	GameLoop();
@@ -28,29 +28,29 @@ void Game::CreateWindow()
 	_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(800, 600), gameTitle);
 }
 
-void Game::CreateTestScene(const std::filesystem::path & resourcesDirectory)
+void Game::CreateGameScene(const std::filesystem::path & resourcesDirectory)
 {
 	if (!Verify2(_window, "Window must be created first."))
 	{
 		_shouldTerminate = true;
 		return;
 	}
-	_testScene->Init(_window, resourcesDirectory);
+	_gameScene->Init(_window, resourcesDirectory);
 }
 
 void Game::PreGameLoop()
 {
-	_testScene->PreGameLoop();
+	_gameScene->PreGameLoop();
 }
 
 void Game::PostGameLoop()
 {
-	_testScene->PostGameLoop();
+	_gameScene->PostGameLoop();
 }
 
 void Game::PreFrame()
 {
-	_testScene->PreFrame();
+	_gameScene->PreFrame();
 }
 
 void Game::HandleInput()
@@ -58,26 +58,26 @@ void Game::HandleInput()
 	sf::Event e;
 	while (_window->pollEvent(e))
 	{
-		_testScene->ProcessInput(e);
-		_shouldTerminate = _testScene->ShouldTerminate();
+		_gameScene->ProcessInput(e);
+		_shouldTerminate = _gameScene->ShouldTerminate();
 	}
 }
 
 void Game::Update(const sf::Time & elapsedTime)
 {
-	_testScene->Update(elapsedTime);
+	_gameScene->Update(elapsedTime);
 }
 
 void Game::Render()
 {
 	_window->clear();
-	_testScene->Render();
+	_gameScene->Render();
 	_window->display();
 }
 
 void Game::PostFrame()
 {
-	_testScene->PostFrame();
+	_gameScene->PostFrame();
 }
 
 void Game::GameLoop()

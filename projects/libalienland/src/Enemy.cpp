@@ -2,13 +2,13 @@
 #include "Utils.h"
 #include "SfmlUtils.h"
 
-void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<sf::RenderWindow> window)
+void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<GameScene> gameScene)
 {
-	Assert(window);
+	_gameScene = gameScene;
+	SetGameObjectId(GameObject::GameObjectType::enemy);
 
 	const std::string enemyTextureName = "enemy-1.png";
 	auto enemyTexturePath = resourcesDirectory / enemyTextureName;
-
 	std::string enemyTexturePathStr = enemyTexturePath.generic_string();
 
 	if (!LoadTexture(enemyTexturePathStr))
@@ -16,8 +16,8 @@ void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_p
 		return;
 	}
 
-	const auto textureSize = _texture.getSize();
 	_sprite.setOrigin(65.0f, 83.0f);
+	InitBoundingBox();
 }
 
 void Enemy::ProcessInput(const sf::Event & event)
@@ -41,6 +41,11 @@ void Enemy::Render(sf::RenderTarget & renderTarget)
 	renderTarget.draw(_boundingBox);
 }
 
+void Enemy::ProcessCollision()
+{
+
+}
+
 void Enemy::MoveTo(const sf::Vector2f & dest)
 {
 	_targetPos = dest;
@@ -62,13 +67,13 @@ void Enemy::InitBoundingBox()
 
 bool Enemy::LoadTexture(const std::string & enemyTexturePath)
 {
-	if (!_texture.loadFromFile(enemyTexturePath))
+	if (!GetTexture().loadFromFile(enemyTexturePath))
 	{
 		LOG_ERROR() << "Failed to load the enemy's texture.";
 		return false;
 	}
 
-	_sprite.setTexture(_texture);
+	_sprite.setTexture(GetTexture());
 	LOG_INFO() << "Successful loading the enemy texture.";
 	return true;
 }

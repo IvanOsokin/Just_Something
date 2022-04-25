@@ -2,7 +2,7 @@
 
 void BulletFactory::Init(const std::filesystem::path & resourcesDirectory,
 						 const std::vector<std::string> & bulletTextureTitle,
-						 std::vector<float> && distanceToWeaponTip)
+						 std::vector<float> distanceToWeaponTip)
 {
 	_distanceToWeaponTip = std::move(distanceToWeaponTip);
 
