@@ -31,7 +31,6 @@ public:
 private:
 	void AddCharacter(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager);
 	void AddEnemy(const std::filesystem::path & resourcesDirectory);
-	void AddBullets();
 
 	void EventLogging(const sf::Event & event);
 	void ProcessSceneInput(const sf::Event & event);
@@ -47,7 +46,6 @@ private:
 	std::weak_ptr<sf::RenderWindow>				_window;
 	std::shared_ptr<ImguiController>			_imguiController;
 	std::shared_ptr<BulletManager>				_bulletManager;
-	std::vector<std::shared_ptr<Bullet>>		_bullets;
 
 	std::vector<std::shared_ptr<GameObject>>	_gameObjects;
 
