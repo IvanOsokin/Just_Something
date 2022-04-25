@@ -78,10 +78,11 @@ void GameScene::ProcessInput(const sf::Event & event)
 	}
 	//EventLogging(event);
 	ProcessSceneInput(event);
-	
-	for (const std::shared_ptr<GameObject> entity : _gameObjects)
+
+	std::vector<std::shared_ptr<GameObject>> gameObjects = _gameObjects;
+	for (auto & gameObject : gameObjects)
 	{
-		entity->ProcessInput(event);
+		gameObject->ProcessInput(event);
 	}
 }
 
@@ -92,11 +93,11 @@ void GameScene::Update(const sf::Time & elapsedTime)
 		_imguiController->BeginUpdate(elapsedTime);
 	}
 	
-	for (std::shared_ptr<GameObject> entity : _gameObjects)
+	for (auto & gameObject : _gameObjects)
 	{
-		entity->Update(elapsedTime);
+		gameObject->Update(elapsedTime);
 	}
-	AddBullets();
+
 	ProcessCollision();
 	if (_shouldRemoveGameObjs)
 	{
@@ -119,9 +120,9 @@ void GameScene::Render()
 	
 	window->draw(_mapSprite);
 
-	for (const std::shared_ptr<GameObject> entity : _gameObjects)
+	for (const auto & gameObject : _gameObjects)
 	{
-		entity->Render(*window);
+		gameObject->Render(*window);
 	}
 
 	if (_imguiController)
@@ -141,7 +142,7 @@ void GameScene::PostFrame()
 void GameScene::AddBullet(std::shared_ptr<GameScene> gameScene, const sf::Vector2f & curCharPos, float curCharRot, const sf::Vector2f & targetPos)
 {	
 	auto bullet = _bulletManager->CreateBullet(gameScene, curCharPos, curCharRot, targetPos);
-	_bullets.push_back(bullet);
+	_gameObjects.push_back(bullet);
 }
 
 void GameScene::AddCharacter(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager)
@@ -158,19 +159,6 @@ void GameScene::AddEnemy(const std::filesystem::path & resourcesDirectory)
 	enemy->Init(resourcesDirectory, shared_from_this());
 	_gameObjects.push_back(enemy);
 	LOG_INFO() << "An enemy has been created";
-}
-
-void GameScene::AddBullets()
-{
-	if (_bullets.empty())
-	{
-		return;
-	}
-	for (std::shared_ptr<Bullet> bullet : _bullets)
-	{
-		_gameObjects.push_back(bullet);
-	}
-	_bullets.clear();
 }
 
 void GameScene::EventLogging(const sf::Event & event)
