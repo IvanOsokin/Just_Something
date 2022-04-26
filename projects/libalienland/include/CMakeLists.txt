@@ -6,6 +6,8 @@ target_sources(${PROJECT_NAME} PRIVATE
 
 	Internal/pch.h
 
+	Render/SimpleSpriteUnitRender.h
+
 	Game.h
 	GameObject.h
 	GameObjectTransform.h
