@@ -1,16 +1,27 @@
 #pragma once
 
 #include "SFML/Graphics.hpp"
+class GameObjectRender
+{
+public:
+	virtual ~GameObjectRender() = default;
+	virtual void Render() = 0;
+};
 
 class GameObject
 {
 public:
 	virtual ~GameObject() {};
+	virtual ~GameObject() = default;
+
+	void SetRender(std::unique_ptr<GameObjectRender> render);
 
 	virtual void ProcessInput(const sf::Event& /*event*/) {};
 	virtual void Update(const sf::Time& /*elapsedTime*/) {};
 	virtual void Render(sf::RenderTarget& /*renderTarget*/) {};
 	virtual void ProcessCollision() {};
+
+	void Render();
 
 	enum class GameObjectType
 	{
@@ -31,4 +42,5 @@ private:
 	sf::Texture		_texture;
 	GameObjectType	_gameObjectType;
 	bool			_shouldRemove = false;
+	std::unique_ptr<GameObjectRender>		_render;
 };
