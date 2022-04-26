@@ -19,8 +19,9 @@ public:
 	void Init(std::shared_ptr<GameScene> gameScene, float baseSpeed, std::optional<sf::Sprite> sprite, const sf::Vector2f & initPos, const sf::Vector2f & targetPos);
 
 	void Update(const sf::Time & elapsedTime) override;
-	void Render(sf::RenderTarget & renderTarget) override;
 	void ProcessCollision() override;
+
+	const sf::Sprite & GetSprite() const { return _sprite; }
 
 private:
 	void SceneBorderCollision();

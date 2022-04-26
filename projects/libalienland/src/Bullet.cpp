@@ -40,11 +40,6 @@ void Bullet::Update(const sf::Time & elapsedTime)
 	_sprite.move(offset);
 }
 
-void Bullet::Render(sf::RenderTarget & renderTarget)
-{
-	renderTarget.draw(_sprite);
-}
-
 void Bullet::ProcessCollision()
 {
 	SceneBorderCollision();

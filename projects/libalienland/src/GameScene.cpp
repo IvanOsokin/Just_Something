@@ -198,6 +198,10 @@ void GameScene::PostFrame()
 void GameScene::AddBullet(std::shared_ptr<GameScene> gameScene, const sf::Vector2f & curCharPos, float curCharRot, const sf::Vector2f & targetPos)
 {	
 	auto bullet = _bulletManager->CreateBullet(gameScene, curCharPos, curCharRot, targetPos);
+	auto window = _window.lock();
+	auto render = std::make_unique<SimpleGameObjectRender>(*window, bullet->GetSprite());
+	
+	bullet->SetRender(std::move(render));
 	_gameObjects.push_back(bullet);
 }
 
