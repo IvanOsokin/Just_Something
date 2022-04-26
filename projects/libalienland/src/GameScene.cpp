@@ -154,7 +154,11 @@ void GameScene::AddCharacter(const std::filesystem::path & resourcesDirectory, s
 	character->Init(resourcesDirectory, shared_from_this(), _bulletManager);
 
 	auto window = _window.lock();
-	auto render = std::make_unique<SimpleSpriteUnitRender>(*window, character->GetSprite(), character->Transform());
+
+	auto sprite = sf::Sprite(character->GetTexture());
+	sprite.setOrigin(68.0f, 92.0f);
+
+	auto render = std::make_unique<SimpleSpriteUnitRender>(*window, sprite, character->Transform());
 	
 	character->SetRender(std::move(render));
 	_gameObjects.push_back(character);

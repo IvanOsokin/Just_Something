@@ -43,13 +43,6 @@ float Character::GetDistFromOriginToWeaponTip() const
 	return _bulletManager.lock()->GetCurrentDistFormOriginToWeaponTip(/*Weapon ID*/);
 }
 
-sf::Sprite Character::GetSprite() const
-{
-	auto sprite = sf::Sprite(_texture);
-	sprite.setOrigin(68.0f, 92.0f);
-	return sprite;
-}
-
 bool Character::LoadTexture(const std::string & characterTexturePath)
 {
 	if (!_texture.loadFromFile(characterTexturePath))
