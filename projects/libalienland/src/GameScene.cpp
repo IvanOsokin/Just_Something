@@ -211,21 +211,6 @@ void GameScene::ProcessSceneInput(const sf::Event & event)
 	}
 }
 
-template <typename T>
-void GameScene::SetInitialPosition(std::shared_ptr<T> object)
-{
-	if (!_window.lock())
-	{
-		LOG_ERROR() << "The window was lost.";
-		object->GetSprite().setPosition( 0.0f, 0.0f );
-		return;
-	}
-	
-	const auto windowSize = _window.lock()->getSize();
-	object->SetPosition(sf::Vector2f(windowSize.x / 2.0f, windowSize.y / 2.0f));
-	object->GetSprite().setPosition(object->GetPosition());
-}
-
 void GameScene::RemoveMarkedGameObjects()
 {
 	if (_gameObjects.empty())
