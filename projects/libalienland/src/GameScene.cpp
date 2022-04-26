@@ -63,16 +63,14 @@ namespace
 	};
 }
 
-GameScene::GameScene()
-	: _bulletManager(std::make_shared<BulletManager>())
-{}
-
+GameScene::GameScene() = default;
 GameScene::~GameScene() = default;
 
 void GameScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesystem::path & resourcesDirectory)
 {
 	Assert(window);
 	_window = window;
+	_bulletManager = std::make_shared<BulletManager>(*window);
 	
 	AddCharacter(resourcesDirectory, _bulletManager);
 	//SetInitialPosition(_character);
