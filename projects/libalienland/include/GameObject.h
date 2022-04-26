@@ -33,7 +33,6 @@ public:
 	void SetShouldRemoveState(bool shouldRemove) { _shouldRemove = shouldRemove; }
 
 private:
-	sf::Texture		_texture;
 	GameObjectType	_gameObjectType;
 	bool			_shouldRemove = false;
 	std::unique_ptr<GameObjectRender>		_render;
