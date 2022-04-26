@@ -68,7 +68,7 @@ void Bullet::EnemyCollision()
 	auto gameObjects = gameScene->GetGameObjects();
 	for (auto gameObject : gameObjects)
 	{
-		Enemy* enemy = dynamic_cast<Enemy*>(gameObject.get());
+		auto enemy = std::dynamic_pointer_cast<Enemy>(gameObject);
 		if (!enemy)
 		{
 			continue;
