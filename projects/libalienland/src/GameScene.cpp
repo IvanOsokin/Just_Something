@@ -29,27 +29,6 @@ namespace
 		const sf::Drawable &	_drawable;
 	};
 
-	class SimpleSpriteUnitRender : public GameObjectRender
-	{
-	public:
-		SimpleSpriteUnitRender(sf::RenderTarget & renderTarget, sf::Sprite sprite, const GameObjectTransform & transform)
-			: _renderTarget(renderTarget)
-			, _sprite(sprite)
-			, _transform(transform)
-		{
-		}
-
-		void Render() override
-		{
-			_renderTarget.draw(_sprite, sf::RenderStates(_transform.GetTransform()));
-		}
-
-	private:
-		sf::RenderTarget &				_renderTarget;
-		sf::Sprite						_sprite;
-		const GameObjectTransform &		_transform;
-	};
-
 	class TempEnemyRender : public GameObjectRender
 	{
 	public:

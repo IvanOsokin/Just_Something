@@ -3,6 +3,8 @@ target_sources(${PROJECT_NAME} PRIVATE
 	Imgui/ImguiController.cpp
 	Imgui/ImguiDebugWidget.cpp
 
+	Render/SimpleSpriteUnitRender.cpp
+
 	Game.cpp
 	GameObject.cpp
 	GameScene.cpp
