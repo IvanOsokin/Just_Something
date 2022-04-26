@@ -2,9 +2,9 @@
 #include "Utils.h"
 #include "SfmlUtils.h"
 
-void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<GameScene> gameScene)
+void Enemy::Init(const std::filesystem::path & resourcesDirectory, sf::FloatRect localBounds)
 {
-	_gameScene = gameScene;
+	_localBounds = localBounds;
 
 	const std::string enemyTextureName = "enemy-1.png";
 	auto enemyTexturePath = resourcesDirectory / enemyTextureName;
@@ -14,9 +14,6 @@ void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_p
 	{
 		return;
 	}
-
-	_sprite.setOrigin(65.0f, 83.0f);
-	InitBoundingBox();
 }
 
 void Enemy::ProcessInput(const sf::Event & event)
@@ -44,20 +41,6 @@ void Enemy::MoveTo(const sf::Vector2f & dest)
 	_targetPos = dest;
 }
 
-void Enemy::InitBoundingBox()
-{
-	_boundingBox.setOutlineColor(sf::Color::Yellow);
-	_boundingBox.setFillColor(sf::Color::Transparent);
-	_boundingBox.setOutlineThickness(2.0f);
-
-	/////// Depending on the type of the enemy /////////
-	_boundingBox.setSize(sf::Vector2f(64.0f, 24.0f));
-	////////////////////////////////////////////////////
-	_boundingBox.setOrigin(_boundingBox.getSize().x / 2 + 14, _boundingBox.getSize().y / 2 - 3);
-	_boundingBox.setPosition(_sprite.getPosition());
-	_boundingBox.setRotation(_sprite.getRotation());
-}
-
 bool Enemy::LoadTexture(const std::string & enemyTexturePath)
 {
 	if (!_texture.loadFromFile(enemyTexturePath))
@@ -66,7 +49,6 @@ bool Enemy::LoadTexture(const std::string & enemyTexturePath)
 		return false;
 	}
 
-	_sprite = sf::Sprite(_texture);
 	LOG_INFO() << "Successful loading the enemy texture.";
 	return true;
 }
@@ -78,16 +60,14 @@ void Enemy::Move(const sf::Time & elapsedTime)
 		return;
 	}
 
-	sf::Vector2f speedVector = *_targetPos - _pos;
+	sf::Vector2f speedVector = *_targetPos - Transform().GetPosition();
 	float speedVectorLength = Utils::VectorLength(speedVector);
 
 	const float eps = 0.5f;			// Необходим eps, чтобы враг не дергался, когда догоняет игрока
 	if (speedVectorLength >= eps)
 	{
 		_unitSpeedVector = speedVector / speedVectorLength;
-		_sprite.move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
-		_pos = _sprite.getPosition();
-		_boundingBox.setPosition(_pos);
+		Transform().Move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
 	}
 	else
 	{
@@ -112,15 +92,9 @@ void Enemy::Rotate()
 
 	if (_unitSpeedVector.y < 0)
 	{
-		_sprite.setRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
-		///// Template data /////
-		_boundingBox.setRotation(_sprite.getRotation());
-		/////////////////////////
+		Transform().SetRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
 		return;
 	}
 
-	_sprite.setRotation(Utils::RadiansToDegrees(angle));
-	///// Template data /////
-	_boundingBox.setRotation(_sprite.getRotation());
-	/////////////////////////
+	Transform().SetRotation(Utils::RadiansToDegrees(angle));
 }
