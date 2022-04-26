@@ -1,4 +1,5 @@
 #pragma once
+#include "GameObjectTransform.h"
 
 class GameObjectRender
 {
@@ -20,10 +21,14 @@ public:
 
 	void Render();
 
+	auto & Transform() { return _transform; }
+	const auto & Transform() const { return _transform; }
+
 	bool ShouldRemove() const { return _shouldRemove; }
 	void SetShouldRemoveState(bool shouldRemove) { _shouldRemove = shouldRemove; }
 
 private:
 	bool			_shouldRemove = false;
+	GameObjectTransform						_transform;
 	std::unique_ptr<GameObjectRender>		_render;
 };
