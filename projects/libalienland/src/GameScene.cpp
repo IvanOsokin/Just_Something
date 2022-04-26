@@ -69,7 +69,11 @@ GameScene::~GameScene() = default;
 
 void GameScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesystem::path & resourcesDirectory)
 {
-	Assert(window);
+	if (!Verify2(window, "Window is not supplied."))
+	{
+		return;
+	}
+
 	_window = window;
 	_bulletManager = std::make_shared<BulletManager>(*window);
 	
