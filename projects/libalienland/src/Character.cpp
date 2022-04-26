@@ -35,11 +35,6 @@ void Character::Update(const sf::Time & elapsedTime)
 
 }
 
-void Character::Render(sf::RenderTarget & renderTarget)
-{
-	renderTarget.draw(_sprite);
-}
-
 void Character::ProcessCollision()
 {
 
@@ -52,13 +47,13 @@ float Character::GetDistFromOriginToWeaponTip() const
 
 bool Character::LoadTexture(const std::string & characterTexturePath)
 {
-	if (!GetTexture().loadFromFile(characterTexturePath))
+	if (!_texture.loadFromFile(characterTexturePath))
 	{
 		LOG_ERROR() << "Failed to load the character's texture.";
 		return false;
 	}
 
-	_sprite.setTexture(GetTexture());
+	_sprite = sf::Sprite(_texture);
 	LOG_INFO() << "Successful loading the character texture.";
 	return true;
 }

@@ -14,12 +14,13 @@ public:
 
 	void ProcessInput(const sf::Event & event) override;
 	void Update(const sf::Time & elapsedTime) override;
-	void Render(sf::RenderTarget & renderTarget) override;
 	void ProcessCollision() override;
 
 	const sf::Vector2f& GetPosition() const { return _pos; }
 	void SetPosition(const sf::Vector2f pos) { _pos = pos; }
 	float GetDistFromOriginToWeaponTip() const;
+
+	const sf::Sprite & GetSprite() const { return _sprite; }
 
 private:
 	bool LoadTexture(const std::string & characterTexturePath);
@@ -33,7 +34,9 @@ private:
 	std::weak_ptr<BulletManager>	_bulletManager;
 	std::weak_ptr<GameScene>		_gameScene;
 
+	sf::Texture		_texture;
 	sf::Sprite		_sprite;
+	
 	sf::Vector2f	_pos;
 	sf::Vector2f	_speed;
 	sf::Vector2f	_unitSpeedVector;

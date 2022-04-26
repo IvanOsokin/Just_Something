@@ -209,6 +209,11 @@ void GameScene::AddCharacter(const std::filesystem::path & resourcesDirectory, s
 {
 	auto character = std::make_shared<Character>();
 	character->Init(resourcesDirectory, shared_from_this(), _bulletManager);
+
+	auto window = _window.lock();
+	auto render = std::make_unique<SimpleGameObjectRender>(*window, character->GetSprite());
+	
+	character->SetRender(std::move(render));
 	_gameObjects.push_back(character);
 	LOG_INFO() << "The main character has been created";
 }
