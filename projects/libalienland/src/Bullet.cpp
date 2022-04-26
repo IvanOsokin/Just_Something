@@ -4,20 +4,15 @@
 #include "SfmlUtils.h"
 #include "Utils.h"
 
-void Bullet::Init(std::shared_ptr<GameScene> gameScene, float baseSpeed, std::optional<sf::Sprite> sprite, const sf::Vector2f & initPos, const sf::Vector2f & targetPos)
+void Bullet::Init(std::shared_ptr<GameScene> gameScene, float baseSpeed, sf::FloatRect localBounds, const sf::Vector2f & initPos, const sf::Vector2f & targetPos)
 {
 	_gameScene = gameScene;
 	_baseSpeed = baseSpeed;
-	if (!sprite)
-	{
-		LOG_ERROR() << "Could not load a sprite of the bullet";
-		return;
-	}
-	_sprite = *sprite;
-	
+	_localBounds = localBounds;
+
 	// Set initial position of the bullet on the tip of the weapon
-	_sprite.setOrigin(0.0f, _sprite.getTexture()->getSize().y / 2.0f);
-	_sprite.setPosition(initPos);
+	Transform().SetOrigin(0.0f, _localBounds.top / 2.0f);
+	Transform().SetPosition(initPos);
 
 	// Calculate the unit speed vector
 	sf::Vector2f speedVector = targetPos - initPos;
@@ -28,15 +23,15 @@ void Bullet::Init(std::shared_ptr<GameScene> gameScene, float baseSpeed, std::op
 	const float angle = std::acosf(_unitSpeedVector.x);
 
 	if (_unitSpeedVector.y < 0)
-		_sprite.setRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
+		Transform().SetRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
 	else
-		_sprite.setRotation(Utils::RadiansToDegrees(angle));
+		Transform().SetRotation(Utils::RadiansToDegrees(angle));
 }
 
 void Bullet::Update(const sf::Time & elapsedTime)
 {
 	sf::Vector2f offset = (_unitSpeedVector * _baseSpeed) * elapsedTime.asSeconds();
-	_sprite.move(offset);
+	Transform().Move(offset);
 }
 
 void Bullet::ProcessCollision()
@@ -53,7 +48,7 @@ void Bullet::SceneBorderCollision()
 {
 	auto gameScene = _gameScene.lock();
 	const sf::IntRect sceneBorder = gameScene->GetSceneBorder();
-	const sf::FloatRect entityBound = _sprite.getGlobalBounds();
+	const sf::FloatRect entityBound = Transform().GetTransform().transformRect(_localBounds);
 	if (Utils::RectCast<float>(sceneBorder).intersects(entityBound))
 	{
 		return;
@@ -74,7 +69,7 @@ void Bullet::EnemyCollision()
 			continue;
 		}
 		const sf::FloatRect enemyBound = enemy->GetBoundingBox();
-		const sf::FloatRect bulletBound = this->_sprite.getGlobalBounds();
+		const sf::FloatRect bulletBound = Transform().GetTransform().transformRect(_localBounds);
 		if (!enemyBound.intersects(bulletBound))
 		{
 			continue;
