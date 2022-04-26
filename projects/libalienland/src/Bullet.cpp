@@ -68,7 +68,7 @@ void Bullet::EnemyCollision()
 		{
 			continue;
 		}
-		const sf::FloatRect enemyBound = enemy->GetBoundingBox();
+		const sf::FloatRect enemyBound = enemy->Transform().GetTransform().transformRect(enemy->GetLocalBounds());
 		const sf::FloatRect bulletBound = Transform().GetTransform().transformRect(_localBounds);
 		if (!enemyBound.intersects(bulletBound))
 		{
