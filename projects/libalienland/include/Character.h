@@ -20,7 +20,7 @@ public:
 	void SetPosition(const sf::Vector2f pos) { _pos = pos; }
 	float GetDistFromOriginToWeaponTip() const;
 
-	const sf::Sprite & GetSprite() const { return _sprite; }
+	sf::Sprite GetSprite() const;
 
 private:
 	bool LoadTexture(const std::string & characterTexturePath);
@@ -35,7 +35,6 @@ private:
 	std::weak_ptr<GameScene>		_gameScene;
 
 	sf::Texture		_texture;
-	sf::Sprite		_sprite;
 	
 	sf::Vector2f	_pos;
 	sf::Vector2f	_speed;
