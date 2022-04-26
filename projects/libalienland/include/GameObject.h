@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SFML/Graphics.hpp"
 class GameObjectRender
 {
 public:
@@ -11,14 +10,12 @@ public:
 class GameObject
 {
 public:
-	virtual ~GameObject() {};
 	virtual ~GameObject() = default;
 
 	void SetRender(std::unique_ptr<GameObjectRender> render);
 
 	virtual void ProcessInput(const sf::Event& /*event*/) {};
-	virtual void Update(const sf::Time& /*elapsedTime*/) {};
-	virtual void Render(sf::RenderTarget& /*renderTarget*/) {};
+	virtual void Update(const sf::Time& /*elapsedTime*/) {}
 	virtual void ProcessCollision() {};
 
 	void Render();
@@ -34,9 +31,6 @@ public:
 	void SetGameObjectId(GameObjectType gameObjectId) { _gameObjectType = gameObjectId; }
 	bool ShouldRemove() const { return _shouldRemove; }
 	void SetShouldRemoveState(bool shouldRemove) { _shouldRemove = shouldRemove; }
-
-protected:
-	sf::Texture& GetTexture() { return _texture; }
 
 private:
 	sf::Texture		_texture;
