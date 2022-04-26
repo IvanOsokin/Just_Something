@@ -10,26 +10,6 @@
 
 namespace
 {
-	// Proof of Concept: no render states, no dangling pointer checks
-	class SimpleGameObjectRender : public GameObjectRender
-	{
-	public:
-		SimpleGameObjectRender(sf::RenderTarget & renderTarget, const sf::Drawable & drawable)
-			: _renderTarget(renderTarget)
-			, _drawable(drawable)
-		{
-		}
-
-		void Render() override
-		{
-			_renderTarget.draw(_drawable);
-		}
-
-	private:
-		sf::RenderTarget &		_renderTarget;
-		const sf::Drawable &	_drawable;
-	};
-
 	class TempEnemyRender : public GameObjectRender
 	{
 	public:
