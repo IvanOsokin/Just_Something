@@ -7,6 +7,62 @@
 #include "SfmlUtils.h"
 #include "Imgui/ImguiController.h"
 
+namespace
+{
+	// Proof of Concept: no render states, no dangling pointer checks
+	class SimpleGameObjectRender : public GameObjectRender
+	{
+	public:
+		SimpleGameObjectRender(sf::RenderTarget & renderTarget, const sf::Drawable & drawable)
+			: _renderTarget(renderTarget)
+			, _drawable(drawable)
+		{
+		}
+
+		void Render() override
+		{
+			_renderTarget.draw(_drawable);
+		}
+
+	private:
+		sf::RenderTarget &		_renderTarget;
+		const sf::Drawable &	_drawable;
+	};
+
+	class TempEnemyRender : public GameObjectRender
+	{
+	public:
+		TempEnemyRender(sf::RenderTarget & renderTarget, const sf::Drawable & drawable, const Enemy & enemy)
+			: _renderTarget(renderTarget)
+			, _drawable(drawable)
+			, _enemy(enemy)
+		{
+		}
+
+		void Render() override
+		{
+			_renderTarget.draw(_drawable);
+
+			sf::RectangleShape bboxVisualizer;
+			bboxVisualizer.setOutlineColor(sf::Color::Yellow);
+			bboxVisualizer.setFillColor(sf::Color::Transparent);
+			bboxVisualizer.setOutlineThickness(2.0f);
+
+			bboxVisualizer.setSize(sf::Vector2f(64.0f, 24.0f));
+			bboxVisualizer.setOrigin(bboxVisualizer.getSize().x / 2 + 14, bboxVisualizer.getSize().y / 2 - 3);
+			bboxVisualizer.setPosition(_enemy.GetSprite().getPosition());
+			bboxVisualizer.setRotation(_enemy.GetSprite().getRotation());
+		
+			_renderTarget.draw(bboxVisualizer);
+		}
+
+	private:
+		sf::RenderTarget &		_renderTarget;
+		const sf::Drawable &	_drawable;
+		const Enemy &			_enemy;
+	};
+}
+
 GameScene::GameScene()
 	: _bulletManager(std::make_shared<BulletManager>())
 {}
