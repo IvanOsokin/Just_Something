@@ -29,6 +29,27 @@ namespace
 		const sf::Drawable &	_drawable;
 	};
 
+	class SimpleSpriteUnitRender : public GameObjectRender
+	{
+	public:
+		SimpleSpriteUnitRender(sf::RenderTarget & renderTarget, sf::Sprite sprite, const GameObjectTransform & transform)
+			: _renderTarget(renderTarget)
+			, _sprite(sprite)
+			, _transform(transform)
+		{
+		}
+
+		void Render() override
+		{
+			_renderTarget.draw(_sprite, sf::RenderStates(_transform.GetTransform()));
+		}
+
+	private:
+		sf::RenderTarget &				_renderTarget;
+		sf::Sprite						_sprite;
+		const GameObjectTransform &		_transform;
+	};
+
 	class TempEnemyRender : public GameObjectRender
 	{
 	public:
@@ -211,7 +232,7 @@ void GameScene::AddCharacter(const std::filesystem::path & resourcesDirectory, s
 	character->Init(resourcesDirectory, shared_from_this(), _bulletManager);
 
 	auto window = _window.lock();
-	auto render = std::make_unique<SimpleGameObjectRender>(*window, character->GetSprite());
+	auto render = std::make_unique<SimpleSpriteUnitRender>(*window, character->GetSprite(), character->Transform());
 	
 	character->SetRender(std::move(render));
 	_gameObjects.push_back(character);
