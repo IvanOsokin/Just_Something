@@ -178,7 +178,7 @@ void GameScene::Render()
 
 	for (const auto & gameObject : _gameObjects)
 	{
-		gameObject->Render(*window);
+		gameObject->Render();
 	}
 
 	if (_imguiController)
