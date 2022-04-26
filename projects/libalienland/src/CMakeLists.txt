@@ -4,6 +4,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 	Imgui/ImguiDebugWidget.cpp
 
 	Game.cpp
+	GameObject.cpp
 	GameScene.cpp
 	Character.cpp
 	Enemy.cpp
