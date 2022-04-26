@@ -10,13 +10,14 @@ public:
 
 	void ProcessInput(const sf::Event & event) override;
 	void Update(const sf::Time & elapsedTime) override;
-	void Render(sf::RenderTarget & renderTarget) override;
 	void ProcessCollision() override;
 
 	void MoveTo(const sf::Vector2f & dest);
 	sf::FloatRect GetBoundingBox() const { return _boundingBox.getGlobalBounds(); }
 	const sf::Vector2f& GetPosition() const { return _pos; }
 	void SetPosition(const sf::Vector2f pos) { _pos = pos; }
+
+	const sf::Sprite & GetSprite() const { return _sprite; }
 
 private:
 	void InitBoundingBox();
@@ -28,6 +29,7 @@ private:
 
 	std::optional<sf::Vector2f>		_targetPos;
 	sf::RectangleShape				_boundingBox;
+	sf::Texture						_texture;
 	sf::Sprite						_sprite;
 	sf::Vector2f					_unitSpeedVector;
 	sf::Vector2f					_pos;

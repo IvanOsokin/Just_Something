@@ -222,6 +222,11 @@ void GameScene::AddEnemy(const std::filesystem::path & resourcesDirectory)
 {
 	auto enemy = std::make_shared<Enemy>();
 	enemy->Init(resourcesDirectory, shared_from_this());
+
+	auto window = _window.lock();
+	auto render = std::make_unique<TempEnemyRender>(*window, enemy->GetSprite(), *enemy);
+	
+	enemy->SetRender(std::move(render));
 	_gameObjects.push_back(enemy);
 	LOG_INFO() << "An enemy has been created";
 }

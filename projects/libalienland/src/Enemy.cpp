@@ -35,12 +35,6 @@ void Enemy::Update(const sf::Time & elapsedTime)
 	Rotate();
 }
 
-void Enemy::Render(sf::RenderTarget & renderTarget)
-{
-	renderTarget.draw(_sprite);
-	renderTarget.draw(_boundingBox);
-}
-
 void Enemy::ProcessCollision()
 {
 
@@ -67,13 +61,13 @@ void Enemy::InitBoundingBox()
 
 bool Enemy::LoadTexture(const std::string & enemyTexturePath)
 {
-	if (!GetTexture().loadFromFile(enemyTexturePath))
+	if (!_texture.loadFromFile(enemyTexturePath))
 	{
 		LOG_ERROR() << "Failed to load the enemy's texture.";
 		return false;
 	}
 
-	_sprite.setTexture(GetTexture());
+	_sprite = sf::Sprite(_texture);
 	LOG_INFO() << "Successful loading the enemy texture.";
 	return true;
 }
