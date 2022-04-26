@@ -200,10 +200,16 @@ void GameScene::AddCharacter(const std::filesystem::path & resourcesDirectory, s
 void GameScene::AddEnemy(const std::filesystem::path & resourcesDirectory)
 {
 	auto enemy = std::make_shared<Enemy>();
-	enemy->Init(resourcesDirectory, shared_from_this());
+
+	auto boundingBox = sf::FloatRect(0, 0, 64.0f, 24.0f);
+	enemy->Init(resourcesDirectory, boundingBox);
+
+	auto sprite = sf::Sprite(enemy->GetTexture());
+	sprite.setOrigin(65.0f, 83.0f);
 
 	auto window = _window.lock();
-	auto render = std::make_unique<TempEnemyRender>(*window, enemy->GetSprite(), *enemy);
+	auto render = std::make_unique<SimpleSpriteUnitRender>(*window, sprite, enemy->Transform());
+	render->SetBoundsToRender(boundingBox);
 	
 	enemy->SetRender(std::move(render));
 	_gameObjects.push_back(enemy);
