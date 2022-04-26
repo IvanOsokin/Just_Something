@@ -98,12 +98,11 @@ void Character::ProcessMouse(const sf::Event & event)
 void Character::Move(const sf::Time & elapsedTime)
 {
 	Transform().Move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
-	_pos = Transform().GetPosition();
 }
 
 void Character::Rotate()
 {
-	sf::Vector2f viewDirectionVector = _currentCursorPosition - _pos;
+	sf::Vector2f viewDirectionVector = _currentCursorPosition - Transform().GetPosition();
 
 	float viewDirectionVectorLength = Utils::VectorLength(viewDirectionVector);
 

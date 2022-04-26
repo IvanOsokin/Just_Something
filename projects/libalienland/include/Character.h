@@ -16,8 +16,6 @@ public:
 	void Update(const sf::Time & elapsedTime) override;
 	void ProcessCollision() override;
 
-	const sf::Vector2f& GetPosition() const { return _pos; }
-	void SetPosition(const sf::Vector2f pos) { _pos = pos; }
 	float GetDistFromOriginToWeaponTip() const;
 
 	const sf::Texture & GetTexture() const { return _texture; }
@@ -35,8 +33,7 @@ private:
 	std::weak_ptr<GameScene>		_gameScene;
 
 	sf::Texture		_texture;
-	
-	sf::Vector2f	_pos;
+
 	sf::Vector2f	_speed;
 	sf::Vector2f	_unitSpeedVector;
 	sf::Vector2f	_currentCursorPosition;
