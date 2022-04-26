@@ -7,7 +7,7 @@ class GameScene;
 class BulletManager
 {
 public:
-	BulletManager();
+	BulletManager(sf::RenderTarget & renderTarget);
 	~BulletManager();
 
 	void Init(const std::filesystem::path & resourcesDirectory);
@@ -25,6 +25,7 @@ private:
 	std::vector<float> DistanceToWeaponTip() const;
 
 	std::shared_ptr<BulletFactory>		_bulletFactory;
+	sf::RenderTarget &					_renderTarget;
 };
 
 // #include "Character.h"
