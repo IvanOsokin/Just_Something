@@ -6,6 +6,7 @@
 #include "BulletManager.h"
 #include "SfmlUtils.h"
 #include "Imgui/ImguiController.h"
+#include "Render/SimpleSpriteUnitRender.h"
 
 namespace
 {
