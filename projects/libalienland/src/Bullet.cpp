@@ -14,7 +14,6 @@ void Bullet::Init(std::shared_ptr<GameScene> gameScene, float baseSpeed, std::op
 		return;
 	}
 	_sprite = *sprite;
-	SetGameObjectId(GameObject::GameObjectType::bullet);
 	
 	// Set initial position of the bullet on the tip of the weapon
 	_sprite.setOrigin(0.0f, _sprite.getTexture()->getSize().y / 2.0f);
@@ -69,11 +68,11 @@ void Bullet::EnemyCollision()
 	auto gameObjects = gameScene->GetGameObjects();
 	for (auto gameObject : gameObjects)
 	{
-		if (gameObject->GetGameObjectType() != GameObject::GameObjectType::enemy)
+		Enemy* enemy = dynamic_cast<Enemy*>(gameObject.get());
+		if (!enemy)
 		{
 			continue;
 		}
-		auto enemy = static_cast<Enemy*>(gameObject.get());
 		const sf::FloatRect enemyBound = enemy->GetBoundingBox();
 		const sf::FloatRect bulletBound = this->_sprite.getGlobalBounds();
 		if (!enemyBound.intersects(bulletBound))

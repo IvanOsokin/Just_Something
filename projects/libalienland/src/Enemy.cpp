@@ -5,7 +5,6 @@
 void Enemy::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<GameScene> gameScene)
 {
 	_gameScene = gameScene;
-	SetGameObjectId(GameObject::GameObjectType::enemy);
 
 	const std::string enemyTextureName = "enemy-1.png";
 	auto enemyTexturePath = resourcesDirectory / enemyTextureName;

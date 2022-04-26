@@ -20,20 +20,10 @@ public:
 
 	void Render();
 
-	enum class GameObjectType
-	{
-		character,
-		enemy,
-		bullet
-	};
-
-	GameObjectType GetGameObjectType() { return _gameObjectType; }
-	void SetGameObjectId(GameObjectType gameObjectId) { _gameObjectType = gameObjectId; }
 	bool ShouldRemove() const { return _shouldRemove; }
 	void SetShouldRemoveState(bool shouldRemove) { _shouldRemove = shouldRemove; }
 
 private:
-	GameObjectType	_gameObjectType;
 	bool			_shouldRemove = false;
 	std::unique_ptr<GameObjectRender>		_render;
 };
