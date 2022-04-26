@@ -9,7 +9,6 @@ void Character::Init(const std::filesystem::path & resourcesDirectory, std::shar
 {
 	_gameScene = gameScene;
 	_bulletManager = bulletManager;
-	SetGameObjectId(GameObject::GameObjectType::character);
 
 	const std::string characterTextureName = "character-1.png";
 	auto characterTexturePath = resourcesDirectory / characterTextureName;
