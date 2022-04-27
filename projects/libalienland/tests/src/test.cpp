@@ -1,6 +1,13 @@
 #include "gtest/gtest.h"
 
-TEST(AlienLandTest, Stub)
+TEST(AlienLandTest, CPP20_CompileCheck)
 {
-	EXPECT_EQ(__LINE__, 5);
+	struct A
+	{
+		int a;
+		int b;
+	};
+	std::vector<A> aa;
+	aa.emplace_back(42, 42);
+	EXPECT_TRUE(true);
 }
