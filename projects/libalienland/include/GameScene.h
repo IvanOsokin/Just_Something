@@ -29,7 +29,7 @@ public:
 	const std::vector<std::shared_ptr<GameObject>>& GetGameObjects() { return _gameObjects; }
 		
 private:
-	void AddCharacter(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager);
+	void AddCharacter(const std::filesystem::path & resourcesDirectory);
 	void AddEnemy(const std::filesystem::path & resourcesDirectory);
 
 	void EventLogging(const sf::Event & event);

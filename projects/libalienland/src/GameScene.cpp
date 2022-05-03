@@ -21,7 +21,7 @@ void GameScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 	_window = window;
 	_bulletManager = std::make_shared<BulletManager>(*window);
 	
-	AddCharacter(resourcesDirectory, _bulletManager);
+	AddCharacter(resourcesDirectory);
 	//SetInitialPosition(_character);
 
 	Assert(_gameObjects[0]);
@@ -148,7 +148,7 @@ void GameScene::AddBullet(std::shared_ptr<GameScene> gameScene, const sf::Vector
 	_gameObjects.push_back(bullet);
 }
 
-void GameScene::AddCharacter(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager)
+void GameScene::AddCharacter(const std::filesystem::path & resourcesDirectory)
 {
 	auto character = std::make_shared<Character>();
 	character->Init(resourcesDirectory, shared_from_this(), _bulletManager);
