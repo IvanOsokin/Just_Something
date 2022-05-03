@@ -2,9 +2,9 @@
 #include <memory>
 
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 
 #include "Game.h"
+#include "SfmlGameLoopDelegate.h"
 #include "Log/DebuggerDisplaySink.h"
 #include "Log/FileLogSink.h"
 #include "Log/Log.h"
@@ -21,7 +21,14 @@ int main(int /*argc*/, char **argv)
 	fileLogSink->Init(executableDirectory / "Alienland.log");
 	Core::GetLogger().AddSink(fileLogSink);
 
-	Game game;
-	game.Start(resourcesDirectory);
+	const std::string gameTitle = "Alien Land";
+	auto window = std::make_shared<sf::RenderWindow>(sf::VideoMode(800, 600), gameTitle);
+	sf::Time deltaTime = sf::microseconds(1000);
+	const int requestedFps = 60;
+	std::unique_ptr<GameLoopDelegate> delegate = std::make_unique<SfmlGameLoopDelegate>(window, resourcesDirectory, deltaTime, requestedFps);
+
+	Game game(std::move(delegate));
+	game.Start();
+
 	return 0;
 }
