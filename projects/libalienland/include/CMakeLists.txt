@@ -9,6 +9,8 @@ target_sources(${PROJECT_NAME} PRIVATE
 	Render/SimpleSpriteUnitRender.h
 
 	Game.h
+	GameLoopDelegate.h
+	SfmlGameLoopDelegate.h
 	GameObject.h
 	GameObjectTransform.h
 	GameScene.h
