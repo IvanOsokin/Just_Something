@@ -6,6 +6,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 	Render/SimpleSpriteUnitRender.cpp
 
 	Game.cpp
+	SfmlGameLoopDelegate.cpp
 	GameObject.cpp
 	GameScene.cpp
 	Character.cpp
