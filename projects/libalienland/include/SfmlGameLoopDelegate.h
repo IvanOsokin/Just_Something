@@ -7,7 +7,6 @@ class SfmlGameLoopDelegate : public GameLoopDelegate
 {
 public:
 	SfmlGameLoopDelegate(std::shared_ptr<sf::RenderWindow> window, const std::filesystem::path & resourcesDirectory, const sf::Time & deltaTime, int requestedFps);
-	~SfmlGameLoopDelegate() override {};
 
 	int RequestedFps() const override;
 
@@ -30,7 +29,7 @@ private:
 	std::shared_ptr<GameScene>			_gameScene;
 
 	sf::Time							_deltaTime;
-
+	std::filesystem::path				_resourceDirectory;
 	int									_requestedFps = 0;
 	bool								_shouldTerminate = false;
 };

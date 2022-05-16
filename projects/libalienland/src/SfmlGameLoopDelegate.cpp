@@ -5,9 +5,9 @@ SfmlGameLoopDelegate::SfmlGameLoopDelegate(std::shared_ptr<sf::RenderWindow> win
 	: _window(window)
 	, _gameScene(std::make_shared<GameScene>())
 	, _deltaTime(deltaTime)
+	, _resourceDirectory(resourcesDirectory)
 	, _requestedFps(requestedFps)
 {
-	InitializeGameScene(resourcesDirectory);
 }
 
 int SfmlGameLoopDelegate::RequestedFps() const
@@ -17,6 +17,7 @@ int SfmlGameLoopDelegate::RequestedFps() const
 
 void SfmlGameLoopDelegate::PreGameLoop()
 {
+	InitializeGameScene(_resourceDirectory);
 	_gameScene->PreGameLoop();
 }
 
