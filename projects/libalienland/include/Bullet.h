@@ -18,7 +18,7 @@ class Bullet : public GameObject
 public:
 	void Init(std::shared_ptr<GameScene> gameScene, float baseSpeed, sf::FloatRect localBounds, const sf::Vector2f & initPos, const sf::Vector2f & targetPos);
 
-	void Update(const sf::Time & elapsedTime) override;
+	void Update(float elapsedTime) override;
 	void ProcessCollision() override;
 
 private:
