@@ -6,7 +6,7 @@
 class SfmlGameLoopDelegate : public GameLoopDelegate
 {
 public:
-	SfmlGameLoopDelegate(std::shared_ptr<sf::RenderWindow> window, const std::filesystem::path & resourcesDirectory, const sf::Time & deltaTime, int requestedFps);
+	SfmlGameLoopDelegate(std::shared_ptr<sf::RenderWindow> window, const std::filesystem::path & resourcesDirectory, int requestedFps);
 
 	int RequestedFps() const override;
 
@@ -16,7 +16,7 @@ public:
 	void PreFrame() override;
 	void PostFrame() override;
 	
-	void Update() override;
+	void Update(float deltaTime) override;
 	void Input() override;
 	void Render() override;
 	
@@ -28,7 +28,6 @@ private:
 	std::shared_ptr<sf::RenderWindow>	_window;
 	std::shared_ptr<GameScene>			_gameScene;
 
-	sf::Time							_deltaTime;
 	std::filesystem::path				_resourceDirectory;
 	int									_requestedFps = 0;
 	bool								_shouldTerminate = false;

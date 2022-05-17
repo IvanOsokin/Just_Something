@@ -1,10 +1,9 @@
 #include "Internal/pch.h"
 #include "SfmlGameLoopDelegate.h"
 
-SfmlGameLoopDelegate::SfmlGameLoopDelegate(std::shared_ptr<sf::RenderWindow> window, const std::filesystem::path & resourcesDirectory, const sf::Time & deltaTime, int requestedFps)
+SfmlGameLoopDelegate::SfmlGameLoopDelegate(std::shared_ptr<sf::RenderWindow> window, const std::filesystem::path & resourcesDirectory, int requestedFps)
 	: _window(window)
 	, _gameScene(std::make_shared<GameScene>())
-	, _deltaTime(deltaTime)
 	, _resourceDirectory(resourcesDirectory)
 	, _requestedFps(requestedFps)
 {
@@ -36,9 +35,9 @@ void SfmlGameLoopDelegate::PostFrame()
 	_gameScene->PostFrame();
 }
 
-void SfmlGameLoopDelegate::Update()
+void SfmlGameLoopDelegate::Update(float deltaTime)
 {
-	_gameScene->Update(_deltaTime);
+	_gameScene->Update(deltaTime);
 }
 
 void SfmlGameLoopDelegate::Input()
