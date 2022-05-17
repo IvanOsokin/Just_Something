@@ -17,7 +17,7 @@ public:
 
 	void PreFrame();
 	void ProcessInput(const sf::Event & event);
-	void Update(const sf::Time & elapsedTime);
+	void Update(float elapsedTime);
 	void Render();
 	void PostFrame();
 

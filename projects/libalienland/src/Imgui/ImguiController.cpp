@@ -30,7 +30,7 @@ void ImguiController::ProcessInput(const sf::Event& event)
 	ImGui::SFML::ProcessEvent(event);
 }
 
-void ImguiController::BeginUpdate(sf::Time elapsedTime)
+void ImguiController::BeginUpdate(float elapsedTime)
 {
 	auto window = _window.lock();
 	if (!window)
@@ -38,7 +38,8 @@ void ImguiController::BeginUpdate(sf::Time elapsedTime)
 		return;
 	}
 
-	ImGui::SFML::Update(*window, elapsedTime);
+	auto dt = sf::microseconds(static_cast<sf::Int64>(elapsedTime * 1000));
+	ImGui::SFML::Update(*window, dt);
 
 	std::for_each(_widgets.begin(), _widgets.end(), [](const ImguiWidgetPtr & widgetPtr)
 	{
@@ -46,7 +47,7 @@ void ImguiController::BeginUpdate(sf::Time elapsedTime)
 	});
 	std::for_each(_widgets.begin(), _widgets.end(), [&](const ImguiWidgetPtr & widgetPtr)
 	{
-		widgetPtr->BaseUpdate(elapsedTime);
+		widgetPtr->BaseUpdate(dt);
 	});
 }
 

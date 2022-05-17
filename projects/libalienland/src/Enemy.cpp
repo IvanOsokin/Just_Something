@@ -25,7 +25,7 @@ void Enemy::ProcessInput(const sf::Event & event)
 	}
 }
 
-void Enemy::Update(const sf::Time & elapsedTime)
+void Enemy::Update(float elapsedTime)
 {
 	Move(elapsedTime);
 	Rotate();
@@ -53,7 +53,7 @@ bool Enemy::LoadTexture(const std::string & enemyTexturePath)
 	return true;
 }
 
-void Enemy::Move(const sf::Time & elapsedTime)
+void Enemy::Move(float elapsedTime)
 {
 	if (!_targetPos)
 	{
@@ -67,7 +67,7 @@ void Enemy::Move(const sf::Time & elapsedTime)
 	if (speedVectorLength >= eps)
 	{
 		_unitSpeedVector = speedVector / speedVectorLength;
-		Transform().Move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
+		Transform().Move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime);
 	}
 	else
 	{
