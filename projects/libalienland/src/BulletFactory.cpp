@@ -2,7 +2,7 @@
 
 void BulletFactory::Init(const std::filesystem::path & resourcesDirectory,
 						 const std::vector<std::string> & bulletTextureTitle,
-						 std::vector<float> && distanceToWeaponTip)
+						 std::vector<float> distanceToWeaponTip)
 {
 	_distanceToWeaponTip = std::move(distanceToWeaponTip);
 
@@ -27,7 +27,7 @@ std::optional<sf::Sprite> BulletFactory::GetSprite(/*WeaponID*/)
 	}
 
 	sf::Sprite bulletSprite;
-	bulletSprite.setTexture(*_textures.begin());
+	bulletSprite.setTexture(_textures.begin()[0]);
 
 	return bulletSprite;
 }
@@ -40,7 +40,7 @@ std::optional<float> BulletFactory::GetInitPosition(/*WeaponID*/)
 		return std::nullopt;
 	}
 
-	return *_distanceToWeaponTip.begin();
+	return _distanceToWeaponTip[0];
 }
 
 void BulletFactory::LoadTextures(const std::vector<std::string> & bulletsTexturesPath)

@@ -1,23 +1,25 @@
 #include "Character.h"
 
 #include "BulletManager.h"
+#include "GameScene.h"
+#include "Utils.h"
+#include "SfmlUtils.h"
 
-void Character::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager)
+void Character::Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<GameScene> gameScene, std::shared_ptr<BulletManager> bulletManager)
 {
+	_gameScene = gameScene;
 	_bulletManager = bulletManager;
+	SetGameObjectId(GameObject::GameObjectType::character);
 
-	//Loading the character's texture and asigning it to the sprite
 	const std::string characterTextureName = "character-1.png";
 	auto characterTexturePath = resourcesDirectory / characterTextureName;
-
 	std::string characterTexturePathStr = characterTexturePath.generic_string();
 
 	if (!LoadTexture(characterTexturePathStr))
 	{
 		return;
 	}
-
-	_sprite.setOrigin(108.0f, 119.0f);
+	_sprite.setOrigin(68.0f, 92.0f);
 }
 
 void Character::ProcessInput(const sf::Event & event)
@@ -38,20 +40,25 @@ void Character::Render(sf::RenderTarget & renderTarget)
 	renderTarget.draw(_sprite);
 }
 
+void Character::ProcessCollision()
+{
+
+}
+
 float Character::GetDistFromOriginToWeaponTip() const
 {
-	return _bulletManager->GetCurrentDistFormOriginToWeaponTip(/*Weapon ID*/);
+	return _bulletManager.lock()->GetCurrentDistFormOriginToWeaponTip(/*Weapon ID*/);
 }
 
 bool Character::LoadTexture(const std::string & characterTexturePath)
 {
-	if (!_texture.loadFromFile(characterTexturePath))
+	if (!GetTexture().loadFromFile(characterTexturePath))
 	{
 		LOG_ERROR() << "Failed to load the character's texture.";
 		return false;
 	}
 
-	_sprite.setTexture(_texture);
+	_sprite.setTexture(GetTexture());
 	LOG_INFO() << "Successful loading the character texture.";
 	return true;
 }
@@ -68,7 +75,7 @@ void Character::ProcessKeyboard()
 
 	if (_unitSpeedVector.x != 0 && _unitSpeedVector.y != 0)
 	{
-		const float decreasingCoef = static_cast<float>(pow(2, 0.5));
+		const float decreasingCoef = std::sqrtf(2.0f);
 		_unitSpeedVector /= decreasingCoef;
 	}
 }
@@ -77,24 +84,22 @@ void Character::ProcessMouse(const sf::Event & event)
 {
 	if (event.type == sf::Event::EventType::MouseMoved)
 	{
-		_currentCursorPosition = sf::Vector2f(static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y));
+		_currentCursorPosition = Utils::VectorCast<float>(event.mouseMove.x, event.mouseMove.y);
 	}
 	
 	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 	{
-		const auto targetPos = sf::Vector2f(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
-
+		const auto targetPos = Utils::VectorCast<float>(event.mouseButton.x, event.mouseButton.y);
 		const auto viewDirectionVector = targetPos - _sprite.getPosition();
-		const float viewDirectionVectorLength = std::powf((std::powf(viewDirectionVector.x, 2.0f) + std::powf(viewDirectionVector.y, 2.0f)), 0.5f);
-
+		const float viewDirectionVectorLength = Utils::VectorLength(viewDirectionVector);
 		const float distFromOriginToWeaponTip = GetDistFromOriginToWeaponTip();
 
 		if (viewDirectionVectorLength < distFromOriginToWeaponTip)
 		{
 			return;
 		}
-
-		_bulletManager->AddBullet(_sprite.getPosition(), _sprite.getRotation(), targetPos);
+		auto gameScene = _gameScene.lock();
+		gameScene->AddBullet(gameScene, _sprite.getPosition(), _sprite.getRotation(), targetPos);
 	}
 }
 
@@ -108,7 +113,7 @@ void Character::Rotate()
 {
 	sf::Vector2f viewDirectionVector = _currentCursorPosition - _pos;
 
-	float viewDirectionVectorLength = std::powf((std::powf(viewDirectionVector.x, 2.0f) + std::powf(viewDirectionVector.y, 2.0f)), 0.5f);
+	float viewDirectionVectorLength = Utils::VectorLength(viewDirectionVector);
 
 	const float eps = 1.0f;
 	if (viewDirectionVectorLength <= eps)
@@ -119,16 +124,13 @@ void Character::Rotate()
 	sf::Vector2f unitViewDirectionVector;
 	unitViewDirectionVector = viewDirectionVector / viewDirectionVectorLength;
 
-	const float pi = 3.141593f;
-	static const float s_fromRadToDeg = 180.0f / pi;
-
 	const float angle = std::acosf(unitViewDirectionVector.x);
-
+	
 	if (unitViewDirectionVector.y < 0)
 	{
-		_sprite.setRotation((2 * pi - angle) * s_fromRadToDeg);
+		_sprite.setRotation(Utils::RadiansToDegrees(2 * Utils::pi - angle));
 		return;
 	}
 
-	_sprite.setRotation(angle * s_fromRadToDeg);
+	_sprite.setRotation(Utils::RadiansToDegrees(angle));
 }
