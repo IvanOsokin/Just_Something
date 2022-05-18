@@ -15,13 +15,19 @@ function(target_set_binary_output project dir)
 endfunction()
 
 function(target_treat_all_warnings_as_error project)
-	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-		target_compile_options(${project} PRIVATE -Werror)
-	elseif (MSVC)
-		target_compile_options(${project} PRIVATE -W4 -WX /permissive-)
-	endif()
-	if (WIN32)
-		target_compile_definitions(${project} PRIVATE _CRT_SECURE_NO_WARNINGS)
-	endif()
-
+	target_compile_options(${project} PRIVATE
+		$<$<CXX_COMPILER_ID:Clang>:-Werror>
+		$<$<CXX_COMPILER_ID:MSVC>:"-W4 -WX /permissive-">
+	)
+	target_compile_definitions(${project} PRIVATE
+		$<$<BOOL:${WIN32}>:_CRT_SECURE_NO_WARNINGS>
+	)
 endfunction()
+
+macro(enable_timetrace)
+	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+		add_compile_options(-ftime-trace)
+	else()
+		message(FATAL_ERROR "Option time-trace enabled only with clang compiler")
+	endif()
+endmacro()

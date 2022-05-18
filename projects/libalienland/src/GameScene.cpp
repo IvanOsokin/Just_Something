@@ -233,7 +233,7 @@ void GameScene::ProcessCollision()
 	{
 		return;
 	}
-	for (const std::shared_ptr<GameObject> entity : _gameObjects)
+	for (auto && entity : _gameObjects)
 	{
 		entity->ProcessCollision();
 	}
