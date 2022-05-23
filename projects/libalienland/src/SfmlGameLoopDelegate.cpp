@@ -35,7 +35,7 @@ void SfmlGameLoopDelegate::PostFrame()
 	_gameScene->PostFrame();
 }
 
-void SfmlGameLoopDelegate::Update(float deltaTime)
+void SfmlGameLoopDelegate::Update(sf::Time deltaTime)
 {
 	_gameScene->Update(deltaTime);
 }

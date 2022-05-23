@@ -35,7 +35,7 @@ void Game::GameLoop()
 		while (timeSinceLastUpdate >= deltaTime)
 		{
 			timeSinceLastUpdate -= deltaTime;
-			_delegate->Update(deltaTime.asSeconds());
+			_delegate->Update(deltaTime);
 		}
 		_delegate->Render();
 		_delegate->PostFrame();

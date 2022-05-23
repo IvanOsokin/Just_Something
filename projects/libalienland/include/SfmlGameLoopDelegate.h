@@ -16,7 +16,7 @@ public:
 	void PreFrame() override;
 	void PostFrame() override;
 	
-	void Update(float deltaTime) override;
+	void Update(sf::Time deltaTime) override;
 	void Input() override;
 	void Render() override;
 	

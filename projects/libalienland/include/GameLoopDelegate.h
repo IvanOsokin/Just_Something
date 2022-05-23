@@ -13,7 +13,7 @@ public:
 	virtual void PreFrame() = 0;
 	virtual void PostFrame() = 0;
 
-	virtual void Update(float deltaTime) = 0;
+	virtual void Update(sf::Time deltaTime) = 0;
 	virtual void Input() = 0;
 	virtual void Render() = 0;
 
