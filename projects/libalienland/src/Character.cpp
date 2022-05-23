@@ -26,7 +26,7 @@ void Character::ProcessInput(const sf::Event & event)
 	ProcessMouse(event);
 }
 
-void Character::Update(float elapsedTime)
+void Character::Update(const sf::Time & elapsedTime)
 {
 	Move(elapsedTime);
 	Rotate();
@@ -95,9 +95,9 @@ void Character::ProcessMouse(const sf::Event & event)
 	}
 }
 
-void Character::Move(float elapsedTime)
+void Character::Move(const sf::Time & elapsedTime)
 {
-	Transform().Move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime);
+	Transform().Move(sf::Vector2f(_baseSpeed * _unitSpeedVector) * elapsedTime.asSeconds());
 }
 
 void Character::Rotate()

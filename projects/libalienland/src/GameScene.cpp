@@ -89,7 +89,7 @@ void GameScene::ProcessInput(const sf::Event & event)
 	}
 }
 
-void GameScene::Update(float elapsedTime)
+void GameScene::Update(const sf::Time & elapsedTime)
 {
 	if (_imguiController)
 	{

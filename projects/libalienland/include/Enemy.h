@@ -9,7 +9,7 @@ public:
 	void Init(const std::filesystem::path & resourcesDirectory, sf::FloatRect localBounds);
 
 	void ProcessInput(const sf::Event & event) override;
-	void Update(float elapsedTime) override;
+	void Update(const sf::Time & elapsedTime) override;
 	void ProcessCollision() override;
 
 	void MoveTo(const sf::Vector2f & dest);
@@ -19,7 +19,7 @@ public:
 
 private:
 	bool LoadTexture(const std::string & alienTexturePath);
-	void Move(float elapsedTime);
+	void Move(const sf::Time & elapsedTime);
 	void Rotate();
 
 	std::optional<sf::Vector2f>		_targetPos;

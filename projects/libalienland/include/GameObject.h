@@ -16,7 +16,7 @@ public:
 	void SetRender(std::unique_ptr<GameObjectRender> render);
 
 	virtual void ProcessInput(const sf::Event& /*event*/) {};
-	virtual void Update(float /*elapsedTime*/) {}
+	virtual void Update(const sf::Time& /*elapsedTime*/) {}
 	virtual void ProcessCollision() {};
 
 	void Render();

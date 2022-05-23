@@ -28,9 +28,9 @@ void Bullet::Init(std::shared_ptr<GameScene> gameScene, float baseSpeed, sf::Flo
 		Transform().SetRotation(Utils::RadiansToDegrees(angle));
 }
 
-void Bullet::Update(float elapsedTime)
+void Bullet::Update(const sf::Time & elapsedTime)
 {
-	sf::Vector2f offset = (_unitSpeedVector * _baseSpeed) * elapsedTime;
+	sf::Vector2f offset = (_unitSpeedVector * _baseSpeed) * elapsedTime.asSeconds();
 	Transform().Move(offset);
 }
 

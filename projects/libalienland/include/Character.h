@@ -13,7 +13,7 @@ public:
 	void Init(const std::filesystem::path & resourcesDirectory, std::shared_ptr<GameScene> gameScene, std::shared_ptr<BulletManager> bulletManager);
 
 	void ProcessInput(const sf::Event & event) override;
-	void Update(float elapsedTime) override;
+	void Update(const sf::Time & elapsedTime) override;
 	void ProcessCollision() override;
 
 	float GetDistFromOriginToWeaponTip() const;
@@ -26,7 +26,7 @@ private:
 	void ProcessKeyboard();
 	void ProcessMouse(const sf::Event & event);
 		 
-	void Move(float elapsedTime);
+	void Move(const sf::Time & elapsedTime);
 	void Rotate();
 
 	std::weak_ptr<BulletManager>	_bulletManager;

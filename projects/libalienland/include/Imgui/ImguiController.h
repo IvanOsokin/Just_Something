@@ -19,7 +19,7 @@ public:
 
 	void BeginFrame();
 	void ProcessInput(const sf::Event & event);
-	void BeginUpdate(float elapsedTime);
+	void BeginUpdate(sf::Time elapsedTime);
 	void EndUpdate();
 	void Render();
 	void EndFrame();
