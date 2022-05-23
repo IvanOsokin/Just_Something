@@ -6,19 +6,22 @@
 #include "BulletManager.h"
 #include "SfmlUtils.h"
 #include "Imgui/ImguiController.h"
+#include "Render/SimpleSpriteUnitRender.h"
 
-GameScene::GameScene()
-	: _bulletManager(std::make_shared<BulletManager>())
-{}
-
+GameScene::GameScene() = default;
 GameScene::~GameScene() = default;
 
 void GameScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesystem::path & resourcesDirectory)
 {
-	Assert(window);
+	if (!Verify2(window, "Window is not supplied."))
+	{
+		return;
+	}
+
 	_window = window;
+	_bulletManager = std::make_shared<BulletManager>(*window);
 	
-	AddCharacter(resourcesDirectory, _bulletManager);
+	AddCharacter(resourcesDirectory);
 	//SetInitialPosition(_character);
 
 	Assert(_gameObjects[0]);
@@ -122,7 +125,7 @@ void GameScene::Render()
 
 	for (const auto & gameObject : _gameObjects)
 	{
-		gameObject->Render(*window);
+		gameObject->Render();
 	}
 
 	if (_imguiController)
@@ -145,10 +148,19 @@ void GameScene::AddBullet(std::shared_ptr<GameScene> gameScene, const sf::Vector
 	_gameObjects.push_back(bullet);
 }
 
-void GameScene::AddCharacter(const std::filesystem::path & resourcesDirectory, std::shared_ptr<BulletManager> bulletManager)
+void GameScene::AddCharacter(const std::filesystem::path & resourcesDirectory)
 {
 	auto character = std::make_shared<Character>();
 	character->Init(resourcesDirectory, shared_from_this(), _bulletManager);
+
+	auto window = _window.lock();
+
+	auto sprite = sf::Sprite(character->GetTexture());
+	sprite.setOrigin(68.0f, 92.0f);
+
+	auto render = std::make_unique<SimpleSpriteUnitRender>(*window, sprite, character->Transform());
+	
+	character->SetRender(std::move(render));
 	_gameObjects.push_back(character);
 	LOG_INFO() << "The main character has been created";
 }
@@ -156,7 +168,18 @@ void GameScene::AddCharacter(const std::filesystem::path & resourcesDirectory, s
 void GameScene::AddEnemy(const std::filesystem::path & resourcesDirectory)
 {
 	auto enemy = std::make_shared<Enemy>();
-	enemy->Init(resourcesDirectory, shared_from_this());
+
+	auto boundingBox = sf::FloatRect(0, 0, 64.0f, 24.0f);
+	enemy->Init(resourcesDirectory, boundingBox);
+
+	auto sprite = sf::Sprite(enemy->GetTexture());
+	sprite.setOrigin(65.0f, 83.0f);
+
+	auto window = _window.lock();
+	auto render = std::make_unique<SimpleSpriteUnitRender>(*window, sprite, enemy->Transform());
+	render->SetBoundsToRender(boundingBox);
+	
+	enemy->SetRender(std::move(render));
 	_gameObjects.push_back(enemy);
 	LOG_INFO() << "An enemy has been created";
 }
@@ -186,21 +209,6 @@ void GameScene::ProcessSceneInput(const sf::Event & event)
 	{
 		_shouldTerminate = true;
 	}
-}
-
-template <typename T>
-void GameScene::SetInitialPosition(std::shared_ptr<T> object)
-{
-	if (!_window.lock())
-	{
-		LOG_ERROR() << "The window was lost.";
-		object->GetSprite().setPosition( 0.0f, 0.0f );
-		return;
-	}
-	
-	const auto windowSize = _window.lock()->getSize();
-	object->SetPosition(sf::Vector2f(windowSize.x / 2.0f, windowSize.y / 2.0f));
-	object->GetSprite().setPosition(object->GetPosition());
 }
 
 void GameScene::RemoveMarkedGameObjects()

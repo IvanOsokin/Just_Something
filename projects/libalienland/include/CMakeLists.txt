@@ -6,8 +6,13 @@ target_sources(${PROJECT_NAME} PRIVATE
 
 	Internal/pch.h
 
+	Render/SimpleSpriteUnitRender.h
+
 	Game.h
+	GameLoopDelegate.h
+	SfmlGameLoopDelegate.h
 	GameObject.h
+	GameObjectTransform.h
 	GameScene.h
 	Character.h
 	Enemy.h
