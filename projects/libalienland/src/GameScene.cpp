@@ -1,5 +1,6 @@
 #include "GameScene.h"
 
+#include "CollisionProcessor.h"
 #include "Character.h"
 #include "Enemy.h"
 #include "Bullet.h"
@@ -20,6 +21,7 @@ void GameScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 
 	_window = window;
 	_bulletManager = std::make_shared<BulletManager>(*window);
+	_collisionProcessor = std::make_unique<CollisionProcessor>(GetGameObjects());
 	
 	AddCharacter(resourcesDirectory);
 	//SetInitialPosition(_character);
@@ -101,7 +103,7 @@ void GameScene::Update(const sf::Time & elapsedTime)
 		gameObject->Update(elapsedTime);
 	}
 
-	ProcessCollision();
+	_collisionProcessor->ProcessCollision();
 	if (_shouldRemoveGameObjs)
 	{
 		RemoveMarkedGameObjects();
@@ -233,18 +235,6 @@ void GameScene::InitSceneBorder()
 	auto size = Utils::VectorCast<int>(window->getSize());
 	sf::Vector2i startPos(0, 0);
 	_sceneBorder = sf::IntRect(startPos, size);
-}
-
-void GameScene::ProcessCollision()
-{
-	if (_gameObjects.empty())
-	{
-		return;
-	}
-	for (const std::shared_ptr<GameObject> entity : _gameObjects)
-	{
-		entity->ProcessCollision();
-	}
 }
 
 std::unique_ptr<sf::Texture> GameScene::LoadMapTexture(const std::filesystem::path & resourcesDirectory)
