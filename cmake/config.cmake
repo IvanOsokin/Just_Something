@@ -17,7 +17,7 @@ endfunction()
 function(target_treat_all_warnings_as_error project)
 	target_compile_options(${project} PRIVATE
 		$<$<CXX_COMPILER_ID:Clang>:-Werror>
-		$<$<CXX_COMPILER_ID:MSVC>:"-W4 -WX /permissive-">
+		$<$<CXX_COMPILER_ID:MSVC>:-W4 -WX /permissive->
 	)
 	target_compile_definitions(${project} PRIVATE
 		$<$<BOOL:${WIN32}>:_CRT_SECURE_NO_WARNINGS>
