@@ -1,34 +1,34 @@
 #pragma once
+#include "GameObjectTransform.h"
 
-#include "SFML/Graphics.hpp"
+class GameObjectRender
+{
+public:
+	virtual ~GameObjectRender() = default;
+	virtual void Render() = 0;
+};
 
 class GameObject
 {
 public:
-	virtual ~GameObject() {};
+	virtual ~GameObject() = default;
+
+	void SetRender(std::unique_ptr<GameObjectRender> render);
 
 	virtual void ProcessInput(const sf::Event& /*event*/) {};
-	virtual void Update(const sf::Time& /*elapsedTime*/) {};
-	virtual void Render(sf::RenderTarget& /*renderTarget*/) {};
+	virtual void Update(const sf::Time& /*elapsedTime*/) {}
 	virtual void ProcessCollision() {};
 
-	enum class GameObjectType
-	{
-		character,
-		enemy,
-		bullet
-	};
+	void Render();
 
-	GameObjectType GetGameObjectType() { return _gameObjectType; }
-	void SetGameObjectId(GameObjectType gameObjectId) { _gameObjectType = gameObjectId; }
+	auto & Transform() { return _transform; }
+	const auto & Transform() const { return _transform; }
+
 	bool ShouldRemove() const { return _shouldRemove; }
 	void SetShouldRemoveState(bool shouldRemove) { _shouldRemove = shouldRemove; }
 
-protected:
-	sf::Texture& GetTexture() { return _texture; }
-
 private:
-	sf::Texture		_texture;
-	GameObjectType	_gameObjectType;
 	bool			_shouldRemove = false;
+	GameObjectTransform						_transform;
+	std::unique_ptr<GameObjectRender>		_render;
 };

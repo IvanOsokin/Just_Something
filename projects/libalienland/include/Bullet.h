@@ -16,18 +16,17 @@ class GameScene;
 class Bullet : public GameObject
 {
 public:
-	void Init(std::shared_ptr<GameScene> gameScene, float baseSpeed, std::optional<sf::Sprite> sprite, const sf::Vector2f & initPos, const sf::Vector2f & targetPos);
+	void Init(std::shared_ptr<GameScene> gameScene, float baseSpeed, sf::FloatRect localBounds, const sf::Vector2f & initPos, const sf::Vector2f & targetPos);
 
 	void Update(const sf::Time & elapsedTime) override;
-	void Render(sf::RenderTarget & renderTarget) override;
 	void ProcessCollision() override;
 
 private:
 	void SceneBorderCollision();
 	void EnemyCollision();
 
+	sf::FloatRect				_localBounds;
 	std::weak_ptr<GameScene>	_gameScene;
-	sf::Sprite					_sprite;
 	sf::Vector2f				_unitSpeedVector;
 	float						_baseSpeed = 0.0f;
 };

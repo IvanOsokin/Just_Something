@@ -2,13 +2,14 @@
 
 #include "BulletFactory.h"
 #include "Bullet.h"
-#include "Enemy.h"
 #include "Utils.h"
-#include "SfmlUtils.h"
+#include "Render/SimpleSpriteUnitRender.h"
 
-BulletManager::BulletManager()
+BulletManager::BulletManager(sf::RenderTarget& renderTarget)
 	: _bulletFactory(std::make_shared<BulletFactory>())
-{}
+	, _renderTarget(renderTarget)
+{
+}
 
 BulletManager::~BulletManager() = default;
 
@@ -24,7 +25,20 @@ std::shared_ptr<Bullet> BulletManager::CreateBullet(std::shared_ptr<GameScene> g
 	const auto bulletSpeed = 200.f;
 	auto bulletSprite = _bulletFactory->GetSprite(/*WeaponID*/);
 	auto bullet = std::make_shared<Bullet>();
-	bullet->Init(gameScene, bulletSpeed, bulletSprite.value_or(sf::Sprite()), initBulletPos, targetPos);
+
+	sf::FloatRect bulletBounds;
+	if (bulletSprite)
+	{
+		bulletBounds = bulletSprite->getLocalBounds();
+	}
+	bullet->Init(gameScene, bulletSpeed, bulletBounds, initBulletPos, targetPos);
+
+	if (bulletSprite)
+	{
+		auto render = std::make_unique<SimpleSpriteUnitRender>(_renderTarget, *bulletSprite, bullet->Transform());
+		bullet->SetRender(std::move(render));
+	}
+	
 	return bullet;
 }
 
