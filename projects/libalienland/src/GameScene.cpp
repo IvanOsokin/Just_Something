@@ -237,6 +237,18 @@ void GameScene::InitSceneBorder()
 	_sceneBorder = sf::IntRect(startPos, size);
 }
 
+void GameScene::ProcessCollision()
+{
+	if (_gameObjects.empty())
+	{
+		return;
+	}
+	for (auto && entity : _gameObjects)
+	{
+		entity->ProcessCollision();
+	}
+}
+
 std::unique_ptr<sf::Texture> GameScene::LoadMapTexture(const std::filesystem::path & resourcesDirectory)
 {
 	const auto mapTexturePath = (resourcesDirectory / "stone01.jpg").generic_string();

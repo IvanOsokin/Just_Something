@@ -1,0 +1,25 @@
+include(FetchContent)
+
+FetchContent_Declare(
+	freetype
+	GIT_REPOSITORY git@github.com:freetype/freetype.git
+	GIT_TAG 3f83daeecb1a78d851b660eed025eeba362c0e4a # refs/tags/2.11.1
+)
+
+set(BUILD_SHARED_LIBS OFF)
+
+set(FT_DISABLE_ZLIB TRUE CACHE INTERNAL "")
+set(FT_DISABLE_BZIP2 TRUE CACHE INTERNAL "")
+set(FT_DISABLE_PNG TRUE CACHE INTERNAL "")
+set(FT_DISABLE_HARFBUZZ TRUE CACHE INTERNAL "")
+set(FT_DISABLE_BROTLI TRUE CACHE INTERNAL "")
+
+FetchContent_MakeAvailable(freetype)
+
+unset(FT_DISABLE_ZLIB CACHE)
+unset(FT_DISABLE_BZIP2 CACHE)
+unset(FT_DISABLE_PNG CACHE)
+unset(FT_DISABLE_HARFBUZZ CACHE)
+unset(FT_DISABLE_BROTLI CACHE)
+
+set(EXTERNAL_FREETYPE_DIR ${freetype_BUILD_DIR} CACHE PATH "Path to FreeType directory" FORCE)
