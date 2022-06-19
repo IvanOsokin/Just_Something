@@ -1,5 +1,6 @@
 #include "GameScene.h"
 
+#include "CollisionProcessor.h"
 #include "Character.h"
 #include "Enemy.h"
 #include "Bullet.h"
@@ -20,6 +21,7 @@ void GameScene::Init(std::shared_ptr<sf::RenderWindow> window, const std::filesy
 
 	_window = window;
 	_bulletManager = std::make_shared<BulletManager>(*window);
+	_collisionProcessor = std::make_unique<CollisionProcessor>(GetGameObjects());
 	
 	AddCharacter(resourcesDirectory);
 	//SetInitialPosition(_character);
@@ -101,7 +103,7 @@ void GameScene::Update(const sf::Time & elapsedTime)
 		gameObject->Update(elapsedTime);
 	}
 
-	ProcessCollision();
+	_collisionProcessor->ProcessCollision();
 	if (_shouldRemoveGameObjs)
 	{
 		RemoveMarkedGameObjects();

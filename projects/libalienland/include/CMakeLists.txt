@@ -14,6 +14,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 	GameObject.h
 	GameObjectTransform.h
 	GameScene.h
+	CollisionProcessor.h
 	Character.h
 	Enemy.h
 	Bullet.h

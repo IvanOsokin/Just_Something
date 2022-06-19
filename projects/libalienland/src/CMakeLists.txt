@@ -9,6 +9,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 	SfmlGameLoopDelegate.cpp
 	GameObject.cpp
 	GameScene.cpp
+	CollisionProcessor.cpp
 	Character.cpp
 	Enemy.cpp
 	Bullet.cpp
